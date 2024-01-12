@@ -8,4 +8,5 @@ export interface FreeTrialProduct extends Document {
   readonly Currency: string;
   readonly Study_Time: number;
   readonly About_Product: string;
+  readonly Image: string;
 }

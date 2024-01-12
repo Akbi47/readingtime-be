@@ -9,6 +9,7 @@ export const FreeTrialProductSchema = new mongoose.Schema(
     Currency: String,
     Study_Time: Number,
     About_Product: String,
+    Image: String,
   },
   { timestamps: true },
 );
