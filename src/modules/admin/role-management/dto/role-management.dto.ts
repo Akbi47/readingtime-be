@@ -4,12 +4,12 @@ export class RoleManagementDto {
   readonly Email: string;
   readonly Password: string;
   readonly Gender: boolean;
-  readonly Birth: Date;
+  readonly Birth: string;
   readonly Country: string;
   readonly Contract_Type: string;
   readonly _Contract: string;
-  readonly _Start_Date: Date;
-  readonly Registration_Date: Date;
+  readonly _Start_Date: string;
+  readonly Registration_Date: string;
   readonly Authority_Type: string;
   readonly _Image: string;
   readonly Role: string;

@@ -19,6 +19,7 @@ export class RoleManagementController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
+      console.log(error);
       return new ResponseData<RoleManagement[]>(
         null,
         HttpStatus.ERROR,
@@ -42,6 +43,7 @@ export class RoleManagementController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
+      console.log(error);
       return new ResponseData<RoleManagement>(
         null,
         HttpStatus.ERROR,
@@ -71,6 +73,7 @@ export class RoleManagementController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
+      console.log(error);
       return new ResponseData<RoleManagement>(
         null,
         HttpStatus.ERROR,
