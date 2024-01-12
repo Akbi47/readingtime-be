@@ -8,5 +8,6 @@ export class RegularProductDto {
   readonly Price: number;
   readonly Discount_Price: number;
   readonly Study_Time: number;
-  readonly readonlyAbout_Product: string;
+  readonly About_Product: string;
+  readonly Image: string;
 }

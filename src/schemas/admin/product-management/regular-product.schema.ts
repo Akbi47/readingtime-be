@@ -13,6 +13,7 @@ export const RegularProductSchema = new mongoose.Schema(
     Discount_Price: Number,
     Study_Time: Number,
     About_Product: String,
+    Image: String,
   },
   { timestamps: true },
 );
