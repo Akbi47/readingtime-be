@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('today')
-export class TodayController {
+@Controller('report-user')
+export class ReportUserController {
   constructor() {}
 }

@@ -1,7 +1,6 @@
 import { Document } from 'mongoose';
 
 export interface Curriculum extends Document {
-  readonly Unique_No: string;
   readonly Curriculum_Title: string;
   readonly Subtitle: string;
   readonly Division: string;

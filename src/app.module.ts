@@ -40,6 +40,12 @@ import { BoardSupportModule } from './modules/admin/website-management/board/sup
 import { BannerModule } from './modules/admin/website-management/banner/banner.module';
 import { BoardNoticeFAQModule } from './modules/admin/website-management/board/notice-faq/board-notice-faq.module';
 import { CategoryModule } from './modules/admin/category/category.module';
+import { MonthlyModule } from './modules/admin/assignment-management/dashboard/monthly/monthly.module';
+import { TodayModule } from './modules/admin/assignment-management/dashboard/today/today.module';
+import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular.module';
+import { FreeTrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/free-trial.module';
+import { ReportTeacherModule } from './modules/admin/reports/teacher/report-teacher.module';
+import { ReportUserModule } from './modules/admin/reports/user/report-user.module';
 dotenv.config();
 
 @Module({
@@ -82,6 +88,12 @@ dotenv.config();
     BoardSupportModule,
     BoardNoticeFAQModule,
     CategoryModule,
+    MonthlyModule,
+    TodayModule,
+    RegularAssignmentModule,
+    FreeTrialAssignmentModule,
+    ReportTeacherModule,
+    ReportUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
