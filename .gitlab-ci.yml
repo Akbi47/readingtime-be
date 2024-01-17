@@ -1,0 +1,32 @@
+stages:
+  - build-develop
+  - deploy-develop
+
+build-develop:
+  stage: build-develop
+  image: node:latest
+  script:
+    - npm install --legacy-peer-deps
+    - npm run build
+  only:
+    - develop
+    - merge_requests
+
+deploy-develop:
+  stage: deploy-develop
+  image: ubuntu
+  needs: ['build-develop']
+  before_script:
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - echo "Deploying to server"
+    - ssh $SSH_USER@$VM_IPADDRESS "cd project && cd Hallo-BE3 && git pull && npm && npm run build"
+  only:
+    - develop
+1
