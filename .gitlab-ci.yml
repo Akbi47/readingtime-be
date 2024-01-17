@@ -4,6 +4,7 @@ stages:
 
 build-develop:
   stage: build-develop
+  tag: 
   image: node:latest
   script:
     - npm install --legacy-peer-deps
@@ -11,6 +12,7 @@ build-develop:
   only:
     - develop
     - merge_requests
+  tags: [develop] 
 
 deploy-develop:
   stage: deploy-develop
@@ -26,6 +28,7 @@ deploy-develop:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying to server"
-    - ssh $SSH_USER@$VM_IPADDRESS "cd project && cd Hallo-BE3 && git pull && npm && npm run build"
+    - ssh $SSH_USER@$VM_IPADDRESS "git pull && npm && npm run build"
   only:
     - develop
+  tags: [develop]
