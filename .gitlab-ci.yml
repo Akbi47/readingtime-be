@@ -29,4 +29,3 @@ deploy-develop:
     - ssh $SSH_USER@$VM_IPADDRESS "cd project && cd Hallo-BE3 && git pull && npm && npm run build"
   only:
     - develop
-1
