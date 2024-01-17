@@ -19,7 +19,7 @@ deploy-develop:
   needs: ['build-develop']
   script:
     - echo "Deploying to server"
-    - ssh $SSH_USER@$VM_IPADDRESS "git pull && npm && npm run build"
+    - git pull && npm && npm run build
   only:
     - develop
   tags: [develop]
