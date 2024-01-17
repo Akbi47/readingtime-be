@@ -32,4 +32,3 @@ deploy-develop:
   only:
     - develop
   tags: [develop]
-1
