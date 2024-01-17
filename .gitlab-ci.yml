@@ -19,7 +19,7 @@ deploy-develop:
   needs: ['build-develop']
   script:
     - echo "Deploying to server"
-    - npm run build
+    - "git pull && npm install && npm run build"
     - echo "Deployed"
   only:
     - develop
