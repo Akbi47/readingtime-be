@@ -5,13 +5,17 @@ stages:
 build-develop:
   stage: build-develop
   image: node:latest
+  before_script:
+    - sudo apt update
+    - sudo apt install nodejs npm
+
   script:
     - npm install --legacy-peer-deps
     - npm run build
   only:
     - develop
     - merge_requests
-  tags: [develop] 
+  tags: [develop]
 
 deploy-develop:
   stage: deploy-develop
