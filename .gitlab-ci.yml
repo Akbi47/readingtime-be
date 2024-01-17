@@ -17,14 +17,6 @@ deploy-develop:
   stage: deploy-develop
   image: ubuntu
   needs: ['build-develop']
-  before_script:
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
-    - eval $(ssh-agent -s)
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan $VM_IPADDRESS >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying to server"
     - ssh $SSH_USER@$VM_IPADDRESS "git pull && npm && npm run build"
