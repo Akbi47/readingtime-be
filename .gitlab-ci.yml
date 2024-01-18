@@ -33,9 +33,6 @@ deploy-develop:
     - echo "Deploying to server"
     - ssh -i ~/.ssh/gitlab -o StrictHostKeyChecking=no root@164.92.107.189
     - rsync -avz --progress -a -e "ssh -p PORT" build/ root@164.92.107.189:/home/www
-    - echo "Deployed"
-  script:
-    - echo "Deploying to server"
     - "cd readingtime-web-be && git pull develop && npm install && npm run build && pm2 restart all"
     - echo "Deployed"
   environment:
