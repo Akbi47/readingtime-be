@@ -21,6 +21,10 @@ deploy-develop:
     - echo "Deploying to server"
     - "cd readingtime-web-be && git pull develop && npm install && npm run build"
     - echo "Deployed"
+  environment:
+    name: production
+    url: http://164.92.107.189
+
   only:
     - develop
   tags: [develop]
