@@ -19,7 +19,7 @@ deploy-develop:
   needs: ['build-develop']
   script:
     - echo "Deploying to server"
-    - "cd readingtime-web-be && git pull develop && npm install && npm run build"
+    - ssh root@164.92.107.189 "cd readingtime-web-be && git pull develop && npm install && npm run build && pm2 restart all "
     - echo "Deployed"
   environment:
     name: production
