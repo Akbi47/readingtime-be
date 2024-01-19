@@ -1,26 +1,50 @@
+variables:
+  IMAGE_NAME: khoavio/reading-time
+  IMAGE_TAG: img1
 stages:
   - build-develop
+  - build-image
   - deploy-develop
 
 build-develop:
   stage: build-develop
   image: node:latest
   script:
-    - npm install --legacy-peer-deps
-    - npm run build
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - /home/gitlab-runner/
   only:
     - develop
     - merge_requests
   tags: [develop]
 
+build-image:
+  # needs: ['build-develop']
+  stage: build-image
+  image: docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u khoavio -p $REGISTRY_PASS
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
 deploy-develop:
   stage: deploy-develop
   image: ubuntu
-  needs: ['build-develop']
+  # needs: ['build-image']
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -H 164.92.107.189 >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
   script:
-    - echo "Deploying to server"
-    - 'npm install && npm run build'
-    - echo "Deployed"
+    - ssh root@164.92.107.189 "docker login -u khoavio -p $REGISTRY_PASS && docker run -p 8080:8080 -d my-node-app"
   only:
     - develop
   tags: [develop]
