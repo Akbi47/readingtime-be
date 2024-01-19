@@ -1,9 +1,10 @@
 import { Controller, Get, Body, Post } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { PointPenaltyManagement } from './interface/point-penalty-management.interface';
+
 import { PointPenaltyManagementService } from './point-penalty-management.service';
-import { PointPenaltyManagementDto } from './dto/point-penalty-management.dto';
+import { CreatePointPenaltyManagementDto } from './dto/create-point-penalty-management.dto';
+import { PointPenaltyManagement } from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
 
 @Controller('point-penalty')
 export class PointPenaltyManagementController {
@@ -58,7 +59,7 @@ export class PointPenaltyManagementController {
 
   @Post()
   async createPointPenaltyManagement(
-    @Body() pointPenaltyManagementDto: PointPenaltyManagementDto,
+    @Body() pointPenaltyManagementDto: CreatePointPenaltyManagementDto
   ): Promise<ResponseData<PointPenaltyManagement>> {
     try {
       const data =
@@ -72,7 +73,7 @@ export class PointPenaltyManagementController {
       );
     } catch (error) {
       return new ResponseData<PointPenaltyManagement>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

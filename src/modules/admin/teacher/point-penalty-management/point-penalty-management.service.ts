@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PointPenaltyManagement } from './interface/point-penalty-management.interface';
-import { PointPenaltyManagementDto } from './dto/point-penalty-management.dto';
+import { CreatePointPenaltyManagementDto } from './dto/create-point-penalty-management.dto';
+import {
+  PointPenaltyManagement,
+  PointPenaltyManagementDocument,
+} from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
 // import { ClassFeedback } from '../class-feedback/interface/class-feedback.interface';
 
 @Injectable()
@@ -10,8 +13,8 @@ export class PointPenaltyManagementService {
   constructor(
     // @InjectModel('ClassFeedback')
     // private readonly classFeedbackModel: Model<ClassFeedback>,
-    @InjectModel('PointPenaltyManagement')
-    private readonly pointPenaltyManagementModel: Model<PointPenaltyManagement>,
+    @InjectModel(PointPenaltyManagement.name)
+    private pointPenaltyManagementModel: Model<PointPenaltyManagementDocument>,
   ) {}
 
   async getPointPenaltyManagement(
@@ -73,11 +76,11 @@ export class PointPenaltyManagementService {
   // }
 
   async createPointPenaltyManagement(
-    pointPenaltyManagementDto: PointPenaltyManagementDto,
+    createPointPenaltyManagementDto: CreatePointPenaltyManagementDto,
   ): Promise<PointPenaltyManagement> {
-    const createdPointPenaltyManagement = new this.pointPenaltyManagementModel(
-      pointPenaltyManagementDto,
+    const data = await this.pointPenaltyManagementModel.create(
+      createPointPenaltyManagementDto,
     );
-    return createdPointPenaltyManagement.save();
+    return data;
   }
 }
