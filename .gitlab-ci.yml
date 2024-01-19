@@ -10,6 +10,7 @@ build-develop:
   stage: build-develop
   image: node:latest
   script:
+    - npm install -g yarn
     - yarn install
     - yarn build
   artifacts:
