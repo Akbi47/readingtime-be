@@ -31,6 +31,9 @@ build-image:
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
+  only:
+    - develop
+  tags: [develop]
 
 deploy-develop:
   stage: deploy-develop
