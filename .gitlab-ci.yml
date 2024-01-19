@@ -27,13 +27,10 @@ build-image:
   services:
     - docker:dind
   before_script:
-    # - docker login -u khoavio -p $REGISTRY_PASS
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN
+    - docker login -u khoavio -p $REGISTRY_PASS
   script:
-    # - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    # - docker push $IMAGE_NAME:$IMAGE_TAG
-    - docker build -t registry.gitlab.com/englishwing/readingtime-web-be .
-    - docker push registry.gitlab.com/englishwing/readingtime-web-be
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
 
 deploy-develop:
   stage: deploy-develop
