@@ -28,7 +28,7 @@ build-image:
     - docker:dind
   before_script:
     # - docker login -u khoavio -p $REGISTRY_PASS
-    - docker login registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN
   script:
     # - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     # - docker push $IMAGE_NAME:$IMAGE_TAG
