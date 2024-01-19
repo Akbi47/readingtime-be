@@ -10,7 +10,7 @@ build-develop:
   stage: build-develop
   image: node:latest
   script:
-    - npm run install
+    - npm install
     - npm run build
   artifacts:
     paths:
