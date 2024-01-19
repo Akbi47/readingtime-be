@@ -41,10 +41,10 @@ deploy-develop:
     - eval $(ssh-agent -s)
     - bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
     - mkdir -p ~/.ssh
-    - ssh-keyscan -H 164.92.107.189 >> ~/.ssh/known_hosts
+    - ssh-keyscan -H 139.59.102.34 >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh root@164.92.107.189 "docker login -u khoavio -p $REGISTRY_PASS && docker run -p 8080:8080 -d my-node-app"
+    - ssh root@139.59.102.34 "docker login -u khoavio -p $REGISTRY_PASS && docker run -p 8080:8080 -d my-node-app"
   only:
     - develop
   tags: [develop]
