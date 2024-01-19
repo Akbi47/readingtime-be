@@ -1,6 +1,6 @@
 variables:
   IMAGE_NAME: khoavio/reading-time
-  IMAGE_TAG: img1
+  IMAGE_TAG: img2
 stages:
   - build-develop
   - build-image
