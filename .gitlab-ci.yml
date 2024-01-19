@@ -27,7 +27,7 @@ build-image:
   services:
     - docker:dind
   before_script:
-    - docker login -u khoavio -p $REGISTRY_PASS
+    - echo $REGISTRY_PASS | docker login -u khoavio --password-stdin
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
