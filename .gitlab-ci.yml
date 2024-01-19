@@ -20,20 +20,20 @@ build-develop:
     - merge_requests
   tags: [develop]
 
-build-image:
-  # needs: ['build-develop']
-  stage: build-image
-  image: docker
-  services:
-    - docker:dind
-  before_script:
-    - docker login -u khoavio -p qvak472000
-  script:
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - docker push $IMAGE_NAME:$IMAGE_TAG
-  only:
-    - develop
-  tags: [develop]
+# build-image:
+#   # needs: ['build-develop']
+#   stage: build-image
+#   image: docker
+#   services:
+#     - docker:dind
+#   before_script:
+#     - docker login -u khoavio -p qvak472000
+#   script:
+#     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+#     - docker push $IMAGE_NAME:$IMAGE_TAG
+#   only:
+#     - develop
+#   tags: [develop]
 
 deploy-develop:
   stage: deploy-develop
