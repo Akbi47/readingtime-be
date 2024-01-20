@@ -1,13 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cors from 'cors';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { ValidationPipe } from '@nestjs/common';
+import { BodyValidationPipe } from './shares/pipes/body.validation.pipe';
+import { ResponseTransformInterceptor } from './shares/pipes/interceptors/response.interceptor';
 
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.use(cors());
-  await app.listen(8080);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+  });
+  app.enableCors();
+  app.useGlobalInterceptors(new ResponseTransformInterceptor());
+  app.useGlobalPipes(new BodyValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  );
+
+  await app.listen(3600);
 
   if (module.hot) {
     module.hot.accept();

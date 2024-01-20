@@ -6,16 +6,13 @@ export type PointPenaltyManagementDocument = PointPenaltyManagement & Document;
 
 @Schema({ timestamps: true })
 export class PointPenaltyManagement {
-  @Prop({ required: true, type: String })
-  teacher: string;
-
   @Prop({
     required: true,
     type: MongooseSchema.Types.ObjectId,
     index: true,
     ref: AccountTeacher.name,
   })
-  teacher_id: string;
+  teacher_id: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: true, type: String })
   division: string;

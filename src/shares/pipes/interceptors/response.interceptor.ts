@@ -1,0 +1,55 @@
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  HttpStatus,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface Response<T> {
+  data: T;
+  metadata: Record<string, unknown>;
+}
+@Injectable()
+export class ResponseTransformInterceptor<T>
+  implements NestInterceptor<T, Response<T>>
+{
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<Response<T>> {
+    return next.handle().pipe(
+      map((_data) => {
+        // @Exclude sensitive data
+        const req = context.switchToHttp().getRequest();
+        if (!_data) {
+          return {
+            code: HttpStatus.OK,
+            data: null,
+            metadata: null,
+          };
+        }
+        const metadata = {
+          ..._data.metadata,
+        };
+        metadata.timestamp = new Date();
+
+        if (_data?.data?.length || _data?.length) {
+          metadata.length = _data?.data?.length || _data?.length;
+        }
+        if (req.query) {
+          metadata.query = { ...req.query };
+        }
+
+        delete _data.metadata;
+        return {
+          code: HttpStatus.OK,
+          data: _data.data || _data,
+          metadata: metadata,
+        };
+      }),
+    );
+  }
+}

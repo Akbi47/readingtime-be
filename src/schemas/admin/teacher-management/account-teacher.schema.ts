@@ -1,21 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { GenderStatus } from 'src/shares/enums/gender.enum';
+import {
+  GenderStatus,
+  Level,
+  ProfileStatus,
+  RecommendedLevel,
+  RecommendedStudent,
+  SpecialFeature,
+} from 'src/shares/enums/account-teacher.enum';
 
 export type AccountTeacherDocument = AccountTeacher & Document;
 
 @Schema({ timestamps: true })
 export class AccountTeacher {
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   teacher: string;
 
-  @Prop({ required: false, type: String })
-  nickname: string;
+  @Prop({ required: true, type: String, unique: true })
+  nick_name: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String, unique: true })
   email_address: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   password: string;
 
   @Prop({
@@ -51,7 +58,7 @@ export class AccountTeacher {
   career_duration: number;
 
   @Prop({ required: false, type: String })
-  description_career: [string];
+  description_career: string;
 
   @Prop({ required: false, type: String })
   certificate: string;
@@ -63,40 +70,43 @@ export class AccountTeacher {
   working_hours: string;
 
   @Prop({ required: false, type: String })
+  image: string;
+
+  @Prop({ required: false, type: String })
   team_name: string;
 
-  @Prop({ required: false, type: String })
-  status: [string];
+  @Prop({ required: false, type: String, enum: ProfileStatus })
+  status: ProfileStatus;
 
-  @Prop({ required: false, type: String })
-  level: [string];
+  @Prop({ required: false, type: String, enum: Level })
+  level: Level;
 
-  @Prop({ required: false, type: String })
-  special_feature: [string];
+  @Prop({ required: false, type: String, enum: SpecialFeature })
+  special_feature: SpecialFeature;
 
   @Prop({ required: false, type: String })
   self_introduction: string;
 
-  @Prop({ required: false, type: String })
-  recommended_student: [string];
+  @Prop({ required: false, type: String, enum: RecommendedStudent })
+  recommended_student: RecommendedStudent;
+
+  @Prop({ required: false, type: String, enum: RecommendedLevel })
+  recommended_level: RecommendedLevel;
 
   @Prop({ required: false, type: String })
-  recommended_level: [string];
+  character: Array<string>;
 
   @Prop({ required: false, type: String })
-  character: [string];
-
-  @Prop({ required: false, type: String })
-  lesson_style: [string];
+  lesson_style: Array<string>;
 
   @Prop({ required: false, type: String })
   video: string;
 
   @Prop({ required: false, type: String })
-  student_review: [string];
+  student_review: Array<string>;
 
   @Prop({ required: false, type: String })
-  comment: [string];
+  comment: Array<string>;
 }
 
 export const AccountTeacherSchema =

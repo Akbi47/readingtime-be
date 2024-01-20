@@ -59,7 +59,7 @@ export class PointPenaltyManagementController {
 
   @Post()
   async createPointPenaltyManagement(
-    @Body() pointPenaltyManagementDto: CreatePointPenaltyManagementDto
+    @Body() pointPenaltyManagementDto: CreatePointPenaltyManagementDto,
   ): Promise<ResponseData<PointPenaltyManagement>> {
     try {
       const data =
@@ -73,7 +73,7 @@ export class PointPenaltyManagementController {
       );
     } catch (error) {
       return new ResponseData<PointPenaltyManagement>(
-        error,
+        null,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

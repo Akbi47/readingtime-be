@@ -1,9 +1,10 @@
 import { Controller, Get, Put, Body, Post } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { AccountTeacher } from './interface/account-teacher.interface';
+
 import { AccountTeacherService } from './account-teacher.service';
-import { AccountTeacherDto } from './dto/account-teacher.dto';
+import { CreateAccountTeacherDto } from './dto/create-account-teacher.dto';
+import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-teacher.schema';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
@@ -47,30 +48,30 @@ export class AccountTeacherController {
     }
   }
 
-  @Put()
-  async updateAccountTeacher(
-    @Body() accountTeacher: AccountTeacher,
-  ): Promise<ResponseData<AccountTeacher>> {
-    try {
-      const data =
-        await this.accountTeacherService.updateAccountTeacher(accountTeacher);
-      return new ResponseData<AccountTeacher>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<AccountTeacher>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
-  }
+  // @Put()
+  // async updateAccountTeacher(
+  //   @Body() accountTeacher: AccountTeacher,
+  // ): Promise<ResponseData<AccountTeacher>> {
+  //   try {
+  //     const data =
+  //       await this.accountTeacherService.updateAccountTeacher(accountTeacher);
+  //     return new ResponseData<AccountTeacher>(
+  //       data,
+  //       HttpStatus.SUCCESS,
+  //       HttpMessage.SUCCESS,
+  //     );
+  //   } catch (error) {
+  //     return new ResponseData<AccountTeacher>(
+  //       null,
+  //       HttpStatus.ERROR,
+  //       HttpMessage.ERROR,
+  //     );
+  //   }
+  // }
 
   @Post()
   async createAccountTeacher(
-    @Body() accountTeacherDto: AccountTeacherDto,
+    @Body() accountTeacherDto: CreateAccountTeacherDto,
   ): Promise<ResponseData<AccountTeacher>> {
     try {
       const data =
@@ -83,7 +84,6 @@ export class AccountTeacherController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      console.log(error);
       return new ResponseData<AccountTeacher>(
         null,
         HttpStatus.ERROR,
