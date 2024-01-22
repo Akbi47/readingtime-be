@@ -7,7 +7,7 @@ import * as dotenv from 'dotenv';
 import { WebSettingsModule } from './modules/admin/settings/web-setting-management/web-settings/web-settings.module';
 import { SMTPSecurityModule } from './modules/admin/settings/smtp-security/smtp-security.module';
 import { MailSettingsModule } from './modules/admin/settings/web-setting-management/mail-settings/mail-settings.module';
-import { AccountUserModule } from './modules/admin/account-user/account-user.module';
+
 import { AuthenticationModule } from './modules/authentication/authentication.module';
 import { TermsOfUseModule } from './modules/admin/settings/terms-management/terms-of-use/terms-of-use.module';
 import { PrivacyPolicyModule } from './modules/admin/settings/terms-management/privacy-policy/privacy-policy.module';
@@ -24,11 +24,6 @@ import { SMSSettingsModule } from './modules/admin/settings/web-setting-manageme
 import { HolidayManagementModule } from './modules/admin/settings/web-setting-management/holiday-management/holiday-management.module';
 import { MenuPermissionManagementModule } from './modules/admin/settings/web-setting-management/menu-permission-management/menu-permission-management.module';
 import { RoleManagementModule } from './modules/admin/role-management/role-management.module';
-import { AccountTeacherModule } from './modules/admin/teacher/account-teacher/account-teacher.module';
-import { WorkingHoursModule } from './modules/admin/teacher/working-hours/working-hours.module';
-import { VacationResignationManagementModule } from './modules/admin/teacher/vacation-resignation-management/vacation-resignation-management.module';
-import { ClassFeedbackModule } from './modules/admin/teacher/class-feedback/class-feedback.module';
-import { PointPenaltyManagementModule } from './modules/admin/teacher/point-penalty-management/point-penalty-management.module';
 import { RoleModule } from './modules/admin/role/role.module';
 import { BookModule } from './modules/admin/content-management/book/book.module';
 import { CurriculumModule } from './modules/admin/content-management/curriculum/curriculum.module';
@@ -46,6 +41,12 @@ import { RegularAssignmentModule } from './modules/admin/assignment-management/a
 import { FreeTrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/free-trial.module';
 import { ReportTeacherModule } from './modules/admin/reports/teacher/report-teacher.module';
 import { ReportUserModule } from './modules/admin/reports/user/report-user.module';
+import { AccountUserModule } from './modules/admin/user-management/account-user/account-user.module';
+import { AccountTeacherModule } from './modules/admin/teacher-management/account-teacher/account-teacher.module';
+import { ClassFeedbackModule } from './modules/admin/teacher-management/class-feedback/class-feedback.module';
+import { PointPenaltyManagementModule } from './modules/admin/teacher-management/point-penalty-management/point-penalty-management.module';
+import { VacationResignationManagementModule } from './modules/admin/teacher-management/vacation-resignation-management/vacation-resignation-management.module';
+import { WorkingHoursModule } from './modules/admin/teacher-management/working-hours/working-hours.module';
 dotenv.config();
 
 @Module({

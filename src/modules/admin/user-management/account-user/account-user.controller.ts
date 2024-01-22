@@ -1,9 +1,13 @@
-import { Controller, Get, Put, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put, Param } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { AccountUser } from './interface/account-user.interface';
 import { AccountUserService } from './account-user.service';
-import { AccountUserDto } from './dto/account-user.dto';
+import {
+  AccountUser,
+  AccountUserDocument,
+} from './schemas/account-user.schema';
+import CreateAccountUserDto from './dto/create-account-user.dto';
+import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Controller('account-user')
 export class AccountUserController {
@@ -47,29 +51,17 @@ export class AccountUserController {
     }
   }
 
-  @Put()
+  @Put('update')
+  // @UserAuth([UserRole.admin])
   async updateAccountUser(
-    @Body() accountUser: AccountUser,
-  ): Promise<ResponseData<AccountUser>> {
-    try {
-      const data = await this.accountUserService.updateAccountUser(accountUser);
-      return new ResponseData<AccountUser>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<AccountUser>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
+    @Body() accountUser: AccountUserDocument,
+  ): Promise<void> {
+    await this.accountUserService.updateAccountUserById(accountUser);
   }
 
-  @Post()
+  @Post('register')
   async createAccountUser(
-    @Body() accountUserDto: AccountUserDto,
+    @Body() accountUserDto: CreateAccountUserDto,
   ): Promise<ResponseData<AccountUser>> {
     try {
       const data =
@@ -81,7 +73,7 @@ export class AccountUserController {
       );
     } catch (error) {
       return new ResponseData<AccountUser>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
