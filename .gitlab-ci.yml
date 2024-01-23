@@ -27,7 +27,7 @@ deploy-develop:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying to server"
-    - ssh $SSH_USER@159.223.42.212 "git pull && npm && npm run build"
+    - ssh $SSH_USER@159.223.42.212 "git pull && npm && npm run build && pm2 restart all"
 
   only:
     - develop
