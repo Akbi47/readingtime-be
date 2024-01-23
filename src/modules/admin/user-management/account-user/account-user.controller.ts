@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Put, Param } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { AccountUserService } from './account-user.service';
@@ -7,7 +7,6 @@ import {
   AccountUserDocument,
 } from './schemas/account-user.schema';
 import CreateAccountUserDto from './dto/create-account-user.dto';
-import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Controller('account-user')
 export class AccountUserController {

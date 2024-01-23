@@ -9,6 +9,7 @@ import {
 
 export type AccountUserDocument = AccountUser & Document;
 
+
 @Schema({ timestamps: true })
 export class AccountUser {
   @Prop({ type: String, unique: true })
@@ -39,6 +40,9 @@ export class AccountUser {
 
   @Prop({ required: false, type: String })
   country: string;
+
+  @Prop({ required: false, type: String })
+  phone: string;
 
   @Prop({ required: false, type: String })
   description: string;

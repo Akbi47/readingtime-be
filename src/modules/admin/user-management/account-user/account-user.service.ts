@@ -10,7 +10,6 @@ import { httpErrors } from 'src/shares/exceptions';
 import { generateHash } from 'src/shares/helpers/bcrypt';
 import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { GetAccountUserDto } from './dto/get-account-user.dto';
-import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Injectable()
 export class AccountUserService {

@@ -47,6 +47,8 @@ import { ClassFeedbackModule } from './modules/admin/teacher-management/class-fe
 import { PointPenaltyManagementModule } from './modules/admin/teacher-management/point-penalty-management/point-penalty-management.module';
 import { VacationResignationManagementModule } from './modules/admin/teacher-management/vacation-resignation-management/vacation-resignation-management.module';
 import { WorkingHoursModule } from './modules/admin/teacher-management/working-hours/working-hours.module';
+import { RegularClassModule } from './modules/admin/class-management/regular-class/regular-class.module';
+import { ReadingRoomModule } from './modules/reading-room/reading-room.module';
 dotenv.config();
 
 @Module({
@@ -77,6 +79,8 @@ dotenv.config();
     WorkingHoursModule,
     VacationResignationManagementModule,
     ClassFeedbackModule,
+    RegularClassModule,
+    ReadingRoomModule,
     PointPenaltyManagementModule,
     RoleModule,
     BookModule,
