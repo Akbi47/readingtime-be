@@ -17,18 +17,12 @@ deploy-develop:
   stage: deploy-develop
   image: ubuntu
   needs: ['build-develop']
-  before_script:
-    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+   before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PK" | tr -d '\r' | ssh-add -
-    - chmod 700 ~/.ssh
-    - ssh-keyscan 159.223.42.212 >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+    - chmod 400 $SSH_PK
   script:
-    - echo "Deploying to server"
-    - ssh $SSH_USER@159.223.42.212 "git pull && npm && npm run build && pm2 restart all"
-
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PK root@159.223.42.212 "git pull && npm && npm run build && pm2 restart all"
   only:
     - develop
   tags: [develop]
