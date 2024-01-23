@@ -16,7 +16,7 @@ build-develop:
 deploy-develop:
   stage: deploy-develop
   image: ubuntu
-  needs: ['build-develop']
+  # needs: ['build-develop']
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
