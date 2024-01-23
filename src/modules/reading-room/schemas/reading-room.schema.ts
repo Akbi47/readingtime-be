@@ -8,11 +8,11 @@ export type ReadingRoomDocument = ReadingRoom & Document;
 export class ReadingRoom {
   @Prop({
     required: true,
-    type: MongooseSchema.Types.ObjectId,
+    type: String,
     index: true,
     ref: AccountUser.name,
   })
-  student_id: MongooseSchema.Types.ObjectId;
+  student_id: string;
 
   @Prop({
     require: false,

@@ -19,7 +19,7 @@ export class ReadingRoomService {
   async getReadingRoomOfUser(idDto: IdDto): Promise<ReadingRoom[]> {
     const { id } = idDto;
     const data = await this.readingRoomModel.findOne({ student_id: id });
-    console.log({ data });
+    console.log({ data, id });
     return await this.readingRoomModel.findOne({ student_id: id });
   }
 }
