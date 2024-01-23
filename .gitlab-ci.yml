@@ -22,7 +22,7 @@ deploy-develop:
     - eval $(ssh-agent -s)
     - chmod 400 $SSH_PK
   script:
-    - ssh -o StrictHostKeyChecking=no -i $SSH_PK root@159.223.42.212 "cd readingtime-web-be git pull && npm && npm run build && pm2 restart all"
+    - ssh -o StrictHostKeyChecking=no -i $SSH_PK root@159.223.42.212 "cd readingtime-web-be && git pull && npm && npm run build && pm2 restart all"
   only:
     - develop
   tags: [develop]
