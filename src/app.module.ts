@@ -48,13 +48,19 @@ import { PointPenaltyManagementModule } from './modules/admin/teacher-management
 import { VacationResignationManagementModule } from './modules/admin/teacher-management/vacation-resignation-management/vacation-resignation-management.module';
 import { WorkingHoursModule } from './modules/admin/teacher-management/working-hours/working-hours.module';
 import { RegularClassModule } from './modules/admin/class-management/regular-class/regular-class.module';
-import { ReadingRoomModule } from './modules/reading-room/reading-room.module';
 import { MailModule } from './modules/mail/mail.module';
+import { ReadingRoomModule } from './modules/user/reading-room/reading-room.module';
+import { CourseRegistrationModule } from './modules/user/course-registration/course-registration.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGOOSE_URL),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static'),
+    }),
     WebSettingsModule,
     SMTPSecurityModule,
     MailSettingsModule,
@@ -101,6 +107,7 @@ dotenv.config();
     ReportTeacherModule,
     ReportUserModule,
     MailModule,
+    CourseRegistrationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -12,26 +12,28 @@ const mailFrom = process.env.MAIL_FROM;
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: mailHost,
-        port: mailPort,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: mailAccount,
-          pass: mailPassword,
+    MailerModule.forRootAsync({
+      useFactory: async () => ({
+        transport: {
+          host: mailHost,
+          port: mailPort,
+          secure: true, // true for 465, false for other ports
+          auth: {
+            user: mailAccount,
+            pass: mailPassword,
+          },
         },
-      },
-      defaults: {
-        from: `"No Reply" <${mailFrom}>`,
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
+        defaults: {
+          from: `"No Reply" <${mailFrom}>`,
         },
-      },
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
     }),
   ],
   providers: [MailService],
