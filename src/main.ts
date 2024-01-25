@@ -14,6 +14,7 @@ async function bootstrap() {
   const allowedOrigins = [
     'https://www.readingtime.vn',
     'http://localhost:3000',
+    'http://localhost:3002',
     'https://reading-time-six.vercel.app',
   ];
   app.enableCors({ origin: allowedOrigins });
