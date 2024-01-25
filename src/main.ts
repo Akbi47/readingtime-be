@@ -22,7 +22,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
-  app.setGlobalPrefix('/api');
   app.useGlobalPipes(new BodyValidationPipe());
   app.useGlobalPipes(
     new ValidationPipe({
