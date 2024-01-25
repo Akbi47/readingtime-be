@@ -9,16 +9,17 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  // const allowedOrigins = [
-  //   'https://www.readingtime.vn',
-  //   'http://localhost:3000',
-  //   'http://localhost:3002',
-  //   'https://reading-time-six.vercel.app',
-  // ];
+  const allowedOrigins = [
+    'https://www.readingtime.vn',
+    'http://localhost:3000',
+    'http://localhost:3002',
+    'https://reading-time-six.vercel.app',
+  ];
   app.enableCors({
-    origin: '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
   });
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalPipes(new BodyValidationPipe());
