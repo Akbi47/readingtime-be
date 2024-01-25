@@ -15,7 +15,11 @@ async function bootstrap() {
   //   'http://localhost:3002',
   //   'https://reading-time-six.vercel.app',
   // ];
-  app.enableCors({ origin: '*' });
+  app.enableCors({
+    allowedHeaders: '*',
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  });
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalPipes(new BodyValidationPipe());
   app.useGlobalPipes(
