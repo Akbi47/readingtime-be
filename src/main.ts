@@ -8,16 +8,14 @@ import { ResponseTransformInterceptor } from './shares/pipes/interceptors/respon
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
-  });
-  const allowedOrigins = [
-    'https://www.readingtime.vn',
-    'http://localhost:3000',
-    'http://localhost:3002',
-    'https://reading-time-six.vercel.app',
-  ];
-  app.enableCors({ origin: allowedOrigins, credentials: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  // const allowedOrigins = [
+  //   'https://www.readingtime.vn',
+  //   'http://localhost:3000',
+  //   'http://localhost:3002',
+  //   'https://reading-time-six.vercel.app',
+  // ];
+  app.enableCors({ origin: '*' });
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalPipes(new BodyValidationPipe());
   app.useGlobalPipes(
