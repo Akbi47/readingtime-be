@@ -9,7 +9,7 @@ declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: false,
+    cors: true,
   });
   const allowedOrigins = [
     'https://www.readingtime.vn',
