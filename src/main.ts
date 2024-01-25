@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: '*',
     methods: ['GET', 'POST', 'PUT', ' PATCH', 'DELETE'],
     // allowedHeaders: 'Content-Type, Authorization',
-    credentials: true,
+    // credentials: true,
   });
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalPipes(new BodyValidationPipe());
