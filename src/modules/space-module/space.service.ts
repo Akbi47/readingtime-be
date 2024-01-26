@@ -5,7 +5,7 @@ import * as AWS from 'aws-sdk';
 export class SpaceService {
   constructor(@Inject(DoSpacesServiceLib) private readonly s3: AWS.S3) {}
 
-  async uploadFile(fileName: string, file: Buffer) {
+  async uploadImage(fileName: string, file: Buffer) {
     const fileNameUrl = `${Date.now()}-${fileName}`;
 
     return new Promise((resolve, reject) => {
@@ -15,6 +15,7 @@ export class SpaceService {
           Key: fileNameUrl,
           Body: file,
           ACL: 'public-read',
+          ContentType: 'image/*',
         },
         (error: AWS.AWSError) => {
           if (!error) {

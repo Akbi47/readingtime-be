@@ -13,6 +13,6 @@ export class SpaceController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return await this.spaceService.uploadFile(file.originalname, file.buffer);
+    return await this.spaceService.uploadImage(file.originalname, file.buffer);
   }
 }
