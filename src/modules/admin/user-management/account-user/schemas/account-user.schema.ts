@@ -66,14 +66,16 @@ export class AccountUser {
 
   @Prop({
     required: false,
-    type: [Number],
-    enum: UserRole,
-    default: UserRole.user,
+    type: [{ type: Number, enum: UserRole }],
+    default: [UserRole.user],
   })
   role: UserRole[];
 
   @Prop({ type: String, enum: UserStatus, default: UserStatus.INACTIVE })
   status: UserStatus;
+
+  @Prop({ required: false, type: Date, default: Date.now() })
+  lastLogin: Date;
 }
 
 export const AccountUserSchema = SchemaFactory.createForClass(AccountUser);

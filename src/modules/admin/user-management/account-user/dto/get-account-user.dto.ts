@@ -1,5 +1,12 @@
 // Import the necessary modules
-import { IsString, IsEmail, IsEnum, IsDate, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsEnum,
+  IsDate,
+  IsOptional,
+  IsArray,
+} from 'class-validator';
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import { Admission } from 'src/shares/enums/account-user.enum';
 
@@ -65,13 +72,17 @@ export class GetAccountUserDto {
   @IsOptional()
   signup_path?: string;
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  role?: string[];
+  role?: number[];
 
   @IsString()
   @IsOptional()
   status?: string;
+
+  @IsDate()
+  @IsOptional()
+  lastLogin?: Date;
 }
 
 // Export the class

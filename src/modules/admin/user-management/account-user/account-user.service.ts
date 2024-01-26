@@ -8,7 +8,7 @@ import {
 import CreateAccountUserDto from './dto/create-account-user.dto';
 import { httpErrors } from 'src/shares/exceptions';
 import { generateHash } from 'src/shares/helpers/bcrypt';
-import { UserStatus } from 'src/shares/enums/account-user.enum';
+import { UserRole, UserStatus } from 'src/shares/enums/account-user.enum';
 import { GetAccountUserDto } from './dto/get-account-user.dto';
 
 @Injectable()
@@ -24,6 +24,14 @@ export class AccountUserService {
 
   async getAccountUserId(_id: string): Promise<AccountUser> {
     return this.accountUserModel.findOne({ _id }).exec();
+  }
+
+  async updateRecentLogin(id: string): Promise<AccountUser> {
+    return await this.accountUserModel.findByIdAndUpdate(
+      id,
+      { $set: { lastLoginDate: Date.now() } },
+      { new: true },
+    );
   }
 
   async updateAccountUserById(accountUser: AccountUserDocument): Promise<void> {
@@ -56,6 +64,27 @@ export class AccountUserService {
     const data = await this.accountUserModel.create({
       ...accountUserDto,
       password: hashPassword,
+      status: UserStatus.ACTIVE,
+    });
+    delete data.password;
+
+    return data;
+  }
+
+  async createStudent(
+    accountUserDto: CreateAccountUserDto,
+  ): Promise<AccountUserDocument> {
+    const { email, password } = accountUserDto;
+    const user = await this.accountUserModel.findOne({ email });
+    if (user) {
+      throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
+    }
+    const { hashPassword } = await generateHash(password);
+
+    const data = await this.accountUserModel.create({
+      ...accountUserDto,
+      password: hashPassword,
+      role: UserRole.user,
       status: UserStatus.ACTIVE,
     });
     delete data.password;

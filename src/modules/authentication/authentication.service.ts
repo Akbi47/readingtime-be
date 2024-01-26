@@ -34,6 +34,7 @@ export class AuthenticationService {
       throw new UnauthorizedException(httpErrors.UNAUTHORIZED);
     }
 
+    await this.accountUserService.updateRecentLogin(user._id);
     const { authToken, userRole } = await this.generateToken(user);
 
     return {
