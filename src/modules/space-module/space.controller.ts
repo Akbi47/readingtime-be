@@ -10,13 +10,12 @@ import { UploadedMulterFile } from './config';
 
 @Controller('space')
 export class SpaceController {
-  constructor(private readonly spaceService: SpaceService) {
-    // @UploadedFile() file: UploadedMulterFile
-  }
-  @Post('upload')
+  constructor(private readonly spaceService: SpaceService) {}
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFile() {
-    const url = await this.spaceService.uploadFile();
+  @Post('spaces')
+  async uploadFile(@UploadedFile() file: UploadedMulterFile) {
+    const url = await this.spaceService.uploadFile(file);
+
     return {
       url,
     };
