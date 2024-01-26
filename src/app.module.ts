@@ -53,6 +53,7 @@ import { ReadingRoomModule } from './modules/user/reading-room/reading-room.modu
 import { CourseRegistrationModule } from './modules/user/course-registration/course-registration.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SpaceModule } from './modules/space-module/space.module';
 dotenv.config();
 
 @Module({
@@ -108,6 +109,7 @@ dotenv.config();
     ReportUserModule,
     MailModule,
     CourseRegistrationModule,
+    SpaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
