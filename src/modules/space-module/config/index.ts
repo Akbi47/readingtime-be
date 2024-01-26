@@ -21,12 +21,3 @@ export const DoSpacesServiceProvider: Provider<AWS.S3> = {
   provide: DoSpacesServiceLib,
   useValue: S3,
 };
-
-export interface UploadedMulterFile {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  buffer: Buffer;
-  size: number;
-}

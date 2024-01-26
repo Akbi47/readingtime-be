@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { SpaceService } from './space.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadedMulterFile } from './config';
 
 @Controller('space')
 export class SpaceController {
@@ -14,6 +13,6 @@ export class SpaceController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    await this.spaceService.uploadFile(file.originalname, file.buffer);
+    return await this.spaceService.uploadFile(file.originalname, file.buffer);
   }
 }
