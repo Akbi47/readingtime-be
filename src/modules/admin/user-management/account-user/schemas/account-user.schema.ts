@@ -9,7 +9,6 @@ import {
 
 export type AccountUserDocument = AccountUser & Document;
 
-
 @Schema({ timestamps: true })
 export class AccountUser {
   @Prop({ type: String, unique: true })
@@ -53,10 +52,10 @@ export class AccountUser {
   @Prop({ required: false, type: String, enum: Admission })
   admission: Admission;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: false, type: [String] })
   list_of_tags: Array<string>;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: false, type: [String] })
   englishwing_member: Array<string>;
 
   @Prop({ required: false, type: String })
@@ -67,7 +66,7 @@ export class AccountUser {
 
   @Prop({
     required: false,
-    type: Number,
+    type: [Number],
     enum: UserRole,
     default: UserRole.user,
   })

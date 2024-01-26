@@ -18,7 +18,9 @@ export class SpaceService {
         },
         (error: AWS.AWSError) => {
           if (!error) {
-            resolve(`${fileName}`);
+            resolve(
+              `https://${process.env.BUCKET_NAME}.${process.env.S3_ENDPOINT}/${fileName}`,
+            );
           } else {
             reject(
               new Error(
