@@ -6,7 +6,7 @@ export class SpaceService {
   constructor(@Inject(DoSpacesServiceLib) private readonly s3: AWS.S3) {}
 
   async uploadFile(fileName: string, file: Buffer) {
-    const fileNameUrl = `${Date.now()}-${fileName}}`;
+    const fileNameUrl = `${Date.now()}-${fileName}`;
 
     return new Promise((resolve, reject) => {
       this.s3.putObject(
