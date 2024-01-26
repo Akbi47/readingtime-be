@@ -5,17 +5,17 @@ import * as AWS from 'aws-sdk';
 export class SpaceService {
   constructor(@Inject(DoSpacesServiceLib) private readonly s3: AWS.S3) {}
 
-  async uploadImage(fileName: string, file: Buffer) {
-    const fileNameUrl = `${Date.now()}-${fileName}`;
+  async uploadImage(file: Express.Multer.File) {
+    const fileNameUrl = `${Date.now()}-${file.originalname}`;
 
     return new Promise((resolve, reject) => {
       this.s3.putObject(
         {
           Bucket: process.env.BUCKET_NAME,
           Key: fileNameUrl,
-          Body: file,
+          Body: file.buffer,
+          ContentType: file.mimetype,
           ACL: 'public-read',
-          ContentType: 'image/*',
         },
         (error: AWS.AWSError) => {
           if (!error) {
