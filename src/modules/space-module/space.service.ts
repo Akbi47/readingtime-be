@@ -18,18 +18,18 @@ export class SpaceService {
   //         cb(null, file.originalname);
   //       },
   //     }),
-  //   }).array('upload', 1);
+  //   }).single('file');
   // }
-  async uploadFile(file: UploadedMulterFile) {
-    const fileName = `${file.originalname}-${Date.now()}`;
+  async uploadFile(fileName: string, file: Buffer) {
+    const fileNameUrl = `${fileName}-${Date.now()}`;
 
     // Return a promise that resolves only when the file upload is complete
     return new Promise((resolve, reject) => {
       this.s3.putObject(
         {
           Bucket: process.env.BUCKET_NAME,
-          Key: fileName,
-          Body: file.buffer,
+          Key: fileNameUrl,
+          Body: file,
           ACL: 'public-read',
         },
         (error: AWS.AWSError) => {

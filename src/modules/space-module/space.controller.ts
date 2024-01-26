@@ -11,13 +11,9 @@ import { UploadedMulterFile } from './config';
 @Controller('space')
 export class SpaceController {
   constructor(private readonly spaceService: SpaceService) {}
-  @UseInterceptors(FileInterceptor('file'))
   @Post('upload')
-  async uploadFile(@UploadedFile() file: UploadedMulterFile) {
-    const url = await this.spaceService.uploadFile(file);
-
-    return {
-      url,
-    };
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    await this.spaceService.uploadFile(file.originalname, file.buffer);
   }
 }
