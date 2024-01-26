@@ -109,7 +109,7 @@ dotenv.config();
     ReportUserModule,
     MailModule,
     CourseRegistrationModule,
-    // SpaceModule,
+    SpaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],

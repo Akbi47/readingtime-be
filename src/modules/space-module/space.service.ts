@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DoSpacesServiceLib, UploadedMulterFile } from './config';
-
+import * as AWS from 'aws-sdk';
 @Injectable()
 export class SpaceService {
   constructor(@Inject(DoSpacesServiceLib) private readonly s3: AWS.S3) {}
