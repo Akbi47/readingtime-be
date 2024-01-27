@@ -42,7 +42,7 @@ export class RoleManagementService {
       const data = await this.roleManagementModel.create({
         ...roleManagementDto,
         password: hashPassword,
-        role: UserRole.user,
+        role,
         status: UserStatus.ACTIVE,
       });
       delete data.password;
