@@ -10,7 +10,7 @@ import {
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import { Admission } from 'src/shares/enums/account-user.enum';
 
-export class CreateAccountUserDto {
+export class CreateRoleManagementDto {
   @IsString()
   username: string;
 
@@ -68,8 +68,8 @@ export class CreateAccountUserDto {
 
   @IsArray()
   @IsOptional()
-  role?: number[];
+  role: number[];
 }
 
 // Export the class
-export default CreateAccountUserDto;
+export default CreateRoleManagementDto;

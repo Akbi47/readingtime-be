@@ -10,7 +10,7 @@ import {
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import { Admission, UserStatus } from 'src/shares/enums/account-user.enum';
 
-export class GetAccountUserDto {
+export class GetRoleManagementDto {
   @IsOptional()
   @IsString()
   username?: string;
@@ -102,4 +102,4 @@ export class GetAccountUserDto {
 }
 
 // Export the class
-export default GetAccountUserDto;
+export default GetRoleManagementDto;

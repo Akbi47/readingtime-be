@@ -18,8 +18,97 @@ export class AccountUserService {
     private accountUserModel: Model<AccountUserDocument>,
   ) {}
 
-  async getAccountUser(): Promise<AccountUser[]> {
-    return this.accountUserModel.find().exec();
+  async buildQuery(param: GetAccountUserDto): Promise<any> {
+    const {
+      admission,
+      country,
+      user,
+      email,
+      phone,
+      englishwing_member,
+      list_of_tags,
+      registration_date_start,
+      registration_date_end,
+      last_login_start,
+      last_login_end,
+    } = param;
+    const query: any = { status: UserStatus.ACTIVE };
+
+    if (admission) {
+      query.admission = { $regex: admission, $options: 'i' };
+    }
+
+    if (email) {
+      query.email = { $regex: email, $options: 'i' };
+    }
+
+    if (country) {
+      query.country = { $regex: country, $options: 'i' };
+    }
+
+    if (user) {
+      query.user = { $regex: user, $options: 'i' };
+    }
+
+    if (phone) {
+      query.phone = { $regex: phone, $options: 'i' };
+    }
+
+    if (englishwing_member) {
+      query.englishwing_member = { $regex: englishwing_member, $options: 'i' };
+    }
+
+    if (list_of_tags) {
+      query.list_of_tags = { $regex: list_of_tags, $options: 'i' };
+    }
+
+    if (registration_date_start && !registration_date_end) {
+      query.createdAt = {
+        $gte: registration_date_start,
+      };
+    }
+
+    if (!registration_date_start && registration_date_end) {
+      query.createdAt = {
+        $lte: registration_date_end,
+      };
+    }
+
+    if (registration_date_start && registration_date_end) {
+      query.createdAt = {
+        $gte: registration_date_start,
+        $lte: registration_date_end,
+      };
+    }
+
+    if (last_login_start && !last_login_end) {
+      query.last_login = {
+        $gte: last_login_start,
+      };
+    }
+
+    if (!last_login_start && last_login_end) {
+      query.last_login = {
+        $lte: last_login_end,
+      };
+    }
+
+    if (last_login_start && last_login_end) {
+      query.last_login = {
+        $gte: last_login_start,
+        $lte: last_login_end,
+      };
+    }
+
+    return query;
+  }
+
+  async getAccountUser(
+    getAccountUserDto: GetAccountUserDto,
+  ): Promise<AccountUser[]> {
+    const query = await this.buildQuery(getAccountUserDto);
+    console.log({ query1: query });
+    return this.accountUserModel.find(query);
   }
 
   async getAccountUserId(_id: string): Promise<AccountUser> {
@@ -54,7 +143,7 @@ export class AccountUserService {
   async createAccountUser(
     accountUserDto: CreateAccountUserDto,
   ): Promise<AccountUserDocument> {
-    const { email, password } = accountUserDto;
+    const { email, password, role } = accountUserDto;
     const user = await this.accountUserModel.findOne({ email });
     if (user) {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
@@ -65,6 +154,7 @@ export class AccountUserService {
       ...accountUserDto,
       password: hashPassword,
       status: UserStatus.ACTIVE,
+      role,
     });
     delete data.password;
 

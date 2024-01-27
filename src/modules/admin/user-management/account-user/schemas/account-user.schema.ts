@@ -75,7 +75,7 @@ export class AccountUser {
   status: UserStatus;
 
   @Prop({ required: false, type: Date, default: Date.now() })
-  lastLogin: Date;
+  last_login: Date;
 }
 
 export const AccountUserSchema = SchemaFactory.createForClass(AccountUser);
