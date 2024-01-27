@@ -66,10 +66,12 @@ export class AccountUser {
 
   @Prop({
     required: false,
-    type: [{ type: Number, enum: UserRole }],
-    default: [UserRole.user],
+    // type: [{ type: Number, enum: UserRole }],
+    enum: UserRole,
+    type: Number,
+    default: UserRole.user,
   })
-  role: UserRole[];
+  role: UserRole;
 
   @Prop({ type: String, enum: UserStatus, default: UserStatus.INACTIVE })
   status: UserStatus;

@@ -7,7 +7,8 @@ import {
   RoleManagementDocument,
 } from './schemas/role-management.schema';
 import { AccountUserService } from '../user-management/account-user/account-user.service';
-import { UserStatus } from 'src/shares/enums/account-user.enum';
+import { UserRole, UserStatus } from 'src/shares/enums/account-user.enum';
+import { generateHash } from 'src/shares/helpers/bcrypt';
 
 @Injectable()
 export class RoleManagementService {
@@ -34,9 +35,19 @@ export class RoleManagementService {
       status: UserStatus.ACTIVE,
     });
     if (user) {
-      const role = user.role;
+      return null;
     } else {
-      await this.accountUserService.createAccountUser(roleManagementDto);
+      const { hashPassword } = await generateHash(password);
+
+      const data = await this.roleManagementModel.create({
+        ...roleManagementDto,
+        password: hashPassword,
+        role: UserRole.user,
+        status: UserStatus.ACTIVE,
+      });
+      delete data.password;
+
+      return data;
     }
   }
 

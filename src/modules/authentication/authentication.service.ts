@@ -46,7 +46,7 @@ export class AuthenticationService {
 
   async generateToken(
     user: AccountUser,
-  ): Promise<{ authToken: string; userRole: Array<number> }> {
+  ): Promise<{ authToken: string; userRole: number }> {
     const { role } = user;
     const payload = {
       email: user.email,

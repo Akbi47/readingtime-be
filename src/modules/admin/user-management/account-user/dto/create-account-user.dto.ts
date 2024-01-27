@@ -66,9 +66,9 @@ export class CreateAccountUserDto {
   @IsOptional()
   signup_path: string;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  role?: number[];
+  role?: number;
 }
 
 // Export the class

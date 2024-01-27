@@ -76,9 +76,9 @@ export class GetAccountUserDto {
   @IsOptional()
   signup_path?: string;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  role?: number[];
+  role?: number;
 
   @IsEnum(UserStatus)
   @IsOptional()
