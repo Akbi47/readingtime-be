@@ -7,7 +7,7 @@ import {
 } from './schemas/trial-product.schema';
 import CreateTrialProductDto from './dto/create-trial-product.dto';
 import { httpErrors } from 'src/shares/exceptions';
-import GetTrialProductDto from './dto/Get-trial-product.dto';
+import GetTrialProductDto from './dto/get-trial-product.dto';
 
 @Injectable()
 export class FreeTrialProductService {

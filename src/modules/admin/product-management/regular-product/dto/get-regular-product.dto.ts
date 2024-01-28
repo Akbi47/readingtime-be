@@ -1,5 +1,5 @@
 import { IsString, IsOptional } from 'class-validator';
-import { GetTrialProductDto } from '../../free-trial-product/dto/Get-trial-product.dto';
+import { GetTrialProductDto } from '../../free-trial-product/dto/get-trial-product.dto';
 
 export class GetRegularProductDto extends GetTrialProductDto {
   @IsString()

@@ -7,7 +7,7 @@ import {
   TrialProduct,
   TrialProductDocument,
 } from './schemas/trial-product.schema';
-import GetTrialProductDto from './dto/Get-trial-product.dto';
+import { GetTrialProductDto } from './dto/get-trial-product.dto';
 
 @Controller('free-trial-product')
 export class FreeTrialProductController {

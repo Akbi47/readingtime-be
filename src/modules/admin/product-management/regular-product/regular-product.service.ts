@@ -8,8 +8,6 @@ import {
   RegularProductDocument,
 } from './schemas/regular-product.schema';
 import GetRegularProductDto from './dto/get-regular-product.dto';
-import getTrialProductDto from '../free-trial-product/dto/Get-trial-product.dto';
-import { TrialProduct } from '../free-trial-product/schemas/trial-product.schema';
 
 @Injectable()
 export class RegularProductService {
