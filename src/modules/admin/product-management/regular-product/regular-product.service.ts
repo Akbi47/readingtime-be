@@ -1,35 +1,71 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RegularProduct } from './interface/regular-product.interface';
-import { RegularProductDto } from './dto/regular-product.dto';
+import CreateRegularProductDto from './dto/create-regular-product.dto';
+import { httpErrors } from 'src/shares/exceptions';
+import {
+  RegularProduct,
+  RegularProductDocument,
+} from './schemas/regular-product.schema';
+import GetRegularProductDto from './dto/get-regular-product.dto';
+import getTrialProductDto from '../free-trial-product/dto/Get-trial-product.dto';
+import { TrialProduct } from '../free-trial-product/schemas/trial-product.schema';
 
 @Injectable()
 export class RegularProductService {
   constructor(
     @InjectModel('RegularProduct')
-    private readonly regularProductModel: Model<RegularProduct>,
+    private regularProductModel: Model<RegularProduct>,
   ) {}
 
-  async getRegularProduct(): Promise<RegularProduct[]> {
-    return this.regularProductModel.find().exec();
-  }
+  async buildQuery(param: GetRegularProductDto): Promise<any> {
+    const { country_of_sale, whether_to_use, currency, product_name } = param;
+    const query: any = {};
 
+    if (country_of_sale) {
+      query.country_of_sale = { $regex: country_of_sale, $options: 'i' };
+    }
+
+    if (whether_to_use) {
+      query.whether_to_use = { $regex: whether_to_use, $options: 'i' };
+    }
+
+    if (currency) {
+      query.currency = { $regex: currency, $options: 'i' };
+    }
+
+    if (product_name) {
+      query.product_name = { $regex: product_name, $options: 'i' };
+    }
+
+    return query;
+  }
+  async getRegularProduct(
+    getRegularProductDto: GetRegularProductDto,
+  ): Promise<RegularProduct[]> {
+    const query = await this.buildQuery(getRegularProductDto);
+    return await this.regularProductModel.find(query);
+  }
   async getRegularProductById(_id: string): Promise<RegularProduct> {
     return this.regularProductModel.findById(_id).exec();
   }
 
   async createRegularProduct(
-    regularProductDto: RegularProductDto,
+    createRegularProductDto: CreateRegularProductDto,
   ): Promise<RegularProduct> {
-    const createdRegularProduct = new this.regularProductModel(
-      regularProductDto,
-    );
-    return createdRegularProduct.save();
+    const { product_name } = createRegularProductDto;
+    const product = await this.regularProductModel.findOne({ product_name });
+    if (product) {
+      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+    }
+
+    const data = await this.regularProductModel.create(createRegularProductDto);
+
+    return data;
   }
 
   async updateRegularProduct(
-    regularProduct: RegularProduct,
+    regularProduct: RegularProductDocument,
   ): Promise<RegularProduct> {
     const { _id, ...updatedData } = regularProduct;
     return this.regularProductModel

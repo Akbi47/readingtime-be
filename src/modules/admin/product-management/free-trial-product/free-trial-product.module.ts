@@ -1,15 +1,18 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FreeTrialProductController } from './free-trial-product.controller';
-import { FreeTrialProductSchema } from '../../../../schemas/admin/product-management/free-trial-product.schema';
 import { FreeTrialProductService } from './free-trial-product.service';
+import {
+  TrialProduct,
+  TrialProductSchema,
+} from './schemas/trial-product.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
-        name: 'FreeTrialProduct',
-        schema: FreeTrialProductSchema,
+        name: TrialProduct.name,
+        schema: TrialProductSchema,
       },
     ]),
   ],

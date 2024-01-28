@@ -53,10 +53,10 @@ export class AccountUser {
   admission: Admission;
 
   @Prop({ required: false, type: [String] })
-  list_of_tags: Array<string>;
+  list_of_tags: string[];
 
   @Prop({ required: false, type: [String] })
-  englishwing_member: Array<string>;
+  englishwing_member: string[];
 
   @Prop({ required: false, type: String })
   referral_code: string;

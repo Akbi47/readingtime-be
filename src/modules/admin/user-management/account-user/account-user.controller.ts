@@ -25,8 +25,6 @@ export class AccountUserController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      console.log(error);
-
       return new ResponseData<AccountUser[]>(
         error,
         HttpStatus.ERROR,

@@ -11,18 +11,21 @@ import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import { Admission } from 'src/shares/enums/account-user.enum';
 
 export class CreateAccountUserDto {
+  @IsOptional()
   @IsString()
   username: string;
 
   @IsString()
   user: string;
 
+  @IsOptional()
   @IsString()
   user_english_name: string;
 
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsString()
   password: string;
 

@@ -107,7 +107,6 @@ export class AccountUserService {
     getAccountUserDto: GetAccountUserDto,
   ): Promise<AccountUser[]> {
     const query = await this.buildQuery(getAccountUserDto);
-    console.log({ query1: query });
     return this.accountUserModel.find(query);
   }
 

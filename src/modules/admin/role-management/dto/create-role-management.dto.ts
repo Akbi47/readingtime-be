@@ -1,74 +1,34 @@
-// Import the necessary modules
-import {
-  IsString,
-  IsEmail,
-  IsEnum,
-  IsDate,
-  IsOptional,
-  IsArray,
-} from 'class-validator';
-import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
-import { Admission } from 'src/shares/enums/account-user.enum';
+import { IsString, IsDate, IsOptional, IsNumber } from 'class-validator';
+import CreateAccountUserDto from '../../user-management/account-user/dto/create-account-user.dto';
 
-export class CreateRoleManagementDto {
+export class CreateRoleManagementDto extends CreateAccountUserDto {
   @IsString()
-  username: string;
-
-  @IsString()
-  user: string;
-
-  @IsString()
-  user_english_name: string;
-
-  @IsEmail()
-  email: string;
-
-  @IsString()
-  password: string;
-
-  @IsEnum(GenderStatus)
   @IsOptional()
-  gender: GenderStatus;
+  nick_name: string;
+
+  @IsString()
+  @IsOptional()
+  ID: string;
+
+  @IsString()
+  @IsOptional()
+  contract_type: string;
+
+  @IsString()
+  @IsOptional()
+  contract: string;
 
   @IsDate()
   @IsOptional()
-  birth: Date;
+  start_date: Date;
 
-  @IsString()
+  @IsDate()
   @IsOptional()
-  country: string;
+  resignation_date: Date;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  description: string;
-
-  @IsString()
-  @IsOptional()
-  picture: string;
-
-  @IsEnum(Admission)
-  @IsOptional()
-  admission: Admission;
-
-  @IsArray()
-  @IsOptional()
-  list_of_tags: string[];
-
-  @IsArray()
-  @IsOptional()
-  englishwing_member: string[];
-
-  @IsString()
-  @IsOptional()
-  referral_code: string;
-
-  @IsString()
-  @IsOptional()
-  signup_path: string;
-
-  @IsArray()
-  @IsOptional()
-  role: number[];
+  role: number;
 }
 
 // Export the class

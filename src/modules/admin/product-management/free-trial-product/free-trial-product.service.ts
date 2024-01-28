@@ -1,39 +1,75 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Query } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FreeTrialProduct } from './interface/free-trial-product.interface';
-import { FreeTrialProductDto } from './dto/free-trial-product.dto';
+import {
+  TrialProduct,
+  TrialProductDocument,
+} from './schemas/trial-product.schema';
+import CreateTrialProductDto from './dto/create-trial-product.dto';
+import { httpErrors } from 'src/shares/exceptions';
+import GetTrialProductDto from './dto/Get-trial-product.dto';
 
 @Injectable()
 export class FreeTrialProductService {
   constructor(
-    @InjectModel('FreeTrialProduct')
-    private readonly FreeTrialProductModel: Model<FreeTrialProduct>,
+    @InjectModel(TrialProduct.name)
+    private trialProductModel: Model<TrialProductDocument>,
   ) {}
+  async buildQuery(param: GetTrialProductDto): Promise<any> {
+    const { country_of_sale, whether_to_use, currency, product_name } = param;
+    const query: any = {};
 
-  async getFreeTrialProduct(): Promise<FreeTrialProduct[]> {
-    return this.FreeTrialProductModel.find().exec();
+    if (country_of_sale) {
+      query.country_of_sale = { $regex: country_of_sale, $options: 'i' };
+    }
+
+    if (whether_to_use) {
+      query.whether_to_use = { $regex: whether_to_use, $options: 'i' };
+    }
+
+    if (currency) {
+      query.currency = { $regex: currency, $options: 'i' };
+    }
+
+    if (product_name) {
+      query.product_name = { $regex: product_name, $options: 'i' };
+    }
+
+    return query;
+  }
+  async getFreeTrialProduct(
+    @Query() getTrialProductDto: GetTrialProductDto,
+  ): Promise<TrialProduct[]> {
+    const query = await this.buildQuery(getTrialProductDto);
+    return await this.trialProductModel.find(query);
   }
 
-  async getFreeTrialProductById(_id: string): Promise<FreeTrialProduct> {
-    return this.FreeTrialProductModel.findById(_id).exec();
+  async getFreeTrialProductById(_id: string): Promise<TrialProduct> {
+    return this.trialProductModel.findById(_id).exec();
   }
 
   async createFreeTrialProduct(
-    FreeTrialProductDto: FreeTrialProductDto,
-  ): Promise<FreeTrialProduct> {
-    const createdFreeTrialProduct = new this.FreeTrialProductModel(
-      FreeTrialProductDto,
-    );
-    return createdFreeTrialProduct.save();
+    createTrialProductDto: CreateTrialProductDto,
+  ): Promise<TrialProduct> {
+    const { product_name } = createTrialProductDto;
+    const product = await this.trialProductModel.findOne({ product_name });
+    if (product) {
+      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+    }
+
+    const data = await this.trialProductModel.create(createTrialProductDto);
+
+    return data;
   }
 
   async updateFreeTrialProduct(
-    FreeTrialProduct: FreeTrialProduct,
-  ): Promise<FreeTrialProduct> {
+    FreeTrialProduct: TrialProductDocument,
+  ): Promise<void> {
     const { _id, ...updatedData } = FreeTrialProduct;
-    return this.FreeTrialProductModel.findOneAndUpdate({ _id }, updatedData, {
-      new: true,
-    }).exec();
+    await this.trialProductModel
+      .findOneAndUpdate({ _id }, updatedData, {
+        new: true,
+      })
+      .exec();
   }
 }

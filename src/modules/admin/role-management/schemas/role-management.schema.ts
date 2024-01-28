@@ -10,6 +10,9 @@ export class RoleManagement extends AccountUser {
   nick_name: string;
 
   @Prop({ required: false, type: String })
+  ID: string;
+
+  @Prop({ required: false, type: String })
   contract_type: string;
 
   @Prop({ required: false, type: String })

@@ -1,9 +1,13 @@
 import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { FreeTrialProduct } from './interface/free-trial-product.interface';
 import { FreeTrialProductService } from './free-trial-product.service';
-import { FreeTrialProductDto } from './dto/free-trial-product.dto';
+import CreateTrialProductDto from './dto/create-trial-product.dto';
+import {
+  TrialProduct,
+  TrialProductDocument,
+} from './schemas/trial-product.schema';
+import GetTrialProductDto from './dto/Get-trial-product.dto';
 
 @Controller('free-trial-product')
 export class FreeTrialProductController {
@@ -11,17 +15,22 @@ export class FreeTrialProductController {
     private readonly freeTrialProductService: FreeTrialProductService,
   ) {}
 
-  @Get()
-  async getFreeTrialProduct(): Promise<ResponseData<FreeTrialProduct[]>> {
+  @Get('/')
+  async getFreeTrialProduct(
+    getTrialProductDto: GetTrialProductDto,
+  ): Promise<ResponseData<TrialProduct[]>> {
     try {
-      const data = await this.freeTrialProductService.getFreeTrialProduct();
-      return new ResponseData<FreeTrialProduct[]>(
+      const data =
+        await this.freeTrialProductService.getFreeTrialProduct(
+          getTrialProductDto,
+        );
+      return new ResponseData<TrialProduct[]>(
         data,
         HttpStatus.SUCCESS,
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      return new ResponseData<FreeTrialProduct[]>(
+      return new ResponseData<TrialProduct[]>(
         null,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
@@ -29,22 +38,22 @@ export class FreeTrialProductController {
     }
   }
 
-  @Post()
+  @Post('/')
   async createFreeTrialProduct(
-    @Body() freeTrialProductDto: FreeTrialProductDto,
-  ): Promise<ResponseData<FreeTrialProduct>> {
+    @Body() freeTrialProductDto: CreateTrialProductDto,
+  ): Promise<ResponseData<TrialProduct>> {
     try {
       const data =
         await this.freeTrialProductService.createFreeTrialProduct(
           freeTrialProductDto,
         );
-      return new ResponseData<FreeTrialProduct>(
+      return new ResponseData<TrialProduct>(
         data,
         HttpStatus.SUCCESS,
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      return new ResponseData<FreeTrialProduct>(
+      return new ResponseData<TrialProduct>(
         null,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
@@ -55,31 +64,15 @@ export class FreeTrialProductController {
   @Get('get-detail')
   async getFreeTrialProductById(
     @Body() body: { _id: string },
-  ): Promise<FreeTrialProduct> {
+  ): Promise<TrialProduct> {
     const { _id } = body;
     return this.freeTrialProductService.getFreeTrialProductById(_id);
   }
 
   @Put()
   async updateFreeTrialProduct(
-    @Body() freeTrialProduct: FreeTrialProduct,
-  ): Promise<ResponseData<FreeTrialProduct>> {
-    try {
-      const data =
-        await this.freeTrialProductService.updateFreeTrialProduct(
-          freeTrialProduct,
-        );
-      return new ResponseData<FreeTrialProduct>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<FreeTrialProduct>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
+    @Body() freeTrialProduct: TrialProductDocument,
+  ): Promise<void> {
+    await this.freeTrialProductService.updateFreeTrialProduct(freeTrialProduct);
   }
 }
