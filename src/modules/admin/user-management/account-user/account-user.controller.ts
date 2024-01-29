@@ -8,6 +8,7 @@ import {
 } from './schemas/account-user.schema';
 import CreateAccountUserDto from './dto/create-account-user.dto';
 import GetAccountUserDto from './dto/get-account-user.dto';
+import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
 
 @Controller('account-user')
 export class AccountUserController {
@@ -88,6 +89,46 @@ export class AccountUserController {
   ): Promise<ResponseData<AccountUser>> {
     try {
       const data = await this.accountUserService.createStudent(accountUserDto);
+      return new ResponseData<AccountUser>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<AccountUser>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
+
+  @Post('register-student')
+  async createStudent(
+    @Body() accountUserDto: CreateAccountUserDto,
+  ): Promise<ResponseData<AccountUser>> {
+    try {
+      const data = await this.accountUserService.createStudent(accountUserDto);
+      return new ResponseData<AccountUser>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<AccountUser>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
+
+  @Post('register-teacher')
+  async createTeacher(
+    @Body() accountUserDto: CreateAccountTeacherDto,
+  ): Promise<ResponseData<AccountUser>> {
+    try {
+      const data = await this.accountUserService.createTeacher(accountUserDto);
       return new ResponseData<AccountUser>(
         data,
         HttpStatus.SUCCESS,

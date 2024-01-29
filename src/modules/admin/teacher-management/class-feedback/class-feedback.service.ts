@@ -15,7 +15,7 @@ export class ClassFeedbackService {
   ) {}
 
   async getClassFeedback(): Promise<ClassFeedback[]> {
-    return this.ClassFeedbackModel.find().exec();
+    return this.ClassFeedbackModel.find();
   }
 
   async createClassFeedback(

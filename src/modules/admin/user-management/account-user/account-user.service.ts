@@ -11,6 +11,7 @@ import { generateHash } from 'src/shares/helpers/bcrypt';
 import { UserRole, UserStatus } from 'src/shares/enums/account-user.enum';
 import { GetAccountUserDto } from './dto/get-account-user.dto';
 import * as moment from 'moment';
+import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
 
 @Injectable()
 export class AccountUserService {
@@ -176,6 +177,26 @@ export class AccountUserService {
       password: hashPassword,
       role: UserRole.user,
       status: UserStatus.ACTIVE,
+    });
+    delete data.password;
+
+    return data;
+  }
+
+  async createTeacher(
+    accountUserDto: CreateAccountTeacherDto,
+  ): Promise<AccountUserDocument> {
+    const { email, password } = accountUserDto;
+    const user = await this.accountUserModel.findOne({ email });
+    if (user) {
+      throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
+    }
+    const { hashPassword } = await generateHash(password);
+
+    const data = await this.accountUserModel.create({
+      ...accountUserDto,
+      password: hashPassword,
+      role: UserRole.teacher,
     });
     delete data.password;
 

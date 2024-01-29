@@ -1,10 +1,10 @@
 import { Schema } from '@nestjs/mongoose';
-import { IsOptional, IsString } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 import { ClassFeedbackStatus } from 'src/shares/enums/account-teacher.enum';
 
 @Schema({ timestamps: true })
-export class CreateClassFeedbackDto {
+export class GetClassFeedbackDto {
   @IsString()
   @IsOptional()
   team: string;
