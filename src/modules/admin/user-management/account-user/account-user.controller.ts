@@ -103,26 +103,6 @@ export class AccountUserController {
     }
   }
 
-  @Post('register-student')
-  async createStudent(
-    @Body() accountUserDto: CreateAccountUserDto,
-  ): Promise<ResponseData<AccountUser>> {
-    try {
-      const data = await this.accountUserService.createStudent(accountUserDto);
-      return new ResponseData<AccountUser>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<AccountUser>(
-        error,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
-  }
-
   @Post('register-teacher')
   async createTeacher(
     @Body() accountUserDto: CreateAccountTeacherDto,
