@@ -6,7 +6,7 @@ import {
   RoleManagement,
   RoleManagementDocument,
 } from './schemas/role-management.schema';
-import { AccountUserService } from '../user-management/account-user/account-user.service';
+
 import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { generateHash } from 'src/shares/helpers/bcrypt';
 import { httpErrors } from 'src/shares/exceptions';
