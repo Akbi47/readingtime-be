@@ -24,7 +24,7 @@ export class CreateAccountTeacherDto {
   nickname: string;
 
   @IsEmail()
-  email_address: string;
+  email: string;
 
   @IsString()
   password: string;
@@ -44,6 +44,10 @@ export class CreateAccountTeacherDto {
   @IsString()
   @IsOptional()
   timezone: string;
+
+  @IsString()
+  @IsOptional()
+  tag: string;
 
   @IsString()
   @IsOptional()

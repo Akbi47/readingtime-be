@@ -1,9 +1,9 @@
 import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { Curriculum } from './interface/curriculum.interface';
 import { CurriculumService } from './curriculum.service';
-import { CurriculumDto } from './dto/curriculum.dto';
+import { Curriculum, CurriculumDocument } from './schemas/curriculum.schema';
+import CreateCurriculumDto from './dto/create-curriculum.dto';
 
 @Controller('curriculum')
 export class CurriculumController {
@@ -29,7 +29,7 @@ export class CurriculumController {
 
   @Post()
   async createCurriculum(
-    @Body() curriculumDto: CurriculumDto,
+    @Body() curriculumDto: CreateCurriculumDto,
   ): Promise<ResponseData<Curriculum>> {
     try {
       const data = await this.curriculumService.createCurriculum(curriculumDto);
@@ -55,21 +55,8 @@ export class CurriculumController {
 
   @Put()
   async updateCurriculum(
-    @Body() curriculum: Curriculum,
-  ): Promise<ResponseData<Curriculum>> {
-    try {
-      const data = await this.curriculumService.updateCurriculum(curriculum);
-      return new ResponseData<Curriculum>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<Curriculum>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
+    @Body() curriculum: CurriculumDocument,
+  ): Promise<void> {
+    await this.curriculumService.updateCurriculum(curriculum);
   }
 }

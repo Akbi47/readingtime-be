@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Transform } from 'class-transformer';
+import * as moment from 'moment';
 import { Document } from 'mongoose';
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import {
@@ -8,7 +10,7 @@ import {
 } from 'src/shares/enums/account-user.enum';
 
 export type AccountUserDocument = AccountUser & Document;
-
+const formattedDate = moment(Date.now()).format('DD/MM/YYYY');
 @Schema({ timestamps: true })
 export class AccountUser {
   @Prop({ type: String, unique: true })
@@ -16,6 +18,9 @@ export class AccountUser {
 
   @Prop({ type: String })
   user: string;
+
+  @Prop({ type: Number })
+  ID: number;
 
   @Prop({ type: String })
   user_english_name: string;
@@ -76,8 +81,11 @@ export class AccountUser {
   @Prop({ type: String, enum: UserStatus, default: UserStatus.INACTIVE })
   status: UserStatus;
 
-  @Prop({ required: false, type: Date, default: Date.now() })
-  last_login: Date;
+  @Prop({ required: false, type: String, default: formattedDate })
+  last_login: string;
+
+  @Prop({ required: false, type: String, default: formattedDate })
+  reg_day: string;
 }
 
 export const AccountUserSchema = SchemaFactory.createForClass(AccountUser);

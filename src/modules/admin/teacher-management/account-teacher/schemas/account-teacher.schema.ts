@@ -75,6 +75,9 @@ export class AccountTeacher {
   @Prop({ required: false, type: String })
   team_name: string;
 
+  @Prop({ required: false, type: String })
+  tag: string;
+
   @Prop({ required: false, type: String, enum: ProfileStatus })
   status: ProfileStatus;
 

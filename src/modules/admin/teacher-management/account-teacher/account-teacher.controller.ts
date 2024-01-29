@@ -10,7 +10,7 @@ import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-tea
 export class AccountTeacherController {
   constructor(private readonly accountTeacherService: AccountTeacherService) {}
 
-  @Get()
+  @Get('/')
   async getAccountTeacher(): Promise<ResponseData<AccountTeacher[]>> {
     try {
       const data = await this.accountTeacherService.getAccountTeacher();
@@ -69,7 +69,7 @@ export class AccountTeacherController {
   //   }
   // }
 
-  @Post()
+  @Post('/')
   async createAccountTeacher(
     @Body() accountTeacherDto: CreateAccountTeacherDto,
   ): Promise<ResponseData<AccountTeacher>> {

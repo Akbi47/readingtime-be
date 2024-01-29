@@ -10,6 +10,7 @@ import { httpErrors } from 'src/shares/exceptions';
 import { generateHash } from 'src/shares/helpers/bcrypt';
 import { UserRole, UserStatus } from 'src/shares/enums/account-user.enum';
 import { GetAccountUserDto } from './dto/get-account-user.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class AccountUserService {
@@ -117,7 +118,7 @@ export class AccountUserService {
   async updateRecentLogin(id: string): Promise<AccountUser> {
     return await this.accountUserModel.findByIdAndUpdate(
       id,
-      { $set: { lastLoginDate: Date.now() } },
+      { $set: { last_login: moment(Date.now()).format('DD/MM/YYYY') } },
       { new: true },
     );
   }

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Curriculum } from './interface/curriculum.interface';
-import { CurriculumDto } from './dto/curriculum.dto';
+import { Curriculum, CurriculumDocument } from './schemas/curriculum.schema';
+import CreateCurriculumDto from './dto/create-curriculum.dto';
 
 @Injectable()
 export class CurriculumService {
@@ -19,14 +19,16 @@ export class CurriculumService {
     return this.CurriculumModel.findById(_id).exec();
   }
 
-  async createCurriculum(CurriculumDto: CurriculumDto): Promise<Curriculum> {
+  async createCurriculum(
+    CurriculumDto: CreateCurriculumDto,
+  ): Promise<Curriculum> {
     const createdCurriculum = new this.CurriculumModel(CurriculumDto);
     return createdCurriculum.save();
   }
 
-  async updateCurriculum(Curriculum: Curriculum): Promise<Curriculum> {
+  async updateCurriculum(Curriculum: CurriculumDocument): Promise<void> {
     const { _id, ...updatedData } = Curriculum;
-    return this.CurriculumModel.findOneAndUpdate({ _id }, updatedData, {
+    await this.CurriculumModel.findOneAndUpdate({ _id }, updatedData, {
       new: true,
     }).exec();
   }

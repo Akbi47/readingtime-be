@@ -1,32 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Book } from './interface/book.interface';
-import { BookDto } from './dto/book.dto';
+import CreateBookDto from './dto/create-book.dto';
+import { httpErrors } from 'src/shares/exceptions';
+import { Book, BookDocument } from './schemas/book.schema';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectModel('Book')
-    private readonly bookModel: Model<Book>,
+    private bookModel: Model<BookDocument>,
   ) {}
 
   async getBook(): Promise<Book[]> {
-    return this.bookModel.find().exec();
+    return this.bookModel.find();
   }
 
   async getBookById(_id: string): Promise<Book> {
     return this.bookModel.findById(_id).exec();
   }
 
-  async createBook(bookDto: BookDto): Promise<Book> {
-    const createdBook = new this.bookModel(bookDto);
-    return createdBook.save();
+  async createBook(createBookDto: CreateBookDto): Promise<Book> {
+    const { book_title } = createBookDto;
+    const product = await this.bookModel.findOne({ book_title });
+    if (product) {
+      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+    }
+
+    const data = await this.bookModel.create(createBookDto);
+
+    return data;
   }
 
-  async updateBook(book: Book): Promise<Book> {
+  async updateBook(book: BookDocument): Promise<void> {
     const { _id, ...updatedData } = book;
-    return this.bookModel
+    await this.bookModel
       .findOneAndUpdate({ _id }, updatedData, {
         new: true,
       })

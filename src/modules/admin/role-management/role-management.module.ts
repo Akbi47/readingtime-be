@@ -26,7 +26,6 @@ import {
           return schema;
         },
         inject: [getConnectionToken()],
-        // schema: RoleManagementSchema,
       },
     ]),
     AccountUserModule,
