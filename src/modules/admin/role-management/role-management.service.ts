@@ -11,12 +11,14 @@ import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { generateHash } from 'src/shares/helpers/bcrypt';
 import { httpErrors } from 'src/shares/exceptions';
 import GetRoleManagementDto from './dto/get-role-management.dto';
+import { AccountUserService } from '../user-management/account-user/account-user.service';
 
 @Injectable()
 export class RoleManagementService {
   constructor(
     @InjectModel(RoleManagement.name)
     private roleManagementModel: Model<RoleManagementDocument>,
+    private accountUser: AccountUserService,
   ) {}
   async buildQuery(param: GetRoleManagementDto): Promise<any> {
     const { user, email, phone, nick_name, ID } = param;
@@ -59,7 +61,8 @@ export class RoleManagementService {
   async createRoleManagement(
     roleManagementDto: CreateRoleManagementDto,
   ): Promise<RoleManagement> {
-    const { email, password } = roleManagementDto;
+    const { email, password, role } = roleManagementDto;
+    const payload = { email, password, role } as any;
     const user = await this.roleManagementModel.findOne({
       email,
       status: UserStatus.ACTIVE,
@@ -67,17 +70,17 @@ export class RoleManagementService {
     if (user) {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
     } else {
-      const { hashPassword } = await generateHash(password);
+      const data = await this.accountUser.createAccountUser(payload);
 
-      const data = await this.roleManagementModel.create({
+      delete roleManagementDto.email;
+      delete roleManagementDto.password;
+
+      const res = await this.roleManagementModel.create({
         ...roleManagementDto,
-        password: hashPassword,
-        status: UserStatus.ACTIVE,
+        user_id: data._id,
       });
-      delete data.password;
-      console.log(data);
 
-      return data;
+      return res;
     }
   }
 

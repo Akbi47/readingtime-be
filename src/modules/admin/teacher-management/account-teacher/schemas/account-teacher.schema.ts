@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 import {
   GenderStatus,
   Level,
@@ -16,13 +17,16 @@ export class AccountTeacher {
   @Prop({ required: true, type: String })
   teacher: string;
 
+  @Prop({ required: false, type: String, ref: AccountUser.name })
+  teacher_id: string;
+
   @Prop({ required: true, type: String, unique: true })
   nick_name: string;
 
-  @Prop({ required: true, type: String, unique: true })
+  @Prop({ required: false, type: String, unique: true })
   email: string;
 
-  @Prop({ required: true, type: String })
+  @Prop({ required: false, type: String })
   password: string;
 
   @Prop({

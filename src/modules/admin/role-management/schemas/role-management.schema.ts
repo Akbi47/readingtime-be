@@ -16,6 +16,9 @@ export class RoleManagement extends AccountUser {
   @Prop({ required: false, type: String })
   contract_type: string;
 
+  @Prop({ required: false, type: String, ref: AccountUser.name })
+  user_id: string;
+
   @Prop({ required: false, type: String })
   contract: string;
 

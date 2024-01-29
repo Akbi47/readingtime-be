@@ -10,12 +10,14 @@ import {
   AccountTeacher,
   AccountTeacherDocument,
 } from './schemas/account-teacher.schema';
+import { AccountUserService } from '../../user-management/account-user/account-user.service';
 
 @Injectable()
 export class AccountTeacherService {
   constructor(
     @InjectModel(AccountTeacher.name)
     private accountTeacherModel: Model<AccountTeacherDocument>,
+    private accountUser: AccountUserService,
   ) {}
 
   async getAccountTeacher(): Promise<AccountTeacher[]> {
@@ -45,19 +47,26 @@ export class AccountTeacherService {
     accountTeacherDto: CreateAccountTeacherDto,
   ): Promise<AccountTeacherDocument> {
     const { email, password } = accountTeacherDto;
-    const teacher = await this.accountTeacherModel.findOne({ email });
+
+    const payload = { email, password } as CreateAccountTeacherDto;
+    const teacher = await this.accountUser.findOne({
+      email,
+      status: UserStatus.ACTIVE,
+    });
+
     if (teacher) {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
     }
-    const { hashPassword } = await generateHash(password);
+    const data = await this.accountUser.createTeacher(payload);
 
-    const data = await this.accountTeacherModel.create({
+    delete accountTeacherDto.email;
+    delete accountTeacherDto.password;
+
+    const res = await this.accountTeacherModel.create({
       ...accountTeacherDto,
-      password: hashPassword,
-      // status: UserStatus.ACTIVE,
+      teacher_id: data._id,
     });
-    delete data.password;
 
-    return data;
+    return res;
   }
 }

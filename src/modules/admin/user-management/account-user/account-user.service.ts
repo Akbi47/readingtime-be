@@ -184,9 +184,9 @@ export class AccountUserService {
   }
 
   async createTeacher(
-    accountUserDto: CreateAccountTeacherDto,
+    accountTeacherDto: CreateAccountTeacherDto,
   ): Promise<AccountUserDocument> {
-    const { email, password } = accountUserDto;
+    const { email, password } = accountTeacherDto;
     const user = await this.accountUserModel.findOne({ email });
     if (user) {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
@@ -194,9 +194,10 @@ export class AccountUserService {
     const { hashPassword } = await generateHash(password);
 
     const data = await this.accountUserModel.create({
-      ...accountUserDto,
+      ...accountTeacherDto,
       password: hashPassword,
       role: UserRole.teacher,
+      status: UserStatus.ACTIVE,
     });
     delete data.password;
 

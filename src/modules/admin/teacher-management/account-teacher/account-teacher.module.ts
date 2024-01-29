@@ -6,12 +6,14 @@ import {
   AccountTeacher,
   AccountTeacherSchema,
 } from './schemas/account-teacher.schema';
+import { AccountUserModule } from '../../user-management/account-user/account-user.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: AccountTeacher.name, schema: AccountTeacherSchema },
     ]),
+    AccountUserModule,
   ],
   controllers: [AccountTeacherController],
   providers: [AccountTeacherService],

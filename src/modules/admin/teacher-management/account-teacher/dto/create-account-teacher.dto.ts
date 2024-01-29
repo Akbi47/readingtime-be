@@ -21,11 +21,17 @@ export class CreateAccountTeacherDto {
   teacher: string;
 
   @IsString()
+  @IsOptional()
+  teacher_id: string;
+
+  @IsString()
   nick_name: string;
 
+  @IsOptional()
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsString()
   password: string;
 
