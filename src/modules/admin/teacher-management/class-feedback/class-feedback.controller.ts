@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { ClassFeedback } from './interface/class-feedback.interface';
+
 import { ClassFeedbackService } from './class-feedback.service';
-import { ClassFeedbackDto } from './dto/class-feedback.dto';
+import { ClassFeedback } from './schemas/class-feedback.schema';
+import { CreateClassFeedbackDto } from './dto/create-class-feedback.schema';
 
 @Controller('class-feedback')
 export class ClassFeedbackController {
@@ -29,7 +30,7 @@ export class ClassFeedbackController {
 
   @Post()
   async createClassFeedback(
-    @Body() classFeedbackDto: ClassFeedbackDto,
+    @Body() classFeedbackDto: CreateClassFeedbackDto,
   ): Promise<ResponseData<ClassFeedback>> {
     try {
       const data =

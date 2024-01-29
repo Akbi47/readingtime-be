@@ -20,7 +20,7 @@ export class AccountTeacher {
   nick_name: string;
 
   @Prop({ required: true, type: String, unique: true })
-  email_address: string;
+  email: string;
 
   @Prop({ required: true, type: String })
   password: string;
@@ -52,7 +52,7 @@ export class AccountTeacher {
   start_date: Date;
 
   @Prop({ required: false, type: Date })
-  resignation_day?: Date;
+  resignation_day: Date;
 
   @Prop({ required: false, type: Number })
   career_duration: number;
@@ -110,6 +110,12 @@ export class AccountTeacher {
 
   @Prop({ required: false, type: String })
   comment: Array<string>;
+
+  @Prop({ required: false, type: Number })
+  point: number;
+
+  @Prop({ required: false, type: Number })
+  penalty: number;
 }
 
 export const AccountTeacherSchema =

@@ -21,7 +21,7 @@ export class CreateAccountTeacherDto {
   teacher: string;
 
   @IsString()
-  nickname: string;
+  nick_name: string;
 
   @IsEmail()
   email: string;
@@ -68,6 +68,14 @@ export class CreateAccountTeacherDto {
   @IsNumber()
   @IsOptional()
   career_duration: number;
+
+  @IsNumber()
+  @IsOptional()
+  point: number;
+
+  @IsNumber()
+  @IsOptional()
+  penalty: number;
 
   @IsString()
   @IsOptional()

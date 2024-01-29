@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Transform } from 'class-transformer';
 import * as moment from 'moment';
 import { Document } from 'mongoose';
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { AccountTeacher } from './account-teacher.schema';
+import { AccountTeacher } from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
+
 
 export type PointPenaltyManagementDocument = PointPenaltyManagement & Document;
 

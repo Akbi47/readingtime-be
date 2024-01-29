@@ -84,7 +84,7 @@ dotenv.config();
     MenuPermissionManagementModule,
     RoleManagementModule,
     AccountTeacherModule,
-    // WorkingHoursModule,
+    WorkingHoursModule,
     VacationResignationManagementModule,
     ClassFeedbackModule,
     RegularClassModule,

@@ -4,7 +4,7 @@ import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
 import { AccountTeacherService } from './account-teacher.service';
 import { CreateAccountTeacherDto } from './dto/create-account-teacher.dto';
-import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-teacher.schema';
+import { AccountTeacher } from './schemas/account-teacher.schema';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
@@ -84,8 +84,10 @@ export class AccountTeacherController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
+      console.log(error);
+
       return new ResponseData<AccountTeacher>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

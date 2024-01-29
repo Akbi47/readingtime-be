@@ -1,18 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-teacher.schema';
+import { ClassFeedback } from '../../class-feedback/schemas/class-feedback.schema';
+import * as moment from 'moment';
+import { AccountTeacher } from '../../account-teacher/schemas/account-teacher.schema';
 
 export type PointPenaltyManagementDocument = PointPenaltyManagement & Document;
+const formatedDate = moment(Date.now()).format('DD/MM/YYYY');
 
-@Schema({ timestamps: true })
 export class PointPenaltyManagement {
   @Prop({
     required: true,
-    type: MongooseSchema.Types.ObjectId,
+    type: String,
     index: true,
     ref: AccountTeacher.name,
   })
-  teacher_id: MongooseSchema.Types.ObjectId;
+  teacher_id: string;
+
+  @Prop({
+    required: true,
+    type: String,
+    index: true,
+    ref: ClassFeedback.name,
+  })
+  class_feedback_id: string;
 
   @Prop({ required: true, type: String })
   division: string;
@@ -22,6 +32,9 @@ export class PointPenaltyManagement {
 
   @Prop({ required: false, type: String })
   texts?: string;
+
+  @Prop({ required: false, type: String, default: formatedDate })
+  date?: string;
 }
 
 export const PointPenaltyManagementSchema = SchemaFactory.createForClass(

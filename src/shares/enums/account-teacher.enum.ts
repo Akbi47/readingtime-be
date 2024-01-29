@@ -33,3 +33,15 @@ export enum RecommendedLevel {
   INTERMEDIATE = 'Intermediate(K~P)',
   ADVANCED = 'Beyond Q',
 }
+
+export enum LeaveInfo {
+  ABSENCE = 'Absence request',
+  VACATION = 'Vacation request',
+  RETIREMENT = 'Retirement request',
+}
+
+export enum ClassFeedbackStatus {
+  COMPLETE = 'Complete',
+  INCOMPLETE = 'In Complete',
+  INPROGRESS = 'In Progress',
+}

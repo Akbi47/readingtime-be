@@ -2,13 +2,14 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateAccountTeacherDto } from './dto/create-account-teacher.dto';
-import {
-  AccountTeacher,
-  AccountTeacherDocument,
-} from 'src/schemas/admin/teacher-management/account-teacher.schema';
+
 import { httpErrors } from 'src/shares/exceptions';
 import { generateHash } from 'src/shares/helpers/bcrypt';
 import { UserStatus } from 'src/shares/enums/account-user.enum';
+import {
+  AccountTeacher,
+  AccountTeacherDocument,
+} from './schemas/account-teacher.schema';
 
 @Injectable()
 export class AccountTeacherService {
@@ -53,7 +54,7 @@ export class AccountTeacherService {
     const data = await this.accountTeacherModel.create({
       ...accountTeacherDto,
       password: hashPassword,
-      status: UserStatus.ACTIVE,
+      // status: UserStatus.ACTIVE,
     });
     delete data.password;
 

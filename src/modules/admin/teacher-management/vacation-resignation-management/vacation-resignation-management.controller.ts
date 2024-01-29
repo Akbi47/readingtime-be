@@ -1,9 +1,12 @@
 import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { VacationResignationManagement } from './interface/vacation-resignation-management.interface';
 import { VacationResignationManagementService } from './vacation-resignation-management.service';
-import { VacationResignationManagementDto } from './dto/vacation-resignation-management.dto';
+import { CreateVacationResignationManagementDto } from './dto/create-vacation-resignation-management.dto';
+import {
+  VacationResignationManagement,
+  VacationResignationManagementDocument,
+} from './schemas/vacation-resignation-management.schema';
 
 @Controller('vacation-resignation')
 export class VacationResignationManagementController {
@@ -34,7 +37,8 @@ export class VacationResignationManagementController {
 
   @Post()
   async createVacationResignationManagement(
-    @Body() vacationResignationManagementDto: VacationResignationManagementDto,
+    @Body()
+    vacationResignationManagementDto: CreateVacationResignationManagementDto,
   ): Promise<ResponseData<VacationResignationManagement>> {
     try {
       const data =
@@ -67,24 +71,11 @@ export class VacationResignationManagementController {
 
   @Put()
   async updateVacationResignationManagement(
-    @Body() vacationResignationManagement: VacationResignationManagement,
-  ): Promise<ResponseData<VacationResignationManagement>> {
-    try {
-      const data =
-        await this.vacationResignationManagementService.updateVacationResignationManagement(
-          vacationResignationManagement,
-        );
-      return new ResponseData<VacationResignationManagement>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<VacationResignationManagement>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
+    @Body()
+    vacationResignationManagement: VacationResignationManagementDocument,
+  ): Promise<void> {
+    await this.vacationResignationManagementService.updateVacationResignationManagement(
+      vacationResignationManagement,
+    );
   }
 }

@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { VacationResignationManagement } from './interface/vacation-resignation-management.interface';
-import { VacationResignationManagementDto } from './dto/vacation-resignation-management.dto';
+import {
+  VacationResignationManagement,
+  VacationResignationManagementDocument,
+} from './schemas/vacation-resignation-management.schema';
+import { CreateVacationResignationManagementDto } from './dto/create-vacation-resignation-management.dto';
 
 @Injectable()
 export class VacationResignationManagementService {
   constructor(
     @InjectModel('VacationResignationManagement')
-    private readonly vacationResignationManagementModel: Model<VacationResignationManagement>,
+    private readonly vacationResignationManagementModel: Model<VacationResignationManagementDocument>,
   ) {}
 
   async getVacationResignationManagement(): Promise<
     VacationResignationManagement[]
   > {
-    return this.vacationResignationManagementModel.find().exec();
+    return this.vacationResignationManagementModel.find();
   }
 
   async getVacationResignationManagementById(
@@ -24,20 +27,18 @@ export class VacationResignationManagementService {
   }
 
   async createVacationResignationManagement(
-    VacationResignationManagementDto: VacationResignationManagementDto,
+    vacationResignationManagementDto: CreateVacationResignationManagementDto,
   ): Promise<VacationResignationManagement> {
-    const createdVacationResignationManagement =
-      new this.vacationResignationManagementModel(
-        VacationResignationManagementDto,
-      );
-    return createdVacationResignationManagement.save();
+    return await this.vacationResignationManagementModel.create(
+      vacationResignationManagementDto,
+    );
   }
 
   async updateVacationResignationManagement(
-    VacationResignationManagement: VacationResignationManagement,
-  ): Promise<VacationResignationManagement> {
+    VacationResignationManagement: VacationResignationManagementDocument,
+  ): Promise<void> {
     const { _id, ...updatedData } = VacationResignationManagement;
-    return this.vacationResignationManagementModel
+    await this.vacationResignationManagementModel
       .findOneAndUpdate({ _id }, updatedData, { new: true })
       .exec();
   }

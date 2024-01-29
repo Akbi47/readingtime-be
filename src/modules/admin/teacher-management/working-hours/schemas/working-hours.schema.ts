@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-teacher.schema';
+import { AccountTeacher } from '../../account-teacher/schemas/account-teacher.schema';
 
 export type WorkingHoursDocument = WorkingHours & Document;
 
@@ -17,31 +17,20 @@ export class WorkingHours {
   @Prop({ required: false, type: String })
   teacher_name: string;
 
-  @Prop({ required: false, type: Number })
-  student_age: number;
-
-  @Prop({ required: true, type: String, unique: true })
-  email: string;
+  @Prop({ required: false, type: String })
+  teacher_nickname: string;
 
   @Prop({ required: false, type: String })
-  course: string;
+  team: string;
 
   @Prop({ required: false, type: String })
-  phone: string;
-
-  @Prop({ required: false, type: Date })
-  start_class: Date;
-
-  @Prop({ required: false, type: String })
-  time: string;
-
-  @Prop({ required: false, type: [String] })
-  known_from: string[];
+  team_leader: string;
 
   @Prop({
     required: false,
     type: [
       {
+        time: String,
         mon: Boolean,
         tue: Boolean,
         wed: Boolean,
@@ -52,7 +41,7 @@ export class WorkingHours {
       },
     ],
   })
-  class_per_week: any[];
+  timesheet: any[];
 }
 
 export const WorkingHoursSchema = SchemaFactory.createForClass(WorkingHours);

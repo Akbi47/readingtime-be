@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { AccountTeacher } from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
-import { AccountTeacher } from 'src/schemas/admin/teacher-management/account-teacher.schema';
 
 export type RegularClassDocument = RegularClass & Document;
 

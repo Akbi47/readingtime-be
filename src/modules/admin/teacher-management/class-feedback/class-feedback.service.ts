@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ClassFeedback } from './interface/class-feedback.interface';
-import { ClassFeedbackDto } from './dto/class-feedback.dto';
+import {
+  ClassFeedback,
+  ClassFeedbackDocument,
+} from './schemas/class-feedback.schema';
+import { CreateClassFeedbackDto } from './dto/create-class-feedback.schema';
 
 @Injectable()
 export class ClassFeedbackService {
   constructor(
     @InjectModel('ClassFeedback')
-    private readonly ClassFeedbackModel: Model<ClassFeedback>,
+    private readonly ClassFeedbackModel: Model<ClassFeedbackDocument>,
   ) {}
 
   async getClassFeedback(): Promise<ClassFeedback[]> {
@@ -16,9 +19,8 @@ export class ClassFeedbackService {
   }
 
   async createClassFeedback(
-    classFeedbackDto: ClassFeedbackDto,
+    classFeedbackDto: CreateClassFeedbackDto,
   ): Promise<ClassFeedback> {
-    const createdClassFeedback = new this.ClassFeedbackModel(classFeedbackDto);
-    return createdClassFeedback.save();
+    return await this.ClassFeedbackModel.create(classFeedbackDto);
   }
 }
