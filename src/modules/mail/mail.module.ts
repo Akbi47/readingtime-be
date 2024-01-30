@@ -40,3 +40,15 @@ const mailFrom = process.env.MAIL_FROM;
   exports: [MailService],
 })
 export class MailModule {}
+
+// @Module({
+//   imports: [
+//     MailerModule.forRootAsync({
+//       useClass: MailConfigService,
+//     }),
+//     MailSettingsModule,
+//   ],
+
+//   providers: [MailService, MailConfigService],
+//   exports: [MailService, MailConfigService],
+// })

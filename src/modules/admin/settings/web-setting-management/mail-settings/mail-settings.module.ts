@@ -12,5 +12,6 @@ import { MailSettingsService } from './mail-settings.service';
   ],
   controllers: [MailSettingsController],
   providers: [MailSettingsService],
+  exports: [MailSettingsService],
 })
 export class MailSettingsModule {}

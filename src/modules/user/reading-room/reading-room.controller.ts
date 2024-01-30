@@ -28,7 +28,7 @@ export class ReadingRoomController {
       );
     }
   }
-  @Post('data-create')
+  @Post()
   async createData(@Body() data: any) {
     try {
       const res = await this.readingRoomService.createData(data);

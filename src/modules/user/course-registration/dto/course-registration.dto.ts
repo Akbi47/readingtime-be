@@ -39,6 +39,6 @@ export class CourseRegistrationDto {
   @IsOptional()
   known_from: string[];
 
-  @IsArray()
-  class_per_week: any[];
+  @IsOptional()
+  class_per_week: any;
 }
