@@ -12,7 +12,7 @@ export class MailSettingsService {
   ) {}
 
   async getMailSettings(): Promise<MailSettings[]> {
-    return this.mailSettingsModel.find().exec();
+    return this.mailSettingsModel.find();
   }
 
   async updateMailSettings(mailSettings: MailSettings): Promise<MailSettings> {

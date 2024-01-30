@@ -91,7 +91,21 @@ export class RoleManagementService {
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
     }
-
+    const user_id = user.user_id;
+    if (updatedData.email) {
+      await this.accountUser.findByIdAndUpdateEmail(
+        user_id,
+        updatedData.email,
+        true,
+      );
+    }
+    if (updatedData.password) {
+      await this.accountUser.findByIdAndUpdateEmail(
+        user_id,
+        updatedData.password,
+      );
+    }
+    delete updatedData.password;
     await this.roleManagementModel.findOneAndUpdate({ _id }, updatedData, {
       new: true,
     });

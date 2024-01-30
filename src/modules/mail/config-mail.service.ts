@@ -3,27 +3,27 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { Injectable } from '@nestjs/common';
 import { join } from 'path';
 import { MailSettingsService } from '../admin/settings/web-setting-management/mail-settings/mail-settings.service';
-const mailHost = process.env.MAIL_HOST;
-const mailPort = +process.env.MAIL_PORT;
-const mailAccount = process.env.MAIL_ACCOUNT;
-const mailPassword = process.env.MAIL_PASSWORD;
-const mailFrom = process.env.MAIL_FROM;
+
 @Injectable()
 export class MailConfigService implements MailerOptionsFactory {
   constructor(private mailSettingService: MailSettingsService) {}
-  createMailerOptions(): MailerOptions {
+  async createMailerOptions(): Promise<MailerOptions> {
+    const mailSettings = await this.mailSettingService.getMailSettings();
+    console.log(mailSettings);
+    console.log(mailSettings[0]?.Email_Sending_Address);
+
     return {
       transport: {
-        host: mailHost,
-        port: mailPort,
-        secure: true, // true for 465, false for other ports
+        host: mailSettings[0]?.SMTP_Host,
+        port: mailSettings[0]?.SMTP_Port,
+        secure: mailSettings[0]?.SMTP_Security === 'SSL' ? true : false, // true for 465, false for other ports
         auth: {
-          user: mailAccount,
-          pass: mailPassword,
+          user: mailSettings[0]?.SMTP_User_Id,
+          pass: mailSettings[0]?.SMTP_User_Password,
         },
       },
       defaults: {
-        from: `"No Reply" <${mailFrom}>`,
+        from: `"No Reply" <${mailSettings[0]?.Email_Sending_Address}>`,
       },
       template: {
         dir: join(__dirname, 'templates'),

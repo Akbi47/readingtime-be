@@ -123,6 +123,31 @@ export class AccountUserService {
       { new: true },
     );
   }
+  async findByIdAndUpdateEmail(
+    id: string,
+    data: any,
+    isEmail?: boolean,
+  ): Promise<void> {
+    if (isEmail) {
+      await this.accountUserModel.findByIdAndUpdate(
+        id,
+        { email: data },
+        {
+          new: true,
+        },
+      );
+    }
+    if (!isEmail) {
+      const { hashPassword } = await generateHash(data);
+      await this.accountUserModel.findByIdAndUpdate(
+        id,
+        { password: hashPassword },
+        {
+          new: true,
+        },
+      );
+    }
+  }
 
   async updateAccountUserById(accountUser: AccountUserDocument): Promise<void> {
     const { _id, ...updatedData } = accountUser;
@@ -131,7 +156,10 @@ export class AccountUserService {
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
     }
-
+    if (updatedData.password) {
+      await this.findByIdAndUpdateEmail(_id, updatedData.password);
+    }
+    delete updatedData.password;
     await this.accountUserModel.findOneAndUpdate({ _id }, updatedData, {
       new: true,
     });

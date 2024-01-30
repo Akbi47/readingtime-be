@@ -31,6 +31,26 @@ export class AccountTeacherService {
     accountTeacher: AccountTeacherDocument,
   ): Promise<void> {
     const { _id, ...updatedData } = accountTeacher;
+    const user = await this.accountTeacherModel.findById(_id);
+
+    if (!user) {
+      throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
+    }
+    const user_id = user.teacher_id;
+    if (updatedData.email) {
+      await this.accountUser.findByIdAndUpdateEmail(
+        user_id,
+        updatedData.email,
+        true,
+      );
+    }
+    if (updatedData.password) {
+      await this.accountUser.findByIdAndUpdateEmail(
+        user_id,
+        updatedData.password,
+      );
+    }
+    delete updatedData.password;
     await this.accountTeacherModel.findOneAndUpdate({ _id }, updatedData, {
       new: true,
     });
