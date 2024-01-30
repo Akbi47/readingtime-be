@@ -2,7 +2,10 @@ import { Controller, Get, Body, Post, Put, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { RoleManagementService } from './role-management.service';
-import { RoleManagement, RoleManagementDocument } from './schemas/role-management.schema';
+import {
+  RoleManagement,
+  RoleManagementDocument,
+} from './schemas/role-management.schema';
 import { GetRoleManagementDto } from './dto/get-role-management.dto';
 import CreateRoleManagementDto from './dto/create-role-management.dto';
 

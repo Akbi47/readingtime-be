@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 import { CreateAccountTeacherDto } from './dto/create-account-teacher.dto';
 
 import { httpErrors } from 'src/shares/exceptions';
-import { generateHash } from 'src/shares/helpers/bcrypt';
 import { UserStatus } from 'src/shares/enums/account-user.enum';
 import {
   AccountTeacher,
@@ -53,7 +52,6 @@ export class AccountTeacherService {
     }
     const data = await this.accountUser.createTeacher(payload);
 
-    delete accountTeacherDto.email;
     delete accountTeacherDto.password;
 
     const res = await this.accountTeacherModel.create({

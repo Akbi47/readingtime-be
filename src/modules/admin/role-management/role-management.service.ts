@@ -50,7 +50,7 @@ export class RoleManagementService {
     getRoleManagementDto: GetRoleManagementDto,
   ): Promise<RoleManagement[]> {
     const query = await this.buildQuery(getRoleManagementDto);
-    return this.roleManagementModel.find(query).sort({ createdAd: -1 });
+    return this.roleManagementModel.find(query).sort({ createdAt: -1 });
   }
 
   async getRoleManagementById(_id: string): Promise<RoleManagement> {
@@ -60,8 +60,8 @@ export class RoleManagementService {
   async createRoleManagement(
     roleManagementDto: CreateRoleManagementDto,
   ): Promise<RoleManagement> {
-    const { email, password, role } = roleManagementDto;
-    const payload = { email, password, role } as any;
+    const { email, password } = roleManagementDto;
+    const payload = { email, password } as any;
     const user = await this.roleManagementModel.findOne({
       email,
       status: UserStatus.ACTIVE,
@@ -71,11 +71,10 @@ export class RoleManagementService {
     } else {
       const data = await this.accountUser.createAccountUser(payload);
 
-      delete roleManagementDto.email;
       delete roleManagementDto.password;
-
       const res = await this.roleManagementModel.create({
         ...roleManagementDto,
+        status: UserStatus.ACTIVE,
         user_id: data._id,
       });
 
