@@ -20,8 +20,8 @@ export class CourseRegistration {
   @Prop({ required: false, type: String })
   phone: string;
 
-  @Prop({ required: false, type: Date })
-  start_class: Date;
+  @Prop({ required: false, type: String })
+  start_class: string;
 
   @Prop({ required: false, type: String })
   time: string;

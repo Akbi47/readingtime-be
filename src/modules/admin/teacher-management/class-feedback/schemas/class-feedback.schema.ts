@@ -17,7 +17,6 @@ export class ClassFeedback {
   @Prop({
     required: true,
     type: String,
-    index: true,
     ref: AccountTeacher.name,
   })
   teacher_id: string;

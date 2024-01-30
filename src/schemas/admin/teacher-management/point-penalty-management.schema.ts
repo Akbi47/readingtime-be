@@ -10,7 +10,7 @@ export class PointPenaltyManagement {
   @Prop({
     required: true,
     type: MongooseSchema.Types.ObjectId,
-    index: true,
+
     ref: AccountTeacher.name,
   })
   teacher_id: MongooseSchema.Types.ObjectId;

@@ -27,9 +27,9 @@ export class CourseRegistrationDto {
   @IsOptional()
   phone: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  start_class: Date;
+  start_class: string;
 
   @IsString()
   @IsOptional()

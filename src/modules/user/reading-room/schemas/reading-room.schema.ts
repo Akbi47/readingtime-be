@@ -9,7 +9,6 @@ export class ReadingRoom {
   @Prop({
     required: true,
     type: String,
-    index: true,
     ref: AccountUser.name,
   })
   student_id: string;

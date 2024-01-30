@@ -11,7 +11,6 @@ export class PointPenaltyManagement {
   @Prop({
     required: true,
     type: String,
-    index: true,
     ref: AccountTeacher.name,
   })
   teacher_id: string;
@@ -19,7 +18,6 @@ export class PointPenaltyManagement {
   @Prop({
     required: true,
     type: String,
-    index: true,
     ref: ClassFeedback.name,
   })
   class_feedback_id: string;

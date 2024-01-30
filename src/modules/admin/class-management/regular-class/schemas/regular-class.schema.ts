@@ -34,7 +34,6 @@ export class RegularClass {
   @Prop({
     required: false,
     type: MongooseSchema.Types.ObjectId,
-    index: true,
     ref: AccountTeacher.name,
   })
   teacher_id: MongooseSchema.Types.ObjectId;
@@ -48,7 +47,6 @@ export class RegularClass {
   @Prop({
     required: false,
     type: MongooseSchema.Types.ObjectId,
-    index: true,
     ref: AccountUser.name,
   })
   student_id: MongooseSchema.Types.ObjectId;

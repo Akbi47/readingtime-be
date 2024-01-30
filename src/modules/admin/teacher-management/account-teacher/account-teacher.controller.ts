@@ -1,10 +1,13 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
 import { AccountTeacherService } from './account-teacher.service';
 import { CreateAccountTeacherDto } from './dto/create-account-teacher.dto';
-import { AccountTeacher } from './schemas/account-teacher.schema';
+import {
+  AccountTeacher,
+  AccountTeacherDocument,
+} from './schemas/account-teacher.schema';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
@@ -48,26 +51,12 @@ export class AccountTeacherController {
     }
   }
 
-  // @Put()
-  // async updateAccountTeacher(
-  //   @Body() accountTeacher: AccountTeacher,
-  // ): Promise<ResponseData<AccountTeacher>> {
-  //   try {
-  //     const data =
-  //       await this.accountTeacherService.updateAccountTeacher(accountTeacher);
-  //     return new ResponseData<AccountTeacher>(
-  //       data,
-  //       HttpStatus.SUCCESS,
-  //       HttpMessage.SUCCESS,
-  //     );
-  //   } catch (error) {
-  //     return new ResponseData<AccountTeacher>(
-  //       null,
-  //       HttpStatus.ERROR,
-  //       HttpMessage.ERROR,
-  //     );
-  //   }
-  // }
+  @Put()
+  async updateAccountTeacher(
+    @Body() accountTeacher: AccountTeacherDocument,
+  ): Promise<void> {
+    await this.accountTeacherService.updateAccountTeacher(accountTeacher);
+  }
 
   @Post('/')
   async createAccountTeacher(

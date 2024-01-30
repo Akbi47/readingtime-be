@@ -28,21 +28,15 @@ export class AccountTeacherService {
     return this.accountTeacherModel.findOne({ _id }).exec();
   }
 
-  // async updateAccountTeacher(
-  //   accountTeacher: AccountTeacher,
-  // ): Promise<AccountTeacher> {
-  //   const { _id, ...updatedData } = accountTeacher;
-  //   return this.accountTeacherModel
-  //     .findOneAndUpdate({ _id }, updatedData, { new: true })
-  //     .exec();
-  // }
+  async updateAccountTeacher(
+    accountTeacher: AccountTeacherDocument,
+  ): Promise<void> {
+    const { _id, ...updatedData } = accountTeacher;
+    await this.accountTeacherModel.findOneAndUpdate({ _id }, updatedData, {
+      new: true,
+    });
+  }
 
-  // async createAccountTeacher(
-  //   accountTeacherDto: CreateAccountTeacherDto,
-  // ): Promise<AccountTeacher> {
-  //   const data = await this.accountTeacherModel.create(accountTeacherDto);
-  //   return data;
-  // }
   async createAccountTeacher(
     accountTeacherDto: CreateAccountTeacherDto,
   ): Promise<AccountTeacherDocument> {
