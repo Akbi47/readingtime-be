@@ -43,13 +43,13 @@ export class CreateBookDto {
   @IsOptional()
   vocab: number;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  grade: number;
+  grade: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  lexile: number;
+  lexile: string;
 
   @IsString()
   @IsOptional()

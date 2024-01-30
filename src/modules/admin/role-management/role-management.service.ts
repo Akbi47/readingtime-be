@@ -8,7 +8,6 @@ import {
 } from './schemas/role-management.schema';
 
 import { UserStatus } from 'src/shares/enums/account-user.enum';
-import { generateHash } from 'src/shares/helpers/bcrypt';
 import { httpErrors } from 'src/shares/exceptions';
 import GetRoleManagementDto from './dto/get-role-management.dto';
 import { AccountUserService } from '../user-management/account-user/account-user.service';
@@ -51,7 +50,7 @@ export class RoleManagementService {
     getRoleManagementDto: GetRoleManagementDto,
   ): Promise<RoleManagement[]> {
     const query = await this.buildQuery(getRoleManagementDto);
-    return this.roleManagementModel.find(query);
+    return this.roleManagementModel.find(query).sort({ createdAd: -1 });
   }
 
   async getRoleManagementById(_id: string): Promise<RoleManagement> {

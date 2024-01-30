@@ -39,7 +39,7 @@ export class BookController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      return new ResponseData<Book>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+      return new ResponseData<Book>(error, HttpStatus.ERROR, HttpMessage.ERROR);
     }
   }
 

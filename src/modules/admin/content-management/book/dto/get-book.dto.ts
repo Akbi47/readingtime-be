@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsNumber, IsBoolean, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNumber,
+  IsBoolean,
+  IsDate,
+} from 'class-validator';
 
 export class GetBookDto {
   @IsString()
@@ -37,13 +43,13 @@ export class GetBookDto {
   @IsOptional()
   vocab: number;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  grade: number;
+  grade: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  lexile: number;
+  lexile: string;
 
   @IsString()
   @IsOptional()
