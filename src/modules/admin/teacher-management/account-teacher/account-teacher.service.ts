@@ -10,6 +10,7 @@ import {
   AccountTeacherDocument,
 } from './schemas/account-teacher.schema';
 import { AccountUserService } from '../../user-management/account-user/account-user.service';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class AccountTeacherService {
@@ -17,6 +18,7 @@ export class AccountTeacherService {
     @InjectModel(AccountTeacher.name)
     private accountTeacherModel: Model<AccountTeacherDocument>,
     private accountUser: AccountUserService,
+    private mailService: MailService,
   ) {}
 
   async getAccountTeacher(): Promise<AccountTeacher[]> {
@@ -78,7 +80,7 @@ export class AccountTeacherService {
       ...accountTeacherDto,
       teacher_id: data._id,
     });
-
+    await this.mailService.sendRegisterMailToUser(accountTeacherDto);
     return res;
   }
 }

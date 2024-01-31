@@ -7,6 +7,7 @@ import {
   AccountTeacherSchema,
 } from './schemas/account-teacher.schema';
 import { AccountUserModule } from '../../user-management/account-user/account-user.module';
+import { MailModule } from 'src/modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AccountUserModule } from '../../user-management/account-user/account-us
       { name: AccountTeacher.name, schema: AccountTeacherSchema },
     ]),
     AccountUserModule,
+    MailModule,
   ],
   controllers: [AccountTeacherController],
   providers: [AccountTeacherService],

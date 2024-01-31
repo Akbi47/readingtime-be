@@ -11,6 +11,7 @@ import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { httpErrors } from 'src/shares/exceptions';
 import GetRoleManagementDto from './dto/get-role-management.dto';
 import { AccountUserService } from '../user-management/account-user/account-user.service';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class RoleManagementService {
@@ -18,6 +19,7 @@ export class RoleManagementService {
     @InjectModel(RoleManagement.name)
     private roleManagementModel: Model<RoleManagementDocument>,
     private accountUser: AccountUserService,
+    private mailService: MailService,
   ) {}
   async buildQuery(param: GetRoleManagementDto): Promise<any> {
     const { user, email, phone, nick_name, ID } = param;
@@ -77,7 +79,7 @@ export class RoleManagementService {
         status: UserStatus.ACTIVE,
         user_id: data._id,
       });
-
+      await this.mailService.sendRegisterMailToUser(roleManagementDto);
       return res;
     }
   }

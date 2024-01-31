@@ -9,8 +9,6 @@ export class MailConfigService implements MailerOptionsFactory {
   constructor(private mailSettingService: MailSettingsService) {}
   async createMailerOptions(): Promise<MailerOptions> {
     const mailSettings = await this.mailSettingService.getMailSettings();
-    console.log(mailSettings);
-    console.log(mailSettings[0]?.Email_Sending_Address);
 
     return {
       transport: {

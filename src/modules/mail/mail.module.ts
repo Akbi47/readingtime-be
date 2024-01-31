@@ -10,6 +10,7 @@ import { MailSettingsModule } from '../admin/settings/web-setting-management/mai
       imports: [MailSettingsModule],
       useClass: MailConfigService,
     }),
+    MailSettingsModule,
   ],
 
   providers: [MailService],

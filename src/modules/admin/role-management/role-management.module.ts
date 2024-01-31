@@ -11,6 +11,7 @@ import {
   AutoIncrementID,
   AutoIncrementIDOptions,
 } from '@typegoose/auto-increment';
+import { MailModule } from 'src/modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import {
       },
     ]),
     AccountUserModule,
+    MailModule,
   ],
   controllers: [RoleManagementController],
   providers: [RoleManagementService],

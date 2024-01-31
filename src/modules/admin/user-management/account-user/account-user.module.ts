@@ -7,6 +7,7 @@ import {
   AutoIncrementID,
   AutoIncrementIDOptions,
 } from '@typegoose/auto-increment';
+import { MailModule } from 'src/modules/mail/mail.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import {
         inject: [getConnectionToken()],
       },
     ]),
+    MailModule,
   ],
   providers: [AccountUserService],
   controllers: [AccountUserController],

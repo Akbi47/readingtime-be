@@ -12,12 +12,14 @@ import { UserRole, UserStatus } from 'src/shares/enums/account-user.enum';
 import { GetAccountUserDto } from './dto/get-account-user.dto';
 import * as moment from 'moment';
 import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class AccountUserService {
   constructor(
     @InjectModel(AccountUser.name)
     private accountUserModel: Model<AccountUserDocument>,
+    private mailService: MailService,
   ) {}
 
   async buildQuery(param: GetAccountUserDto): Promise<any> {
@@ -186,7 +188,7 @@ export class AccountUserService {
       role,
     });
     delete data.password;
-
+    await this.mailService.sendRegisterMailToUser(accountUserDto);
     return data;
   }
 
