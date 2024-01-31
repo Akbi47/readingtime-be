@@ -3,10 +3,10 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 import { AccountTeacher } from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 
-export type RegularClassDocument = RegularClass & Document;
+export type TrialClassDocument = TrialClass & Document;
 
 @Schema({ timestamps: true })
-export class RegularClass {
+export class TrialClass {
   @Prop({ required: false, type: Date })
   date: Date;
 
@@ -61,4 +61,4 @@ export class RegularClass {
   complaint: string;
 }
 
-export const RegularClassSchema = SchemaFactory.createForClass(RegularClass);
+export const TrialClassSchema = SchemaFactory.createForClass(TrialClass);

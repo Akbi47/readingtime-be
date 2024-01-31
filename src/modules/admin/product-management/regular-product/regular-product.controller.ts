@@ -2,7 +2,10 @@ import { Controller, Get, Body, Post, Put, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { RegularProductService } from './regular-product.service';
-import { RegularProduct, RegularProductDocument } from './schemas/regular-product.schema';
+import {
+  RegularProduct,
+  RegularProductDocument,
+} from './schemas/regular-product.schema';
 import GetRegularProductDto from './dto/get-regular-product.dto';
 import CreateRegularProductDto from './dto/create-regular-product.dto';
 

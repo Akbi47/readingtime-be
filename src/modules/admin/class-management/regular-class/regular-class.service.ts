@@ -5,6 +5,7 @@ import {
   RegularClass,
   RegularClassDocument,
 } from './schemas/regular-class.schema';
+import { CreateRegularClassDto } from './dto/create-regular-class.schema';
 
 @Injectable()
 export class RegularClassService {
@@ -13,7 +14,23 @@ export class RegularClassService {
     private regularClassModel: Model<RegularClassDocument>,
   ) {}
 
-  async createData(data: any) {
-    return await this.regularClassModel.create(data);
+  async createRegularClass(
+    createRegularClassDto: CreateRegularClassDto,
+  ): Promise<RegularClass> {
+    return await this.regularClassModel.create(createRegularClassDto);
+  }
+  async getRegularClass(): Promise<RegularClass[]> {
+    return this.regularClassModel.find();
+  }
+
+  async updateRegularClass(
+    regularClassDocument: RegularClassDocument,
+  ): Promise<void> {
+    const { _id, ...updatedData } = regularClassDocument;
+    await this.regularClassModel
+      .findOneAndUpdate({ _id }, updatedData, {
+        new: true,
+      })
+      .exec();
   }
 }
