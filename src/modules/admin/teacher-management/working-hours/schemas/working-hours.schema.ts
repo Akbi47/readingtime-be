@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { AccountTeacher } from '../../account-teacher/schemas/account-teacher.schema';
-import { Workinghours } from 'src/shares/enums/working-hours.enum';
 
 export type WorkingHoursDocument = WorkingHours & Document;
 
@@ -10,8 +9,16 @@ export class WorkingHours {
   @Prop({
     required: true,
     type: String,
+    ref: AccountTeacher.name,
   })
   teacher_id: string;
+
+  // @Prop({
+  //   required: true,
+  //   type: MongooseSchema.Types.ObjectId,
+  //   ref: AccountTeacher.name,
+  // })
+  // teacher_id: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: false, type: String })
   teacher_name: string;
@@ -28,18 +35,16 @@ export class WorkingHours {
   @Prop({
     required: false,
     type: [
-      [
-        {
-          time: { type: String, enum: Workinghours },
-          mon: Boolean,
-          tue: Boolean,
-          wed: Boolean,
-          thu: Boolean,
-          fri: Boolean,
-          sat: Boolean,
-          sun: Boolean,
-        },
-      ],
+      {
+        time: String,
+        mon: Boolean,
+        tue: Boolean,
+        wed: Boolean,
+        thu: Boolean,
+        fri: Boolean,
+        sat: Boolean,
+        sun: Boolean,
+      },
     ],
   })
   timesheet: any[];

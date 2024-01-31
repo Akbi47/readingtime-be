@@ -34,10 +34,6 @@ export class MailService {
   }
 
   async sendRegisterMailToUser(user: any): Promise<void> {
-    console.log({
-      mailSettings: this.mailSettings,
-      isUseCustomTemplate: this.isUseCustomTemplate,
-    });
     await this.mailerService.sendMail({
       to: user.email,
       from: `"ReadingTime Team" <${this.mailSettings[0]?.Email_Sending_Address}>`, // override default from

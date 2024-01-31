@@ -97,10 +97,6 @@ export class CreateAccountTeacherDto {
 
   @IsString()
   @IsOptional()
-  working_hours: string;
-
-  @IsString()
-  @IsOptional()
   image: string;
 
   @IsString()

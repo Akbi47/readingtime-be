@@ -11,17 +11,37 @@ import {
 } from './schemas/account-teacher.schema';
 import { AccountUserService } from '../../user-management/account-user/account-user.service';
 import { MailService } from 'src/modules/mail/mail.service';
+import {
+  WorkingHours,
+  WorkingHoursDocument,
+} from '../working-hours/schemas/working-hours.schema';
 
 @Injectable()
 export class AccountTeacherService {
   constructor(
     @InjectModel(AccountTeacher.name)
     private accountTeacherModel: Model<AccountTeacherDocument>,
+    @InjectModel(WorkingHours.name)
+    private workingHoursModel: Model<WorkingHoursDocument>,
     private accountUser: AccountUserService,
     private mailService: MailService,
   ) {}
 
-  async getAccountTeacher(): Promise<AccountTeacher[]> {
+  async getAccountTeacher(query?: any): Promise<any> {
+    if (query.id) {
+      const timeline = await this.workingHoursModel.findOne({
+        teacher_id: query.id,
+      });
+      const teacher = await this.accountTeacherModel.findById({
+        _id: query.id,
+      });
+      const data = [];
+      data.push({
+        timeline,
+        teacher,
+      });
+      return data;
+    }
     return this.accountTeacherModel.find();
   }
 

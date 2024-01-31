@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Put } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put, Param, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
@@ -14,20 +14,16 @@ export class AccountTeacherController {
   constructor(private readonly accountTeacherService: AccountTeacherService) {}
 
   @Get('/')
-  async getAccountTeacher(): Promise<ResponseData<AccountTeacher[]>> {
+  async getAccountTeacher(@Query() query?: any): Promise<any> {
     try {
-      const data = await this.accountTeacherService.getAccountTeacher();
-      return new ResponseData<AccountTeacher[]>(
+      const data = await this.accountTeacherService.getAccountTeacher(query);
+      return new ResponseData<any>(
         data,
         HttpStatus.SUCCESS,
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      return new ResponseData<AccountTeacher[]>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
+      return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
     }
   }
 
@@ -73,8 +69,6 @@ export class AccountTeacherController {
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      console.log(error);
-
       return new ResponseData<AccountTeacher>(
         error,
         HttpStatus.ERROR,

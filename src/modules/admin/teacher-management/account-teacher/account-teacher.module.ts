@@ -8,11 +8,16 @@ import {
 } from './schemas/account-teacher.schema';
 import { AccountUserModule } from '../../user-management/account-user/account-user.module';
 import { MailModule } from 'src/modules/mail/mail.module';
+import {
+  WorkingHours,
+  WorkingHoursSchema,
+} from '../working-hours/schemas/working-hours.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: AccountTeacher.name, schema: AccountTeacherSchema },
+      { name: WorkingHours.name, schema: WorkingHoursSchema },
     ]),
     AccountUserModule,
     MailModule,
