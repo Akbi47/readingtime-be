@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateWorkingHoursDto {
   @IsString()
@@ -11,13 +11,16 @@ export class CreateWorkingHoursDto {
 
   @IsString()
   @IsOptional()
+  teacher_id: string;
+
+  @IsString()
+  @IsOptional()
   team: string;
 
   @IsString()
   @IsOptional()
   team_leader: string;
 
-  @IsArray()
   @IsOptional()
-  timesheet: any[];
+  timesheet: any;
 }

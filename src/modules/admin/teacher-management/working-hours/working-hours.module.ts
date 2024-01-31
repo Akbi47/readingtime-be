@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WorkingHoursController } from './working-hours.controller';
-import { WorkingHoursSchema } from '../../../../schemas/admin/teacher-management/working-hours.schema';
 import { WorkingHoursService } from './working-hours.service';
+import {
+  WorkingHours,
+  WorkingHoursSchema,
+} from './schemas/working-hours.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {
-        name: 'WorkingHours',
+        name: WorkingHours.name,
         schema: WorkingHoursSchema,
       },
     ]),

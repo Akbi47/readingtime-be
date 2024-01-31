@@ -10,6 +10,8 @@ import {
   SpecialFeature,
 } from 'src/shares/enums/account-teacher.enum';
 
+import { WorkingHours } from '../../working-hours/schemas/working-hours.schema';
+
 export type AccountTeacherDocument = AccountTeacher & Document;
 
 @Schema({ timestamps: true })
@@ -17,7 +19,7 @@ export class AccountTeacher {
   @Prop({ required: true, type: String })
   teacher: string;
 
-  @Prop({ required: false, type: String, ref: AccountUser.name })
+  @Prop({ required: false, type: String })
   teacher_id: string;
 
   @Prop({ required: true, type: String, unique: true })
@@ -70,8 +72,11 @@ export class AccountTeacher {
   @Prop({ required: false, type: String })
   resume: string;
 
-  @Prop({ required: false, type: String })
-  working_hours: string;
+  @Prop({
+    required: false,
+    type: String,
+  })
+  working_hours_id: string;
 
   @Prop({ required: false, type: String })
   image: string;
