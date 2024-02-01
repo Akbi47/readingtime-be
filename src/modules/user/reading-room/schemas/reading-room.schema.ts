@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 
 export type ReadingRoomDocument = ReadingRoom & Document;
@@ -8,10 +8,10 @@ export type ReadingRoomDocument = ReadingRoom & Document;
 export class ReadingRoom {
   @Prop({
     required: true,
-    type: String,
+    type: MongooseSchema.Types.ObjectId,
     ref: AccountUser.name,
   })
-  student_id: string;
+  student_id: MongooseSchema.Types.ObjectId;
 
   @Prop({
     require: false,

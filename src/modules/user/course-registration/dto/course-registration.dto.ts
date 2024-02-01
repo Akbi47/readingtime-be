@@ -20,6 +20,7 @@ export class CourseRegistrationDto {
   email: string;
 
   @IsString()
+  @IsOptional()
   password: string;
 
   @IsString()

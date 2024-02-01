@@ -8,7 +8,7 @@ export class CourseRegistrationController {
     private readonly courseRegistrationService: CourseRegistrationService,
   ) {}
   @Post()
-  async create(@Body() createUserDto: CourseRegistrationDto) {
-    return await this.courseRegistrationService.create(createUserDto);
+  async create(@Body() courseRegistrationDto: CourseRegistrationDto) {
+    return await this.courseRegistrationService.create(courseRegistrationDto);
   }
 }

@@ -54,6 +54,7 @@ import { CourseRegistrationModule } from './modules/user/course-registration/cou
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SpaceModule } from './modules/space-module/space.module';
+import { RegularCourseRegistrationModule } from './modules/user/regular-course-registration/regular-course-registration.module';
 dotenv.config();
 
 @Module({
@@ -110,6 +111,7 @@ dotenv.config();
     MailModule,
     CourseRegistrationModule,
     SpaceModule,
+    RegularCourseRegistrationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
