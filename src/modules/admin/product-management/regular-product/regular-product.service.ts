@@ -38,11 +38,9 @@ export class RegularProductService {
 
     return query;
   }
-  async getRegularProduct(
-    getRegularProductDto: GetRegularProductDto,
-  ): Promise<RegularProduct[]> {
-    const query = await this.buildQuery(getRegularProductDto);
-    return await this.regularProductModel.find(query);
+  async getRegularProduct(): Promise<RegularProduct[]> {
+    // const query = await this.buildQuery(getRegularProductDto);
+    return await this.regularProductModel.find();
   }
   async getRegularProductById(_id: string): Promise<RegularProduct> {
     return this.regularProductModel.findById(_id).exec();

@@ -12,7 +12,7 @@ export class CouponService {
   ) {}
 
   async getCoupon(): Promise<Coupon[]> {
-    return this.couponModel.find().exec();
+    return this.couponModel.find();
   }
 
   async getCouponById(_id: string): Promise<Coupon> {
@@ -20,8 +20,8 @@ export class CouponService {
   }
 
   async createCoupon(couponDto: CouponDto): Promise<Coupon> {
-    const createdCoupon = new this.couponModel(couponDto);
-    return createdCoupon.save();
+    const createdCoupon = await this.couponModel.create(couponDto);
+    return createdCoupon;
   }
 
   async updateCoupon(coupon: Coupon): Promise<Coupon> {

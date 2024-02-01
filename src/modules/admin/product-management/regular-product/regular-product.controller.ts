@@ -14,14 +14,10 @@ export class RegularProductController {
   constructor(private readonly regularProductService: RegularProductService) {}
 
   @Get('/')
-  async getRegularProduct(
-    @Query() getRegularProductDto: GetRegularProductDto,
-  ): Promise<ResponseData<RegularProduct[]>> {
+  async getRegularProduct() // @Query() getRegularProductDto: GetRegularProductDto,
+  : Promise<ResponseData<RegularProduct[]>> {
     try {
-      const data =
-        await this.regularProductService.getRegularProduct(
-          getRegularProductDto,
-        );
+      const data = await this.regularProductService.getRegularProduct();
       return new ResponseData<RegularProduct[]>(
         data,
         HttpStatus.SUCCESS,

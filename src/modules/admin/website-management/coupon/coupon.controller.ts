@@ -64,7 +64,7 @@ export class CouponController {
       );
     } catch (error) {
       return new ResponseData<Coupon>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );
