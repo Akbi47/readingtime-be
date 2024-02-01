@@ -9,6 +9,7 @@ import {
   RegularCourseRegistration,
   RegularCourseRegistrationSchema,
 } from './schemas/regular-course-registration.schema';
+import { ReadingRoomModule } from '../reading-room/reading-room.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {
     ]),
     MailModule,
     AccountUserModule,
+    ReadingRoomModule,
   ],
   providers: [RegularCourseRegistrationService],
   exports: [RegularCourseRegistrationService],

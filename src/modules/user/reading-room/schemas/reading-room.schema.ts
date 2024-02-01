@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { AccountTeacher } from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
+import { CourseRegistration } from '../../course-registration/schemas/course-registration.schema';
+import { RegularCourseRegistration } from '../../regular-course-registration/schemas/regular-course-registration.schema';
 
 export type ReadingRoomDocument = ReadingRoom & Document;
 
@@ -12,6 +15,27 @@ export class ReadingRoom {
     ref: AccountUser.name,
   })
   student_id: MongooseSchema.Types.ObjectId;
+
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountTeacher.name,
+  })
+  teacher_id: MongooseSchema.Types.ObjectId;
+
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: CourseRegistration.name,
+  })
+  course_registration_id: MongooseSchema.Types.ObjectId;
+
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: RegularCourseRegistration.name,
+  })
+  regular_course_registration_id: MongooseSchema.Types.ObjectId;
 
   @Prop({
     require: false,
@@ -46,9 +70,6 @@ export class ReadingRoom {
 
   @Prop({ required: false, type: String })
   product: string;
-
-  @Prop({ required: false, type: String })
-  teacher: string;
 
   @Prop({
     required: false,

@@ -37,8 +37,6 @@ import { BoardNoticeFAQModule } from './modules/admin/website-management/board/n
 import { CategoryModule } from './modules/admin/category/category.module';
 import { MonthlyModule } from './modules/admin/assignment-management/dashboard/monthly/monthly.module';
 import { TodayModule } from './modules/admin/assignment-management/dashboard/today/today.module';
-import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular.module';
-import { FreeTrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/free-trial.module';
 import { ReportTeacherModule } from './modules/admin/reports/teacher/report-teacher.module';
 import { ReportUserModule } from './modules/admin/reports/user/report-user.module';
 import { AccountUserModule } from './modules/admin/user-management/account-user/account-user.module';
@@ -104,8 +102,6 @@ dotenv.config();
     CategoryModule,
     MonthlyModule,
     TodayModule,
-    RegularAssignmentModule,
-    FreeTrialAssignmentModule,
     ReportTeacherModule,
     ReportUserModule,
     MailModule,

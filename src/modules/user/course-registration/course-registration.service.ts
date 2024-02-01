@@ -11,6 +11,7 @@ import CreateAccountUserDto from 'src/modules/admin/user-management/account-user
 import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { AccountUserService } from 'src/modules/admin/user-management/account-user/account-user.service';
 import { httpErrors } from 'src/shares/exceptions';
+import { ReadingRoomService } from '../reading-room/reading-room.service';
 
 @Injectable()
 export class CourseRegistrationService {
@@ -19,6 +20,7 @@ export class CourseRegistrationService {
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
     private readonly mailService: MailService,
     private accountUser: AccountUserService,
+    private readingRoomService: ReadingRoomService,
   ) {}
   async create(data: CourseRegistrationDto): Promise<CourseRegistration> {
     const { email, password } = data;
@@ -45,6 +47,11 @@ export class CourseRegistrationService {
       ...data,
       user_account: new mongoose.Types.ObjectId(regUser._id),
     });
+
+    await this.readingRoomService.findByIdAndUpdateReadingRoom(
+      regUser._id,
+      res._id,
+    );
 
     return res;
   }

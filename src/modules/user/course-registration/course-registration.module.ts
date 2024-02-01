@@ -8,6 +8,7 @@ import {
 } from './schemas/course-registration.schema';
 import { MailModule } from 'src/modules/mail/mail.module';
 import { AccountUserModule } from 'src/modules/admin/user-management/account-user/account-user.module';
+import { ReadingRoomModule } from '../reading-room/reading-room.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AccountUserModule } from 'src/modules/admin/user-management/account-use
     ]),
     MailModule,
     AccountUserModule,
+    ReadingRoomModule,
   ],
   providers: [CourseRegistrationService],
   exports: [CourseRegistrationService],

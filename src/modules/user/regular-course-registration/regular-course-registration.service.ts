@@ -9,6 +9,7 @@ import {
   RegularCourseRegistration,
   RegularCourseRegistrationDocument,
 } from './schemas/regular-course-registration.schema';
+import { ReadingRoomService } from '../reading-room/reading-room.service';
 
 @Injectable()
 export class RegularCourseRegistrationService {
@@ -16,6 +17,7 @@ export class RegularCourseRegistrationService {
     @InjectModel(RegularCourseRegistration.name)
     private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
     private accountUser: AccountUserService,
+    private readingRoomService: ReadingRoomService,
   ) {}
   async create(
     data: RegularCourseRegistrationDto,
@@ -34,6 +36,10 @@ export class RegularCourseRegistrationService {
       user_account: new mongoose.Types.ObjectId(user._id),
     });
 
+    await this.readingRoomService.findByIdAndUpdateReadingRoom(
+      user._id,
+      res._id,
+    );
     return res;
   }
 }
