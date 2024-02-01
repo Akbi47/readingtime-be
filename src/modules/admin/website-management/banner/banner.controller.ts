@@ -1,9 +1,9 @@
 import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { Banner } from './interface/banner.interface';
 import { BannerService } from './banner.service';
 import { BannerDto } from './dto/banner.dto';
+import { Banner } from './schemas/banner.schema';
 
 @Controller('banner')
 export class BannerController {
@@ -53,21 +53,21 @@ export class BannerController {
     return this.bannerService.getBannerById(_id);
   }
 
-  @Put()
-  async updateBanner(@Body() banner: Banner): Promise<ResponseData<Banner>> {
-    try {
-      const data = await this.bannerService.updateBanner(banner);
-      return new ResponseData<Banner>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<Banner>(
-        null,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
-  }
+  // @Put()
+  // async updateBanner(@Body() banner: Banner): Promise<ResponseData<Banner>> {
+  //   try {
+  //     const data = await this.bannerService.updateBanner(banner);
+  //     return new ResponseData<Banner>(
+  //       data,
+  //       HttpStatus.SUCCESS,
+  //       HttpMessage.SUCCESS,
+  //     );
+  //   } catch (error) {
+  //     return new ResponseData<Banner>(
+  //       null,
+  //       HttpStatus.ERROR,
+  //       HttpMessage.ERROR,
+  //     );
+  //   }
+  // }
 }

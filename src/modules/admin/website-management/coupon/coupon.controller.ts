@@ -1,9 +1,9 @@
 import { Controller, Get, Body, Post, Put } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
-import { Coupon } from './interface/coupon.interface';
 import { CouponService } from './coupon.service';
 import { CouponDto } from './dto/coupon.dto';
+import { Coupon, CouponDocument } from './schemas/coupon.schema';
 
 @Controller('coupon')
 export class CouponController {
@@ -54,20 +54,11 @@ export class CouponController {
   }
 
   @Put()
-  async updateCoupon(@Body() coupon: Coupon): Promise<ResponseData<Coupon>> {
-    try {
-      const data = await this.couponService.updateCoupon(coupon);
-      return new ResponseData<Coupon>(
-        data,
-        HttpStatus.SUCCESS,
-        HttpMessage.SUCCESS,
-      );
-    } catch (error) {
-      return new ResponseData<Coupon>(
-        error,
-        HttpStatus.ERROR,
-        HttpMessage.ERROR,
-      );
-    }
+  async updateCoupon(@Body() coupon: CouponDocument): Promise<void> {
+    await new ResponseData<Coupon>(
+      coupon,
+      HttpStatus.SUCCESS,
+      HttpMessage.SUCCESS,
+    );
   }
 }

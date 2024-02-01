@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type CouponDocument = Coupon & Document;
+export type BannerDocument = Banner & Document;
 @Schema({ timestamps: true })
-export class Coupon {
+export class Banner {
   @Prop({ required: false, type: String })
   type: string;
   @Prop({ required: false, type: String })
@@ -28,4 +28,4 @@ export class Coupon {
   start_date: string;
 }
 
-export const CouponSchema = SchemaFactory.createForClass(Coupon);
+export const BannerSchema = SchemaFactory.createForClass(Banner);

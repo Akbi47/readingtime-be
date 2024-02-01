@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Coupon } from './interface/coupon.interface';
 import { CouponDto } from './dto/coupon.dto';
+import { Coupon, CouponDocument } from './schemas/coupon.schema';
 
 @Injectable()
 export class CouponService {
@@ -24,9 +24,9 @@ export class CouponService {
     return createdCoupon;
   }
 
-  async updateCoupon(coupon: Coupon): Promise<Coupon> {
+  async updateCoupon(coupon: CouponDocument): Promise<void> {
     const { _id, ...updatedData } = coupon;
-    return this.couponModel
+    await this.couponModel
       .findOneAndUpdate({ _id }, updatedData, {
         new: true,
       })

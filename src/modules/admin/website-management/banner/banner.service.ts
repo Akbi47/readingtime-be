@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Banner } from './interface/banner.interface';
 import { BannerDto } from './dto/banner.dto';
+import { Banner } from './schemas/banner.schema';
 
 @Injectable()
 export class BannerService {
@@ -24,12 +24,12 @@ export class BannerService {
     return createdBanner.save();
   }
 
-  async updateBanner(banner: Banner): Promise<Banner> {
-    const { _id, ...updatedData } = banner;
-    return this.bannerModel
-      .findOneAndUpdate({ _id }, updatedData, {
-        new: true,
-      })
-      .exec();
-  }
+  // async updateBanner(banner: Banner): Promise<Banner> {
+  //   const { _id, ...updatedData } = banner;
+  //   return this.bannerModel
+  //     .findOneAndUpdate({ _id }, updatedData, {
+  //       new: true,
+  //     })
+  //     .exec();
+  // }
 }
