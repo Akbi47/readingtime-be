@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 
 export type CourseRegistrationDocument = CourseRegistration & Document;
 
@@ -11,8 +12,15 @@ export class CourseRegistration {
   @Prop({ required: false, type: Number })
   student_age: number;
 
-  @Prop({ required: true, type: String, unique: true })
-  email: string;
+  // @Prop({ required: true, type: String, unique: true })
+  // email: string;
+
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountUser.name,
+  })
+  user_account: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: false, type: String })
   course: string;

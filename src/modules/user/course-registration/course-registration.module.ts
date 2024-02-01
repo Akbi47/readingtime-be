@@ -7,6 +7,7 @@ import {
   CourseRegistrationSchema,
 } from './schemas/course-registration.schema';
 import { MailModule } from 'src/modules/mail/mail.module';
+import { AccountUserModule } from 'src/modules/admin/user-management/account-user/account-user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MailModule } from 'src/modules/mail/mail.module';
       { name: CourseRegistration.name, schema: CourseRegistrationSchema },
     ]),
     MailModule,
+    AccountUserModule,
   ],
   providers: [CourseRegistrationService],
   exports: [CourseRegistrationService],

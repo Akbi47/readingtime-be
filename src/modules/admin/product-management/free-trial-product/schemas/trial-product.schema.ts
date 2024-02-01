@@ -12,6 +12,9 @@ export class TrialProduct {
   description: string;
 
   @Prop({ required: false, type: String })
+  picture: string;
+
+  @Prop({ required: false, type: String })
   curriculum: string;
 
   @Prop({ required: false, type: String })
