@@ -12,6 +12,8 @@ import { UserStatus } from 'src/shares/enums/account-user.enum';
 import { AccountUserService } from 'src/modules/admin/user-management/account-user/account-user.service';
 import { httpErrors } from 'src/shares/exceptions';
 import { ReadingRoomService } from '../reading-room/reading-room.service';
+import { AuthenticationService } from 'src/modules/authentication/authentication.service';
+import { LoginDto } from 'src/modules/authentication/dto/login.dto';
 
 @Injectable()
 export class CourseRegistrationService {
@@ -20,46 +22,53 @@ export class CourseRegistrationService {
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
     private readonly mailService: MailService,
     private accountUser: AccountUserService,
+    private authenUserService: AuthenticationService,
     private readingRoomService: ReadingRoomService,
   ) {}
   async create(data: CourseRegistrationDto): Promise<CourseRegistration> {
     const { email, password } = data;
     const payload = { email, password } as CreateAccountUserDto;
+    const signIn = { email, password } as LoginDto;
 
     const user = await this.accountUser.findOne({
       email,
       status: UserStatus.ACTIVE,
     });
+    if (!user) {
+      throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
+    }
     if (user) {
-      throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
+      const signInResponse = await this.authenUserService.login(signIn);
+      if (signInResponse.accessToken) {
+        const registeredCourse = await this.courseRegistrationModel.findById({
+          user_account: new mongoose.Types.ObjectId(user._id),
+        });
+
+        if (registeredCourse) {
+          throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+        }
+        const regUser = await this.accountUser.createStudent(payload);
+
+        await Promise.all([
+          await this.mailService.sendMailToUser(data),
+          await this.mailService.sendMailToAdmin(data),
+        ]);
+
+        delete data.email;
+        delete data.password;
+
+        const res = await this.courseRegistrationModel.create({
+          ...data,
+          user_account: new mongoose.Types.ObjectId(regUser._id),
+        });
+
+        await this.readingRoomService.findByIdAndUpdateReadingRoom(
+          regUser._id,
+          res._id,
+        );
+
+        return res;
+      }
     }
-    const registeredCourse = await this.courseRegistrationModel.findById({
-      user_account: new mongoose.Types.ObjectId(user._id),
-    });
-
-    if (registeredCourse) {
-      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
-    }
-    const regUser = await this.accountUser.createStudent(payload);
-
-    await Promise.all([
-      await this.mailService.sendMailToUser(data),
-      await this.mailService.sendMailToAdmin(data),
-    ]);
-
-    delete data.email;
-    delete data.password;
-
-    const res = await this.courseRegistrationModel.create({
-      ...data,
-      user_account: new mongoose.Types.ObjectId(regUser._id),
-    });
-
-    await this.readingRoomService.findByIdAndUpdateReadingRoom(
-      regUser._id,
-      res._id,
-    );
-
-    return res;
   }
 }
