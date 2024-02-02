@@ -19,6 +19,14 @@ export class RegularCourseRegistrationService {
     private accountUser: AccountUserService,
     private readingRoomService: ReadingRoomService,
   ) {}
+
+  async getRegularCourseRegistrationById(id?: string): Promise<any> {
+    const data = await this.regularCourseRegistrationModel.findById({
+      _id: new mongoose.Types.ObjectId(id),
+    });
+    return data;
+  }
+
   async create(
     data: RegularCourseRegistrationDto,
   ): Promise<RegularCourseRegistration> {

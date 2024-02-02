@@ -26,14 +26,17 @@ export class TrialProduct {
   @Prop({ required: false, type: String })
   about: string;
 
-  @Prop({ required: false, type: Date })
-  reg_day: Date;
+  @Prop({ required: false, type: String })
+  reg_day: string;
 
-  @Prop({ required: false, type: Date })
-  exp_day: Date;
+  @Prop({ required: false, type: String })
+  exp_day: string;
 
   @Prop({ required: false, type: Number })
-  class_days: number;
+  class_day_per_week: number;
+
+  @Prop({ required: false, type: Number })
+  class_day_total: number;
 
   @Prop({ required: false, type: String })
   whether_to_use: string;

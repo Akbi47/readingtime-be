@@ -25,6 +25,14 @@ export class CourseRegistrationService {
     private authenUserService: AuthenticationService,
     private readingRoomService: ReadingRoomService,
   ) {}
+
+  async getCourseRegistrationById(id?: string): Promise<any> {
+    const data = await this.courseRegistrationModel.findById({
+      _id: new mongoose.Types.ObjectId(id),
+    });
+    return data;
+  }
+
   async create(data: CourseRegistrationDto): Promise<CourseRegistration> {
     const { email, password } = data;
     // const payload = { email, password } as CreateAccountUserDto;

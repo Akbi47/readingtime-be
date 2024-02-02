@@ -62,6 +62,11 @@ export class ReadingRoomService {
     const { id } = idDto;
     return await this.readingRoomModel.findOne({ student_id: id });
   }
+  async getReadingRoomById(idDto: IdDto): Promise<ReadingRoom> {
+    const { id } = idDto;
+
+    return await this.readingRoomModel.findById({ _id: id });
+  }
   async getReadingRoom(): Promise<ReadingRoom[]> {
     const data = await this.readingRoomModel
       .find()

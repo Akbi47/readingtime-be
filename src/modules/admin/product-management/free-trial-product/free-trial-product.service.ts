@@ -48,6 +48,10 @@ export class FreeTrialProductService {
     return this.trialProductModel.findById(_id).exec();
   }
 
+  async getFreeTrialProductByName(name: string): Promise<TrialProduct> {
+    return this.trialProductModel.findOne({ product_name: name });
+  }
+
   async createFreeTrialProduct(
     createTrialProductDto: CreateTrialProductDto,
   ): Promise<TrialProduct> {

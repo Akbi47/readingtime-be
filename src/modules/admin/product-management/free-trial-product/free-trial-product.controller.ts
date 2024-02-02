@@ -31,7 +31,7 @@ export class FreeTrialProductController {
       );
     } catch (error) {
       return new ResponseData<TrialProduct[]>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );
@@ -54,7 +54,7 @@ export class FreeTrialProductController {
       );
     } catch (error) {
       return new ResponseData<TrialProduct>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

@@ -34,7 +34,11 @@ export class GetTrialProductDto {
 
   @IsNumber()
   @IsOptional()
-  class_days: number;
+  class_day_total: number;
+
+  @IsNumber()
+  @IsOptional()
+  class_day_per_week: number;
 
   @IsString()
   @IsOptional()

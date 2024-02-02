@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put } from '@nestjs/common';
 import { TrialAssignmentService } from './trial-assignment.service';
-
+import { TrialAssignmentDto } from './dto/trial-assignment.dto';
+import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Controller('trial-assignment')
 export class TrialAssignmentController {
@@ -11,4 +12,14 @@ export class TrialAssignmentController {
   async getData() {
     return await this.trialAssignmentService.getData();
   }
+  @Get('events-readingroom/:id')
+  async getEvents(@Param() idDto: IdDto) {
+    return await this.trialAssignmentService.getEvents(idDto);
+  }
+  // @Put()
+  // async updateAssignment(
+  //   @Body() trialAssignmentDto: TrialAssignmentDto,
+  // ): Promise<void> {
+  //   await this.trialAssignmentService.updateAssignment(trialAssignmentDto);
+  // }
 }

@@ -18,5 +18,6 @@ import {
   ],
   controllers: [FreeTrialProductController],
   providers: [FreeTrialProductService],
+  exports: [FreeTrialProductService],
 })
 export class FreeTrialProductModule {}

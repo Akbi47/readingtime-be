@@ -24,17 +24,21 @@ export class CreateTrialProductDto {
   @IsOptional()
   about: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  reg_day: Date;
+  reg_day: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  exp_day: Date;
+  exp_day: string;
 
   @IsNumber()
   @IsOptional()
-  class_days: number;
+  class_day_total: number;
+
+  @IsNumber()
+  @IsOptional()
+  class_day_per_week: number;
 
   @IsString()
   @IsOptional()
