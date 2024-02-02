@@ -12,9 +12,6 @@ export class CourseRegistration {
   @Prop({ required: false, type: Number })
   student_age: number;
 
-  // @Prop({ required: true, type: String, unique: true })
-  // email: string;
-
   @Prop({
     required: true,
     type: MongooseSchema.Types.ObjectId,

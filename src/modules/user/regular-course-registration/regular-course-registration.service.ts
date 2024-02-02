@@ -31,6 +31,12 @@ export class RegularCourseRegistrationService {
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
     }
+    const registeredCourse = await this.regularCourseRegistrationModel.findOne({
+      user_account: new mongoose.Types.ObjectId(user._id),
+    });
+    if (registeredCourse) {
+      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+    }
     const res = await this.regularCourseRegistrationModel.create({
       ...data,
       user_account: new mongoose.Types.ObjectId(user._id),

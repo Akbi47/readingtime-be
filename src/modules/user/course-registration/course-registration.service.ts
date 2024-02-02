@@ -33,6 +33,13 @@ export class CourseRegistrationService {
     if (user) {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
     }
+    const registeredCourse = await this.courseRegistrationModel.findById({
+      user_account: new mongoose.Types.ObjectId(user._id),
+    });
+
+    if (registeredCourse) {
+      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+    }
     const regUser = await this.accountUser.createStudent(payload);
 
     await Promise.all([

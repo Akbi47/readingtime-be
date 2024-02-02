@@ -63,14 +63,16 @@ export class ReadingRoomService {
     return await this.readingRoomModel.findOne({ student_id: id });
   }
   async getReadingRoom(): Promise<ReadingRoom[]> {
-    const data = await this.readingRoomModel.find();
+    const data = await this.readingRoomModel
+      .find()
+      .populate(this.populateReadingRoom);
     console.log(data);
 
     return data;
   }
 
   async findByIdAndUpdateReadingRoom(id: string, data: any): Promise<void> {
-    await this.readingRoomModel.findByIdAndUpdate(
+    await this.readingRoomModel.findOneAndUpdate(
       { student_id: id },
       { course_registration: new mongoose.Types.ObjectId(data) },
       {
