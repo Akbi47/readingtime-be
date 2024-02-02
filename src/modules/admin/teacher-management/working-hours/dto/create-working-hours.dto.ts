@@ -1,5 +1,22 @@
-import { IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsEnum,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Days } from 'src/shares/enums/timeline.enum';
+export class TimelineDto {
+  @IsEnum(Days)
+  @IsOptional()
+  days: Days;
 
+  @IsString()
+  @IsOptional()
+  time: string;
+}
 export class CreateWorkingHoursDto {
   @IsString()
   @IsOptional()
@@ -22,5 +39,9 @@ export class CreateWorkingHoursDto {
   team_leader: string;
 
   @IsOptional()
-  timesheet: any;
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => TimelineDto)
+  timesheet: TimelineDto[];
 }

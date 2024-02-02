@@ -1,9 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { AccountTeacher } from '../../account-teacher/schemas/account-teacher.schema';
+import { Days } from 'src/shares/enums/timeline.enum';
 
 export type WorkingHoursDocument = WorkingHours & Document;
+@Schema({ _id: false })
+export class Timeline {
+  @Prop({ required: false, type: String, enum: Days })
+  days: Days;
 
+  @Prop({ required: false, type: String })
+  time: string;
+}
+export const TimelineSchema = SchemaFactory.createForClass(Timeline);
 @Schema({ timestamps: true })
 export class WorkingHours {
   @Prop({
@@ -31,23 +40,8 @@ export class WorkingHours {
 
   @Prop({ required: false, type: String })
   team_leader: string;
-
-  @Prop({
-    required: false,
-    type: [
-      {
-        time: String,
-        mon: Boolean,
-        tue: Boolean,
-        wed: Boolean,
-        thu: Boolean,
-        fri: Boolean,
-        sat: Boolean,
-        sun: Boolean,
-      },
-    ],
-  })
-  timesheet: any[];
+  @Prop({ required: false, type: [{ type: TimelineSchema }] })
+  timesheet: Timeline[];
 }
 
 export const WorkingHoursSchema = SchemaFactory.createForClass(WorkingHours);

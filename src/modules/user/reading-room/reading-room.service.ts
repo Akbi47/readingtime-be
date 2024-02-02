@@ -77,7 +77,7 @@ export class ReadingRoomService {
     trialCourse?: boolean,
   ): Promise<void> {
     await this.readingRoomModel.findOneAndUpdate(
-      { student_id: id },
+      { student_id: new mongoose.Types.ObjectId(id) },
       trialCourse
         ? { course_registration_id: new mongoose.Types.ObjectId(data) }
         : { regular_course_registration_id: new mongoose.Types.ObjectId(data) },

@@ -1,16 +1,39 @@
+import { Type } from 'class-transformer';
 import {
+  ArrayMinSize,
   IsArray,
-  IsDate,
   IsEmail,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
+  ValidateNested,
 } from 'class-validator';
+import { Days } from 'src/shares/enums/timeline.enum';
+export class TimelineDto {
+  @IsEnum(Days)
+  @IsOptional()
+  days: Days;
 
+  @IsString()
+  @IsOptional()
+  time: string;
+}
 export class CourseRegistrationDto {
   @IsString()
   @IsOptional()
   student_name: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => TimelineDto)
+  class_per_week: TimelineDto[];
+
+  @IsString()
+  @IsOptional()
+  application_day: string;
 
   @IsNumber()
   @IsOptional()
@@ -35,14 +58,7 @@ export class CourseRegistrationDto {
   @IsOptional()
   start_class: string;
 
-  @IsString()
-  @IsOptional()
-  time: string;
-
   @IsArray()
   @IsOptional()
   known_from: string[];
-
-  @IsOptional()
-  class_per_week: any;
 }

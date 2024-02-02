@@ -10,8 +10,6 @@ import {
   SpecialFeature,
 } from 'src/shares/enums/account-teacher.enum';
 
-import { WorkingHours } from '../../working-hours/schemas/working-hours.schema';
-
 export type AccountTeacherDocument = AccountTeacher & Document;
 
 @Schema({ timestamps: true })

@@ -27,7 +27,7 @@ export class CourseRegistrationService {
   ) {}
   async create(data: CourseRegistrationDto): Promise<CourseRegistration> {
     const { email, password } = data;
-    const payload = { email, password } as CreateAccountUserDto;
+    // const payload = { email, password } as CreateAccountUserDto;
     const signIn = { email, password } as LoginDto;
 
     const user = await this.accountUser.findOne({
@@ -40,30 +40,33 @@ export class CourseRegistrationService {
     if (user) {
       const signInResponse = await this.authenUserService.login(signIn);
       if (signInResponse.accessToken) {
-        const registeredCourse = await this.courseRegistrationModel.findById({
+        const registeredCourse = await this.courseRegistrationModel.findOne({
           user_account: new mongoose.Types.ObjectId(user._id),
         });
 
         if (registeredCourse) {
           throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
         }
-        const regUser = await this.accountUser.createStudent(payload);
 
         await Promise.all([
           await this.mailService.sendMailToUser(data),
           await this.mailService.sendMailToAdmin(data),
         ]);
 
-        delete data.email;
+        // delete data.email;
         delete data.password;
+        console.log({
+          data,
+          user_id: user._id,
+        });
 
         const res = await this.courseRegistrationModel.create({
           ...data,
-          user_account: new mongoose.Types.ObjectId(regUser._id),
+          user_account: new mongoose.Types.ObjectId(user._id),
         });
 
         await this.readingRoomService.findByIdAndUpdateReadingRoom(
-          regUser._id,
+          user._id,
           res._id,
           true,
         );

@@ -4,9 +4,19 @@ import { AccountTeacher } from 'src/modules/admin/teacher-management/account-tea
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 import { CourseRegistration } from '../../course-registration/schemas/course-registration.schema';
 import { RegularCourseRegistration } from '../../regular-course-registration/schemas/regular-course-registration.schema';
+import { Days } from 'src/shares/enums/timeline.enum';
 
 export type ReadingRoomDocument = ReadingRoom & Document;
+@Schema({ _id: false })
+export class Timeline {
+  @Prop({ required: false, type: String, enum: Days })
+  days: Days;
 
+  @Prop({ required: false, type: String })
+  time: string;
+}
+
+export const TimelineSchema = SchemaFactory.createForClass(Timeline);
 @Schema({ timestamps: true })
 export class ReadingRoom {
   @Prop({
@@ -37,21 +47,8 @@ export class ReadingRoom {
   })
   regular_course_registration_id: MongooseSchema.Types.ObjectId;
 
-  @Prop({
-    require: false,
-    type: [
-      {
-        mon: Boolean,
-        tue: Boolean,
-        wed: Boolean,
-        thu: Boolean,
-        fri: Boolean,
-        sat: Boolean,
-        sun: Boolean,
-      },
-    ],
-  })
-  class_per_week: any[];
+  @Prop({ required: false, type: [{ type: TimelineSchema }] })
+  class_per_week: Timeline[];
 
   @Prop({ required: false, type: Date })
   start_date_class: Date;
