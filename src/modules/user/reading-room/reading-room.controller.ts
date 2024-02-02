@@ -9,6 +9,23 @@ import { IdDto } from 'src/shares/dtos/param.dto';
 export class ReadingRoomController {
   constructor(private readonly readingRoomService: ReadingRoomService) {}
 
+  @Get()
+  async getReadingRoom(): Promise<ResponseData<ReadingRoom[]>> {
+    try {
+      const data = await this.readingRoomService.getReadingRoom();
+      return new ResponseData<ReadingRoom[]>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<ReadingRoom[]>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
   @Get(':id')
   async getReadingRoomOfUser(
     @Param() idDto: IdDto,

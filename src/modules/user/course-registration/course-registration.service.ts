@@ -65,6 +65,7 @@ export class CourseRegistrationService {
         await this.readingRoomService.findByIdAndUpdateReadingRoom(
           regUser._id,
           res._id,
+          true,
         );
 
         return res;

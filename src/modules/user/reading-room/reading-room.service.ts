@@ -47,11 +47,11 @@ export class ReadingRoomService {
       model: this.accountTeacherModel,
     },
     {
-      path: 'course_registration_id',
+      path: 'regular_course_registration_id',
       model: this.regularCourseRegistrationModel,
     },
     {
-      path: 'regular_course_registration_id',
+      path: 'course_registration_id',
       model: this.courseRegistrationModel,
     },
   ];
@@ -71,10 +71,16 @@ export class ReadingRoomService {
     return data;
   }
 
-  async findByIdAndUpdateReadingRoom(id: string, data: any): Promise<void> {
+  async findByIdAndUpdateReadingRoom(
+    id: string,
+    data: any,
+    trialCourse?: boolean,
+  ): Promise<void> {
     await this.readingRoomModel.findOneAndUpdate(
       { student_id: id },
-      { course_registration: new mongoose.Types.ObjectId(data) },
+      trialCourse
+        ? { course_registration_id: new mongoose.Types.ObjectId(data) }
+        : { regular_course_registration_id: new mongoose.Types.ObjectId(data) },
       {
         new: true,
       },

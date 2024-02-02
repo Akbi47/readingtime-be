@@ -17,7 +17,7 @@ export class ReadingRoom {
   student_id: MongooseSchema.Types.ObjectId;
 
   @Prop({
-    required: true,
+    required: false,
     type: MongooseSchema.Types.ObjectId,
     ref: AccountTeacher.name,
   })

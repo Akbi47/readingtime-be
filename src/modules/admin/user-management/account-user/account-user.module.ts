@@ -8,6 +8,7 @@ import {
   AutoIncrementIDOptions,
 } from '@typegoose/auto-increment';
 import { MailModule } from 'src/modules/mail/mail.module';
+import { ReadingRoomModule } from 'src/modules/user/reading-room/reading-room.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MailModule } from 'src/modules/mail/mail.module';
       },
     ]),
     MailModule,
+    ReadingRoomModule,
   ],
   providers: [AccountUserService],
   controllers: [AccountUserController],

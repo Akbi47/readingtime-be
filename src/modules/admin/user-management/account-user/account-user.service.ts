@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import {
   AccountUser,
   AccountUserDocument,
@@ -13,6 +13,7 @@ import { GetAccountUserDto } from './dto/get-account-user.dto';
 import * as moment from 'moment';
 import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
 import { MailService } from 'src/modules/mail/mail.service';
+import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
 
 @Injectable()
 export class AccountUserService {
@@ -20,6 +21,7 @@ export class AccountUserService {
     @InjectModel(AccountUser.name)
     private accountUserModel: Model<AccountUserDocument>,
     private mailService: MailService,
+    private readingRoomService: ReadingRoomService,
   ) {}
 
   async buildQuery(param: GetAccountUserDto): Promise<any> {
@@ -207,6 +209,9 @@ export class AccountUserService {
       password: hashPassword,
       role: UserRole.user,
       status: UserStatus.ACTIVE,
+    });
+    await this.readingRoomService.createData({
+      student_id: new mongoose.Types.ObjectId(data._id),
     });
     delete data.password;
 
