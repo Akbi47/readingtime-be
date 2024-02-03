@@ -33,7 +33,8 @@ export class TrialAssignmentService {
       // const class_per_week = trialCourseDetails.class_per_week.map((obj) => {
       //   console.log(obj);
       // });
-      console.log(trialCourseDetails['class_per_week']);
+      const class_per_week = trialCourseDetails['class_per_week'];
+      console.log(class_per_week.length);
 
       console.log({ trialCourseDetails });
 

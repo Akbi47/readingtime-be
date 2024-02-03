@@ -12,6 +12,7 @@ import { httpErrors } from 'src/shares/exceptions';
 import GetRoleManagementDto from './dto/get-role-management.dto';
 import { AccountUserService } from '../user-management/account-user/account-user.service';
 import { MailService } from 'src/modules/mail/mail.service';
+import CreateAccountUserDto from '../user-management/account-user/dto/create-account-user.dto';
 
 @Injectable()
 export class RoleManagementService {
@@ -62,8 +63,8 @@ export class RoleManagementService {
   async createRoleManagement(
     roleManagementDto: CreateRoleManagementDto,
   ): Promise<RoleManagement> {
-    const { email, password } = roleManagementDto;
-    const payload = { email, password } as any;
+    const { email, password, role, nick_name } = roleManagementDto;
+    const payload = { email, password, role, username: nick_name } as any;
     const user = await this.roleManagementModel.findOne({
       email,
       status: UserStatus.ACTIVE,

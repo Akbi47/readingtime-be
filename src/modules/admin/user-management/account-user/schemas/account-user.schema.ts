@@ -12,22 +12,22 @@ export type AccountUserDocument = AccountUser & Document;
 const formattedDate = moment(Date.now()).format('DD/MM/YYYY');
 @Schema({ timestamps: true })
 export class AccountUser {
-  @Prop({ type: String, unique: true })
+  @Prop({ required: false, type: String, unique: true })
   username: string;
 
-  @Prop({ type: String })
+  @Prop({ required: false, type: String })
   user: string;
 
-  @Prop({ type: Number })
+  @Prop({ required: false, type: Number })
   ID: number;
 
-  @Prop({ type: String })
+  @Prop({ required: false, type: String })
   user_english_name: string;
 
-  @Prop({ type: String, unique: true })
+  @Prop({ required: false, type: String, unique: true })
   email: string;
 
-  @Prop({ type: String })
+  @Prop({ required: false, type: String })
   password: string;
 
   @Prop({

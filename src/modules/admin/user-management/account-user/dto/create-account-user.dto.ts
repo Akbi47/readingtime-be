@@ -16,6 +16,7 @@ export class CreateAccountUserDto {
   username: string;
 
   @IsString()
+  @IsOptional()
   user: string;
 
   @IsOptional()
