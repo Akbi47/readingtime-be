@@ -6,7 +6,7 @@ import { IdDto } from 'src/shares/dtos/param.dto';
 import { CourseRegistrationService } from 'src/modules/user/course-registration/course-registration.service';
 import { FreeTrialProductService } from 'src/modules/admin/product-management/free-trial-product/free-trial-product.service';
 import * as moment from 'moment';
-import { GetEventDto } from 'src/modules/user/course-registration/dto/get-event.dto';
+import { GetEventDto } from 'src/modules/user/reading-room/dto/get-timeline-event.dto';
 
 @Injectable()
 export class TrialAssignmentService {

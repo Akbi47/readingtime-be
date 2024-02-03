@@ -17,28 +17,6 @@ export class Timeline {
 }
 export const TimelineSchema = SchemaFactory.createForClass(Timeline);
 
-export class Event {
-  @Prop({ required: false, type: String })
-  day: string;
-
-  @Prop({ required: false, type: String })
-  date: string;
-
-  @Prop({ required: false, type: String })
-  month: string;
-
-  @Prop({ required: false, type: String })
-  year: string;
-
-  @Prop({ required: false, type: String })
-  timeStart: string;
-
-  @Prop({ required: false, type: String })
-  timeEnd: string;
-}
-
-export const EventSchema = SchemaFactory.createForClass(Event);
-
 @Schema({ timestamps: true })
 export class CourseRegistration {
   @Prop({ required: false, type: String })
@@ -49,9 +27,6 @@ export class CourseRegistration {
 
   @Prop({ required: false, type: [{ type: TimelineSchema }] })
   class_per_week: Timeline[];
-
-  @Prop({ required: false, type: [{ type: EventSchema }] })
-  event: Event[];
 
   @Prop({ required: false, type: String, default: formattedDate })
   application_day: string;
