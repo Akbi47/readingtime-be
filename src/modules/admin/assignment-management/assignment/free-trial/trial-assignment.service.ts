@@ -21,79 +21,10 @@ export class TrialAssignmentService {
     return await this.readingRoomService.getReadingRoom();
   }
 
-  async calculateNeededDaysWithTime(start_day, end_day, need_day) {
-    const startDate = moment(start_day, 'YYYY/MM/DD');
-    const endDate = moment(end_day, 'YYYY/MM/DD');
-
-    let currentDate = startDate.clone();
-    const result = [];
-
-    while (currentDate <= endDate) {
-      const matchingDay = need_day.find(
-        (item) => item.days === currentDate.format('dddd').toLowerCase(),
-      );
-
-      if (matchingDay) {
-        const [timeStart, timeEnd] = matchingDay.time.split('~');
-        result.push({
-          day: currentDate.format('dddd'),
-          date: currentDate.format('D'),
-          month: currentDate.format('M'),
-          year: currentDate.format('YYYY'),
-          timeStart,
-          timeEnd,
-        });
-      }
-      currentDate.add(1, 'day');
-    }
-
-    return result;
+  async getEventByReadingRoom(idDto: IdDto): Promise<ReadingRoom> {
+    return await this.readingRoomService.getReadingRoomById(idDto);
   }
 
-  async getEvents(idDto: IdDto): Promise<GetEventDto[]> {
-    const data = await this.readingRoomService.getReadingRoomById(idDto);
-    if (data.course_registration_id) {
-      const trialCourseDetails =
-        await this.courseRegistrationService.getCourseRegistrationById(
-          data.course_registration_id.toString(),
-        );
-
-      const class_per_week = trialCourseDetails['class_per_week'];
-      const trialProductDetails =
-        await this.freeTrialProductService.getFreeTrialProductByName(
-          trialCourseDetails.course,
-        );
-      console.log({ trialProductDetails });
-      const eventsList = await this.calculateNeededDaysWithTime(
-        trialProductDetails.reg_day,
-        trialProductDetails.exp_day,
-        class_per_week,
-      );
-      return eventsList;
-    }
-  }
-  async createEvents(idDto: IdDto): Promise<GetEventDto[]> {
-    const data = await this.readingRoomService.getReadingRoomById(idDto);
-    if (data.course_registration_id) {
-      const trialCourseDetails =
-        await this.courseRegistrationService.getCourseRegistrationById(
-          data.course_registration_id.toString(),
-        );
-
-      const class_per_week = trialCourseDetails['class_per_week'];
-      const trialProductDetails =
-        await this.freeTrialProductService.getFreeTrialProductByName(
-          trialCourseDetails.course,
-        );
-      console.log({ trialProductDetails });
-      const eventsList = await this.calculateNeededDaysWithTime(
-        trialProductDetails.reg_day,
-        trialProductDetails.exp_day,
-        class_per_week,
-      );
-      return eventsList;
-    }
-  }
   // async updateAssignment(
   //   trialAssignmentDto: TrialAssignmentDto,
   // ): Promise<void> {

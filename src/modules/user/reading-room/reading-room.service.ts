@@ -22,6 +22,8 @@ import {
   RegularCourseRegistration,
   RegularCourseRegistrationDocument,
 } from '../regular-course-registration/schemas/regular-course-registration.schema';
+import { GetEventDto } from './dto/get-timeline-event.dto';
+import { CreateTimelineEventDto } from './dto/create-timeline-event.dto';
 
 @Injectable()
 export class ReadingRoomService {
@@ -62,10 +64,10 @@ export class ReadingRoomService {
     const { id } = idDto;
     return await this.readingRoomModel.findOne({ student_id: id });
   }
-  async getReadingRoomById(idDto: IdDto): Promise<ReadingRoom> {
+  async getReadingRoomById(idDto: IdDto): Promise<ReadingRoomDocument> {
     const { id } = idDto;
 
-    return await this.readingRoomModel.findById({ _id: id });
+    return await this.readingRoomModel.findById(id);
   }
   async getReadingRoom(): Promise<ReadingRoom[]> {
     const data = await this.readingRoomModel
@@ -75,13 +77,23 @@ export class ReadingRoomService {
 
     return data;
   }
-
   async findByIdAndUpdateReadingRoom(
+    id: string,
+    data: unknown,
+  ): Promise<ReadingRoomDocument> {
+    const res = await this.readingRoomModel.findByIdAndUpdate(
+      id,
+      { $set: data },
+      { new: true },
+    );
+    return res;
+  }
+  async findByStudentIdAndUpdateReadingRoom(
     id: string,
     data: any,
     trialCourse?: boolean,
-  ): Promise<void> {
-    await this.readingRoomModel.findOneAndUpdate(
+  ): Promise<ReadingRoomDocument> {
+    const res = await this.readingRoomModel.findOneAndUpdate(
       { student_id: new mongoose.Types.ObjectId(id) },
       trialCourse
         ? { course_registration_id: new mongoose.Types.ObjectId(data) }
@@ -90,5 +102,7 @@ export class ReadingRoomService {
         new: true,
       },
     );
+
+    return res;
   }
 }

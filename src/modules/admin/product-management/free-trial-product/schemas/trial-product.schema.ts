@@ -26,8 +26,8 @@ export class TrialProduct {
   @Prop({ required: false, type: String })
   about: string;
 
-  @Prop({ required: false, type: Date })
-  reg_day: Date;
+  @Prop({ required: false, type: String })
+  reg_day: string;
 
   @Prop({ required: false, type: String })
   exp_day: string;

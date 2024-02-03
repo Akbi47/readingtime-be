@@ -14,7 +14,7 @@ export class TrialAssignmentController {
   }
   @Get('events-readingroom/:id')
   async getEvents(@Param() idDto: IdDto) {
-    return await this.trialAssignmentService.getEvents(idDto);
+    return await this.trialAssignmentService.getEventByReadingRoom(idDto);
   }
   // @Put()
   // async updateAssignment(

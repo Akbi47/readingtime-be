@@ -50,7 +50,7 @@ export class RegularCourseRegistrationService {
       user_account: new mongoose.Types.ObjectId(user._id),
     });
 
-    await this.readingRoomService.findByIdAndUpdateReadingRoom(
+    await this.readingRoomService.findByStudentIdAndUpdateReadingRoom(
       user._id,
       res._id,
       false,

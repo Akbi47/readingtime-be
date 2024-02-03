@@ -24,13 +24,13 @@ export class GetTrialProductDto {
   @IsOptional()
   about: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  reg_day: Date;
+  reg_day: string;
 
-  @IsDate()
+  @IsString()
   @IsOptional()
-  exp_day: Date;
+  exp_day: string;
 
   @IsNumber()
   @IsOptional()
