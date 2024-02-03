@@ -24,9 +24,9 @@ export class CreateTrialProductDto {
   @IsOptional()
   about: string;
 
-  @IsString()
+  @IsDate()
   @IsOptional()
-  reg_day: string;
+  reg_day: Date;
 
   @IsString()
   @IsOptional()

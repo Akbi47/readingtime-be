@@ -12,7 +12,6 @@ import { httpErrors } from 'src/shares/exceptions';
 import GetRoleManagementDto from './dto/get-role-management.dto';
 import { AccountUserService } from '../user-management/account-user/account-user.service';
 import { MailService } from 'src/modules/mail/mail.service';
-import CreateAccountUserDto from '../user-management/account-user/dto/create-account-user.dto';
 
 @Injectable()
 export class RoleManagementService {

@@ -1,14 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
-import { UserStatus } from 'src/shares/enums/account-user.enum';
+import { Injectable } from '@nestjs/common';
 import { AccountUserService } from 'src/modules/admin/user-management/account-user/account-user.service';
-import { httpErrors } from 'src/shares/exceptions';
 import { ReadingRoom } from 'src/modules/user/reading-room/schemas/reading-room.schema';
 import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { CourseRegistrationService } from 'src/modules/user/course-registration/course-registration.service';
 import { FreeTrialProductService } from 'src/modules/admin/product-management/free-trial-product/free-trial-product.service';
+import * as moment from 'moment';
+import { GetEventDto } from 'src/modules/user/course-registration/dto/get-event.dto';
 
 @Injectable()
 export class TrialAssignmentService {
@@ -22,37 +20,79 @@ export class TrialAssignmentService {
   async getData(): Promise<ReadingRoom[]> {
     return await this.readingRoomService.getReadingRoom();
   }
-  async getEvents(idDto: IdDto): Promise<unknown[]> {
+
+  async calculateNeededDaysWithTime(start_day, end_day, need_day) {
+    const startDate = moment(start_day, 'YYYY/MM/DD');
+    const endDate = moment(end_day, 'YYYY/MM/DD');
+
+    let currentDate = startDate.clone();
+    const result = [];
+
+    while (currentDate <= endDate) {
+      const matchingDay = need_day.find(
+        (item) => item.days === currentDate.format('dddd').toLowerCase(),
+      );
+
+      if (matchingDay) {
+        const [timeStart, timeEnd] = matchingDay.time.split('~');
+        result.push({
+          day: currentDate.format('dddd'),
+          date: currentDate.format('D'),
+          month: currentDate.format('M'),
+          year: currentDate.format('YYYY'),
+          timeStart,
+          timeEnd,
+        });
+      }
+      currentDate.add(1, 'day');
+    }
+
+    return result;
+  }
+
+  async getEvents(idDto: IdDto): Promise<GetEventDto[]> {
     const data = await this.readingRoomService.getReadingRoomById(idDto);
-    console.log({ data });
     if (data.course_registration_id) {
       const trialCourseDetails =
         await this.courseRegistrationService.getCourseRegistrationById(
           data.course_registration_id.toString(),
         );
-      // const class_per_week = trialCourseDetails.class_per_week.map((obj) => {
-      //   console.log(obj);
-      // });
+
       const class_per_week = trialCourseDetails['class_per_week'];
-      console.log(class_per_week.length);
-
-      console.log({ trialCourseDetails });
-
       const trialProductDetails =
         await this.freeTrialProductService.getFreeTrialProductByName(
           trialCourseDetails.course,
         );
       console.log({ trialProductDetails });
+      const eventsList = await this.calculateNeededDaysWithTime(
+        trialProductDetails.reg_day,
+        trialProductDetails.exp_day,
+        class_per_week,
+      );
+      return eventsList;
     }
-    //  else if (data.regular_course_registration_id) {
-    //   const course =
-    //     await this.regularCourseRegistrationService.getRegularCourseRegistrationById(
-    //       data.regular_course_registration_id.toString(),
-    //     );
+  }
+  async createEvents(idDto: IdDto): Promise<GetEventDto[]> {
+    const data = await this.readingRoomService.getReadingRoomById(idDto);
+    if (data.course_registration_id) {
+      const trialCourseDetails =
+        await this.courseRegistrationService.getCourseRegistrationById(
+          data.course_registration_id.toString(),
+        );
 
-    //   console.log(course);
-    // }
-    return [];
+      const class_per_week = trialCourseDetails['class_per_week'];
+      const trialProductDetails =
+        await this.freeTrialProductService.getFreeTrialProductByName(
+          trialCourseDetails.course,
+        );
+      console.log({ trialProductDetails });
+      const eventsList = await this.calculateNeededDaysWithTime(
+        trialProductDetails.reg_day,
+        trialProductDetails.exp_day,
+        class_per_week,
+      );
+      return eventsList;
+    }
   }
   // async updateAssignment(
   //   trialAssignmentDto: TrialAssignmentDto,
