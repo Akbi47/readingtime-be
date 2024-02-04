@@ -6,6 +6,7 @@ import {
   WorkingHours,
   WorkingHoursSchema,
 } from './schemas/working-hours.schema';
+import { AccountTeacherModule } from '../account-teacher/account-teacher.module';
 
 @Module({
   imports: [
@@ -15,8 +16,10 @@ import {
         schema: WorkingHoursSchema,
       },
     ]),
+    AccountTeacherModule,
   ],
   controllers: [WorkingHoursController],
   providers: [WorkingHoursService],
+  exports: [WorkingHoursService],
 })
 export class WorkingHoursModule {}

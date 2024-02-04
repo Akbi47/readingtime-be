@@ -3,6 +3,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsEnum,
+  IsMongoId,
   IsOptional,
   IsString,
   ValidateNested,
@@ -15,24 +16,24 @@ export class TimelineDto {
 
   @IsString()
   @IsOptional()
-  time: string;
+  time_start: string;
+
+  @IsString()
+  @IsOptional()
+  time_end: string;
 }
 export class CreateWorkingHoursDto {
   @IsString()
   @IsOptional()
-  teacher_name: string;
+  teacher: string;
 
   @IsString()
   @IsOptional()
-  teacher_nickname: string;
+  nick_name: string;
 
   @IsString()
   @IsOptional()
-  teacher_id: string;
-
-  @IsString()
-  @IsOptional()
-  team: string;
+  team_name: string;
 
   @IsString()
   @IsOptional()

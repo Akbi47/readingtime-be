@@ -12,17 +12,25 @@ import {
   WorkingHours,
   WorkingHoursSchema,
 } from '../working-hours/schemas/working-hours.schema';
+import { TeamManagementModule } from '../../team-management/team-management.module';
+import {
+  TeamManagement,
+  TeamManagementSchema,
+} from '../../team-management/schemas/team-management.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: AccountTeacher.name, schema: AccountTeacherSchema },
       { name: WorkingHours.name, schema: WorkingHoursSchema },
+      { name: TeamManagement.name, schema: TeamManagementSchema },
     ]),
     AccountUserModule,
     MailModule,
+    TeamManagementModule,
   ],
   controllers: [AccountTeacherController],
   providers: [AccountTeacherService],
+  exports: [AccountTeacherService],
 })
 export class AccountTeacherModule {}

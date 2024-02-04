@@ -60,7 +60,7 @@ export class WorkingHoursController {
   @Post()
   async createWorkingHours(
     @Body() workingHoursDto: CreateWorkingHoursDto,
-  ): Promise<ResponseData<WorkingHours>> {
+  ): Promise<ResponseData<WorkingHours|any>> {
     try {
       const data =
         await this.workingHoursService.createWorkingHours(workingHoursDto);
@@ -71,7 +71,7 @@ export class WorkingHoursController {
       );
     } catch (error) {
       return new ResponseData<WorkingHours>(
-        null,
+        error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );

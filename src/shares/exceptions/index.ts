@@ -323,4 +323,28 @@ export const httpErrors = {
     message: 'Home not found.',
     code: 'HOME_00000',
   },
+
+  // TEAM
+  TEAM_NOT_FOUND: {
+    message: 'Team not found.',
+    code: 'TEAM_00000',
+  },
+
+  // TEAM
+  TEAM_EXISTED: {
+    message: 'Team existed.',
+    code: 'TEAM_00001',
+  },
+
+  // Tl
+  TL_NOT_FOUND: {
+    message: 'Tl not found.',
+    code: 'Tl_00000',
+  },
+
+  // Tl
+  TL_EXISTED: {
+    message: 'Tl existed.',
+    code: 'Tl_00001',
+  },
 };

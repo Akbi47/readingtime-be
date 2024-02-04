@@ -8,12 +8,13 @@ import {
   AccountTeacher,
   AccountTeacherDocument,
 } from './schemas/account-teacher.schema';
+import { GetAccountTeacherDto } from './dto/get-account-teacher.dto';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
   constructor(private readonly accountTeacherService: AccountTeacherService) {}
 
-  @Get('/')
+  @Get()
   async getAccountTeacher(@Query() query?: any): Promise<any> {
     try {
       const data = await this.accountTeacherService.getAccountTeacher(query);
@@ -24,6 +25,27 @@ export class AccountTeacherController {
       );
     } catch (error) {
       return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
+    }
+  }
+
+  @Get('field')
+  async getTeacherByInfo(
+    @Query() getAccountTeacherDto: GetAccountTeacherDto,
+  ): Promise<ResponseData<AccountTeacherDocument>> {
+    try {
+      const data =
+        await this.accountTeacherService.getTeacherByInfo(getAccountTeacherDto);
+      return new ResponseData<AccountTeacherDocument>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<AccountTeacherDocument>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
     }
   }
 

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { TeamManagement } from 'src/modules/admin/team-management/schemas/team-management.schema';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 import {
   GenderStatus,
@@ -27,7 +28,7 @@ export class AccountTeacher {
   // })
   // workinghours_id: MongooseSchema.Types.ObjectId;
 
-  @Prop({ required: true, type: String, unique: true })
+  @Prop({ required: true, type: String })
   nick_name: string;
 
   @Prop({ required: false, type: String, unique: true })
@@ -80,8 +81,19 @@ export class AccountTeacher {
   @Prop({ required: false, type: String })
   image: string;
 
-  @Prop({ required: false, type: String })
-  team_name: string;
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: TeamManagement.name,
+  })
+  team_name: MongooseSchema.Types.ObjectId;
+
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountUser.name,
+  })
+  team_leader: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: false, type: String })
   tag: string;

@@ -1,4 +1,3 @@
-// Import the necessary modules
 import {
   IsString,
   IsEmail,
@@ -17,9 +16,8 @@ import {
   RecommendedLevel,
 } from 'src/shares/enums/account-teacher.enum';
 
-export class CreateAccountTeacherDto {
+export class GetAccountTeacherDto {
   @IsString()
-  @IsOptional()
   teacher: string;
 
   @IsString()
@@ -102,9 +100,13 @@ export class CreateAccountTeacherDto {
   @IsOptional()
   image: string;
 
-  @IsString()
+  @IsMongoId()
   @IsOptional()
   team_name: string;
+
+  @IsMongoId()
+  @IsOptional()
+  team_leader: string;
 
   @IsEnum(ProfileStatus)
   @IsOptional()
@@ -152,4 +154,4 @@ export class CreateAccountTeacherDto {
 }
 
 // Export the class
-export default CreateAccountTeacherDto;
+export default GetAccountTeacherDto;

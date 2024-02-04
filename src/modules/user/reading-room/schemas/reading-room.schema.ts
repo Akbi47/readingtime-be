@@ -14,6 +14,13 @@ export class Timeline {
 
   @Prop({ required: false, type: String })
   time: string;
+
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountTeacher.name,
+  })
+  teacher_id: MongooseSchema.Types.ObjectId;
 }
 export const TimelineSchema = SchemaFactory.createForClass(Timeline);
 @Schema({ _id: false })
@@ -50,10 +57,10 @@ export class ReadingRoom {
 
   @Prop({
     required: false,
-    type: MongooseSchema.Types.ObjectId,
+    type: [{ type: MongooseSchema.Types.ObjectId }],
     ref: AccountTeacher.name,
   })
-  teacher_id: MongooseSchema.Types.ObjectId;
+  teacher_id: MongooseSchema.Types.ObjectId[];
 
   @Prop({
     required: false,
