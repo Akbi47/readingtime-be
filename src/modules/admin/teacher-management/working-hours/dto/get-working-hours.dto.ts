@@ -24,6 +24,7 @@ export class TimelineDto {
 }
 export class GetWorkingHoursDto {
   @IsMongoId()
+  @IsOptional()
   teacher_id: string;
 
   @IsOptional()

@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Body, Post } from '@nestjs/common';
+import { Controller, Get, Put, Body, Post, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { WorkingHoursService } from './working-hours.service';
@@ -7,6 +7,7 @@ import {
   WorkingHoursDocument,
 } from './schemas/working-hours.schema';
 import { CreateWorkingHoursDto } from './dto/create-working-hours.dto';
+import { TimelineDto } from './dto/get-working-hours.dto';
 
 @Controller('working-hours')
 export class WorkingHoursController {
@@ -16,6 +17,26 @@ export class WorkingHoursController {
   async getWorkingHours(): Promise<ResponseData<WorkingHours[]>> {
     try {
       const data = await this.workingHoursService.getWorkingHours();
+      return new ResponseData<WorkingHours[]>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<WorkingHours[]>(
+        null,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
+  @Get('daytime')
+  async getWorkingHoursByDayAndTime(
+    @Query() timelineDto: TimelineDto,
+  ): Promise<ResponseData<WorkingHours[]>> {
+    try {
+      const data =
+        await this.workingHoursService.getWorkingHoursByDayAndTime(timelineDto);
       return new ResponseData<WorkingHours[]>(
         data,
         HttpStatus.SUCCESS,
@@ -60,7 +81,7 @@ export class WorkingHoursController {
   @Post()
   async createWorkingHours(
     @Body() workingHoursDto: CreateWorkingHoursDto,
-  ): Promise<ResponseData<WorkingHours|any>> {
+  ): Promise<ResponseData<WorkingHours | any>> {
     try {
       const data =
         await this.workingHoursService.createWorkingHours(workingHoursDto);

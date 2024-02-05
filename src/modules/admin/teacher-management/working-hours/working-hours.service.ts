@@ -9,6 +9,7 @@ import { CreateWorkingHoursDto } from './dto/create-working-hours.dto';
 import { AccountTeacherService } from '../account-teacher/account-teacher.service';
 import GetAccountTeacherDto from '../account-teacher/dto/get-account-teacher.dto';
 import { httpErrors } from 'src/shares/exceptions';
+import { TimelineDto } from './dto/get-working-hours.dto';
 
 @Injectable()
 export class WorkingHoursService {
@@ -24,6 +25,22 @@ export class WorkingHoursService {
 
   async getWorkingHoursById(_id: string): Promise<WorkingHours> {
     return this.createWorkingHoursModel.findById(_id).exec();
+  }
+
+  async getWorkingHoursByDayAndTime(
+    data: TimelineDto,
+  ): Promise<WorkingHours | any> {
+    const { days, time_start, time_end } = data;
+
+    const res = await this.createWorkingHoursModel.find({
+      timesheet: {
+        $elemMatch: {
+          days,
+          time_start,
+        },
+      },
+    });
+    return res;
   }
 
   async createWorkingHours(

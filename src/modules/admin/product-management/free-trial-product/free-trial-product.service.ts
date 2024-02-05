@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Query } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -38,10 +38,13 @@ export class FreeTrialProductService {
     return query;
   }
   async getFreeTrialProduct(
-    @Query() getTrialProductDto: GetTrialProductDto,
+    getTrialProductDto?: GetTrialProductDto,
   ): Promise<TrialProduct[]> {
-    const query = await this.buildQuery(getTrialProductDto);
-    return await this.trialProductModel.find(query);
+    if (getTrialProductDto) {
+      const query = await this.buildQuery(getTrialProductDto);
+      return await this.trialProductModel.find(query);
+    }
+    return await this.trialProductModel.find();
   }
 
   async getFreeTrialProductById(_id: string): Promise<TrialProduct> {

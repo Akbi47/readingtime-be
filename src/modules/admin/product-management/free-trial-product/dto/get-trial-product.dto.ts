@@ -2,6 +2,7 @@ import { IsString, IsDate, IsOptional, IsNumber } from 'class-validator';
 
 export class GetTrialProductDto {
   @IsString()
+  @IsOptional()
   product_name: string;
 
   @IsString()

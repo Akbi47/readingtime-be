@@ -1,28 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { AccountUserService } from 'src/modules/admin/user-management/account-user/account-user.service';
 import { ReadingRoom } from 'src/modules/user/reading-room/schemas/reading-room.schema';
 import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
-import { CourseRegistrationService } from 'src/modules/user/course-registration/course-registration.service';
-import { FreeTrialProductService } from 'src/modules/admin/product-management/free-trial-product/free-trial-product.service';
-import * as moment from 'moment';
-import { GetEventDto } from 'src/modules/user/reading-room/dto/get-timeline-event.dto';
+import { WorkingHoursService } from 'src/modules/admin/teacher-management/working-hours/working-hours.service';
+import { TimelineDto } from 'src/modules/admin/teacher-management/working-hours/dto/get-working-hours.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  AccountTeacher,
+  AccountTeacherDocument,
+} from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class TrialAssignmentService {
   constructor(
-    private accountUser: AccountUserService,
+    @InjectModel(AccountTeacher.name)
+    private readonly accountTeacherModel: Model<AccountTeacherDocument>,
     private readingRoomService: ReadingRoomService,
-    private courseRegistrationService: CourseRegistrationService,
-    private freeTrialProductService: FreeTrialProductService,
+    private readonly workingHoursService: WorkingHoursService,
     // private regularCourseRegistrationService: RegularCourseRegistrationService,
   ) {}
+  populateTeacher = [
+    {
+      path: 'teacher_id',
+      model: this.accountTeacherModel,
+    },
+  ];
   async getData(): Promise<ReadingRoom[]> {
     return await this.readingRoomService.getReadingRoom();
   }
 
   async getEventByReadingRoom(idDto: IdDto): Promise<ReadingRoom> {
     return await this.readingRoomService.getReadingRoomById(idDto);
+  }
+
+  async getTeachersByDayTime(data: TimelineDto): Promise<AccountTeacher[]> {
+    const workingHourDetails =
+      await this.workingHoursService.getWorkingHoursByDayAndTime(data);
+    const teacherDetails = workingHourDetails.populate(this.populateTeacher);
+    console.log({ teacherDetails });
+    console.log({ workingHourDetails });
+
+    return teacherDetails;
   }
 
   // async updateAssignment(

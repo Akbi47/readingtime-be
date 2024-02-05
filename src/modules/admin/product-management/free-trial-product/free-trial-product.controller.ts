@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Post, Put } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { FreeTrialProductService } from './free-trial-product.service';
@@ -17,7 +17,7 @@ export class FreeTrialProductController {
 
   @Get('/')
   async getFreeTrialProduct(
-    getTrialProductDto: GetTrialProductDto,
+    @Query() getTrialProductDto?: GetTrialProductDto,
   ): Promise<ResponseData<TrialProduct[]>> {
     try {
       const data =
