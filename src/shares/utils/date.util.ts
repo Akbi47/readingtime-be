@@ -30,8 +30,6 @@ export class DateUtil {
       }
       currentDate.add(1, 'day');
     }
-    console.log(result);
-
     return result;
   };
 }

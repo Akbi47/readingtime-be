@@ -182,7 +182,6 @@ export class AccountUserService {
       throw new BadRequestException(httpErrors.ACCOUNT_EXISTED);
     }
     const { hashPassword } = await generateHash(password);
-    console.log(accountUserDto);
 
     const data = await this.accountUserModel.create({
       ...accountUserDto,

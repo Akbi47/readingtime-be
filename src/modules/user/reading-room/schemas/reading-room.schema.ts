@@ -49,7 +49,7 @@ export const EventSchema = SchemaFactory.createForClass(Event);
 @Schema({ timestamps: true })
 export class ReadingRoom {
   @Prop({
-    required: true,
+    required: false,
     type: MongooseSchema.Types.ObjectId,
     ref: AccountUser.name,
   })
@@ -57,10 +57,10 @@ export class ReadingRoom {
 
   @Prop({
     required: false,
-    type: [{ type: MongooseSchema.Types.ObjectId }],
-    ref: AccountTeacher.name,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountUser.name,
   })
-  teacher_id: MongooseSchema.Types.ObjectId[];
+  teacher_id: MongooseSchema.Types.ObjectId;
 
   @Prop({
     required: false,

@@ -53,6 +53,7 @@ export class WorkingHoursService {
         },
       })
       .populate(this.populateTeacher);
+
     return res;
   }
 
@@ -74,7 +75,6 @@ export class WorkingHoursService {
     if (!teacherInfos) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
     }
-    console.log({ teacherInfos });
     const data = await this.workingHoursModel.create({
       timesheet: createWorkingHoursDto.timesheet,
       teacher_id: new mongoose.Types.ObjectId(teacherInfos._id),

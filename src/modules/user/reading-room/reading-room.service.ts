@@ -96,7 +96,6 @@ export class ReadingRoomService {
     const data = await this.readingRoomModel
       .find()
       .populate(this.populateReadingRoom);
-    console.log(data);
 
     return data;
   }
@@ -104,7 +103,6 @@ export class ReadingRoomService {
     id: string,
     data: unknown,
   ): Promise<ReadingRoomDocument> {
-    console.log({ data });
 
     const res = await this.readingRoomModel.findByIdAndUpdate(
       id,

@@ -18,15 +18,12 @@ export class AccountTeacher {
   @Prop({ required: true, type: String })
   teacher: string;
 
-  @Prop({ required: false, type: String })
-  teacher_id: string;
-
-  // @Prop({
-  //   required: true,
-  //   type: MongooseSchema.Types.ObjectId,
-  //   ref: WorkingHours.name,
-  // })
-  // workinghours_id: MongooseSchema.Types.ObjectId;
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+    ref: AccountUser.name,
+  })
+  teacher_id: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: true, type: String })
   nick_name: string;

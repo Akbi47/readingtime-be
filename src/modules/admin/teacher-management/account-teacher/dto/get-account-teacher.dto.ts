@@ -20,7 +20,7 @@ export class GetAccountTeacherDto {
   @IsString()
   teacher: string;
 
-  @IsString()
+  @IsMongoId()
   @IsOptional()
   teacher_id: string;
 

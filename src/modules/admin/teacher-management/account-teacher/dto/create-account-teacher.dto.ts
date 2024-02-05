@@ -22,7 +22,7 @@ export class CreateAccountTeacherDto {
   @IsOptional()
   teacher: string;
 
-  @IsString()
+  @IsMongoId()
   @IsOptional()
   teacher_id: string;
 

@@ -38,11 +38,11 @@ export class TrialAssignmentService {
 
   async assignTeacher(teacher_id: IdDto, room_id: string): Promise<void> {
     const roomDetails = await this.getEventByReadingRoom(room_id, null);
-    const findTeacherId = roomDetails.teacher_id.map((e) => {
-      return e.toString() === teacher_id.id;
-    });
-
-    if (findTeacherId[0]) {
+    // const findTeacherId = roomDetails.teacher_id.map((e) => {
+    //   return e.toString() === teacher_id.id;
+    // });
+    const findTeacherId = teacher_id.id === roomDetails.teacher_id.toString();
+    if (findTeacherId) {
       throw new BadRequestException(httpErrors.TEACHER_EXISTED);
     } else {
       const payload = {

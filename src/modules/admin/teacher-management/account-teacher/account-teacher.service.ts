@@ -46,7 +46,6 @@ export class AccountTeacherService {
       const teamId = await this.teamManagementModel
         .findOne(queryTeam)
         .select('_id');
-      console.log(teamId);
 
       // query.team_name = new mongoose.Types.ObjectId(teamId);
       query.team_name = teamId;
@@ -103,7 +102,7 @@ export class AccountTeacherService {
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
     }
-    const user_id = user.teacher_id;
+    const user_id = user.teacher_id.toString();
     if (updatedData.email) {
       await this.accountUser.findByIdAndUpdateEmail(
         user_id,
