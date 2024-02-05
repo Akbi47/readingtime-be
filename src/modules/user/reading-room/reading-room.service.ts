@@ -103,7 +103,6 @@ export class ReadingRoomService {
     id: string,
     data: unknown,
   ): Promise<ReadingRoomDocument> {
-
     const res = await this.readingRoomModel.findByIdAndUpdate(
       id,
       { $set: data },

@@ -40,6 +40,7 @@ export class CourseRegistrationDto {
   student_age: number;
 
   @IsEmail()
+  @IsOptional()
   email: string;
 
   @IsString()

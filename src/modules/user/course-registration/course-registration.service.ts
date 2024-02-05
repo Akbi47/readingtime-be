@@ -57,6 +57,7 @@ export class CourseRegistrationService {
       if (!trialProductDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
+      console.log({ trialProductDetails });
 
       const eventsList = await this.dateUtils.calculateNeededDaysWithTime(
         trialProductDetails.reg_day,
@@ -66,10 +67,14 @@ export class CourseRegistrationService {
       const payload = {
         timeline_events: eventsList,
       };
+      console.log({ payload });
+
       return await this.readingRoomService.findByIdAndUpdateReadingRoom(
         data._id,
         payload,
       );
+    } else {
+      throw new BadRequestException(httpErrors.ROOM_NOT_FOUND);
     }
   }
 
@@ -96,12 +101,12 @@ export class CourseRegistrationService {
           throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
         }
 
-        await Promise.all([
-          await this.mailService.sendMailToUser(data),
-          await this.mailService.sendMailToAdmin(data),
-        ]);
+        // await Promise.all([
+        //   await this.mailService.sendMailToUser(data),
+        //   await this.mailService.sendMailToAdmin(data),
+        // ]);
 
-        delete data.email;
+        // delete data.email;
         delete data.password;
 
         const res = await this.courseRegistrationModel.create({
@@ -115,6 +120,10 @@ export class CourseRegistrationService {
             res._id,
             true,
           );
+        if (!readingRoomDetails) {
+          throw new BadRequestException(httpErrors.ROOM_NOT_FOUND);
+        }
+        console.log({ readingRoomDetails });
 
         const payload = { id: readingRoomDetails._id } as IdDto;
         await this.createEvents(payload);

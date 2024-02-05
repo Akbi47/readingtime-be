@@ -318,10 +318,10 @@ export const httpErrors = {
     code: 'CAMPAIGN_00000',
   },
 
-  // HOME
-  HOME_NOT_FOUND: {
-    message: 'Home not found.',
-    code: 'HOME_00000',
+  // ROOM
+  ROOM_NOT_FOUND: {
+    message: 'Room not found.',
+    code: 'ROOM_00000',
   },
 
   // TEAM
@@ -339,24 +339,24 @@ export const httpErrors = {
   // Tl
   TL_NOT_FOUND: {
     message: 'Tl not found.',
-    code: 'Tl_00000',
+    code: 'TL_00000',
   },
 
   // Tl
   TL_EXISTED: {
     message: 'Tl existed.',
-    code: 'Tl_00001',
+    code: 'TL_00001',
   },
 
   // Teacher
   TEACHER_NOT_FOUND: {
     message: 'Teacher not found.',
-    code: 'Teacher_00000',
+    code: 'TEACHER_00000',
   },
 
   // Teacher
   TEACHER_EXISTED: {
     message: 'Teacher existed.',
-    code: 'Teacher_00001',
+    code: 'TEACHER_00001',
   },
 };
