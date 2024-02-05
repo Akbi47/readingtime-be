@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { TrialAssignmentService } from './trial-assignment.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { ResponseData } from 'src/global/globalClass';
@@ -16,35 +24,38 @@ export class TrialAssignmentController {
   async getData() {
     return await this.trialAssignmentService.getData();
   }
-  @Get('events-readingroom/:id')
-  async getEvents(@Param() idDto: IdDto) {
-    return await this.trialAssignmentService.getEventByReadingRoom(idDto);
-  }
 
-  @Get('daytime')
+  @Get('/daytime')
   async getTeachersByDayTime(
     @Query() timelineDto: TimelineDto,
-  ): Promise<ResponseData<AccountTeacher[]>> {
+  ): Promise<ResponseData<WorkingHours[]>> {
     try {
       const data =
         await this.trialAssignmentService.getTeachersByDayTime(timelineDto);
-      return new ResponseData<AccountTeacher[]>(
+      return new ResponseData<WorkingHours[]>(
         data,
         HttpStatus.SUCCESS,
         HttpMessage.SUCCESS,
       );
     } catch (error) {
-      return new ResponseData<AccountTeacher[]>(
+      return new ResponseData<WorkingHours[]>(
         error,
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );
     }
   }
-  // @Put()
-  // async updateAssignment(
-  //   @Body() trialAssignmentDto: TrialAssignmentDto,
-  // ): Promise<void> {
-  //   await this.trialAssignmentService.updateAssignment(trialAssignmentDto);
-  // }
+  @Patch('assign-teacher/:id')
+  async assignTeacher(
+    @Param() teacher_id: IdDto,
+    @Query() room_id: string,
+  ): Promise<void> {
+    console.log({ teacher_id, room_id });
+
+    await this.trialAssignmentService.assignTeacher(teacher_id, room_id);
+  }
+  @Get('events-readingroom/:id')
+  async getEvents(@Param() idDto: IdDto) {
+    return await this.trialAssignmentService.getEventByReadingRoom(idDto);
+  }
 }

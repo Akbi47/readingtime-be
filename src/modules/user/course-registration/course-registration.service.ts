@@ -41,12 +41,11 @@ export class CourseRegistrationService {
   }
 
   async createEvents(idDto: IdDto): Promise<ReadingRoom> {
-    const data = await this.readingRoomService.getReadingRoomById(idDto);
+    const data = await this.readingRoomService.getReadingRoomById(idDto, null);
     if (data.course_registration_id) {
       const trialCourseDetails = await this.getCourseRegistrationById(
         data.course_registration_id.toString(),
       );
-      console.log(trialCourseDetails);
       if (!trialCourseDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
@@ -58,13 +57,6 @@ export class CourseRegistrationService {
       if (!trialProductDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
-      console.log(trialProductDetails);
-
-      console.log({
-        trialProductDetails: trialProductDetails.reg_day,
-        trialProductDetails2: trialProductDetails.exp_day,
-        class_per_week,
-      });
 
       const eventsList = await this.dateUtils.calculateNeededDaysWithTime(
         trialProductDetails.reg_day,
@@ -104,10 +96,10 @@ export class CourseRegistrationService {
           throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
         }
 
-        // await Promise.all([
-        //   await this.mailService.sendMailToUser(data),
-        //   await this.mailService.sendMailToAdmin(data),
-        // ]);
+        await Promise.all([
+          await this.mailService.sendMailToUser(data),
+          await this.mailService.sendMailToAdmin(data),
+        ]);
 
         delete data.email;
         delete data.password;

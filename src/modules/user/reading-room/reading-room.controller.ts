@@ -27,6 +27,25 @@ export class ReadingRoomController {
     }
   }
   @Get(':id')
+  async getReadingRoomById(
+    @Param() idDto: IdDto,
+  ): Promise<ResponseData<ReadingRoom>> {
+    try {
+      const data = await this.readingRoomService.getReadingRoomById(idDto);
+      return new ResponseData<ReadingRoom>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<ReadingRoom>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
+  @Get('user/:id')
   async getReadingRoomOfUser(
     @Param() idDto: IdDto,
   ): Promise<ResponseData<ReadingRoom[]>> {

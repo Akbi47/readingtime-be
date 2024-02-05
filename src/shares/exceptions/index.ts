@@ -347,4 +347,16 @@ export const httpErrors = {
     message: 'Tl existed.',
     code: 'Tl_00001',
   },
+
+  // Teacher
+  TEACHER_NOT_FOUND: {
+    message: 'Teacher not found.',
+    code: 'Teacher_00000',
+  },
+
+  // Teacher
+  TEACHER_EXISTED: {
+    message: 'Teacher existed.',
+    code: 'Teacher_00001',
+  },
 };

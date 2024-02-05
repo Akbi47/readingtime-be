@@ -7,6 +7,10 @@ import {
   WorkingHoursSchema,
 } from './schemas/working-hours.schema';
 import { AccountTeacherModule } from '../account-teacher/account-teacher.module';
+import {
+  AccountTeacher,
+  AccountTeacherSchema,
+} from '../account-teacher/schemas/account-teacher.schema';
 
 @Module({
   imports: [
@@ -14,6 +18,10 @@ import { AccountTeacherModule } from '../account-teacher/account-teacher.module'
       {
         name: WorkingHours.name,
         schema: WorkingHoursSchema,
+      },
+      {
+        name: AccountTeacher.name,
+        schema: AccountTeacherSchema,
       },
     ]),
     AccountTeacherModule,

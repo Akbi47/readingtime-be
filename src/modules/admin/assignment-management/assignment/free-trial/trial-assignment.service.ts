@@ -1,64 +1,57 @@
-import { Injectable } from '@nestjs/common';
-import { ReadingRoom } from 'src/modules/user/reading-room/schemas/reading-room.schema';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  ReadingRoom,
+  ReadingRoomDocument,
+} from 'src/modules/user/reading-room/schemas/reading-room.schema';
 import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { WorkingHoursService } from 'src/modules/admin/teacher-management/working-hours/working-hours.service';
 import { TimelineDto } from 'src/modules/admin/teacher-management/working-hours/dto/get-working-hours.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import {
-  AccountTeacher,
-  AccountTeacherDocument,
-} from 'src/modules/admin/teacher-management/account-teacher/schemas/account-teacher.schema';
-import { Model } from 'mongoose';
+import { WorkingHours } from 'src/modules/admin/teacher-management/working-hours/schemas/working-hours.schema';
+import { httpErrors } from 'src/shares/exceptions';
+import { UpdateTeacherRoomDto } from 'src/modules/user/reading-room/dto/update-teacher-id-room.dto';
 
 @Injectable()
 export class TrialAssignmentService {
   constructor(
-    @InjectModel(AccountTeacher.name)
-    private readonly accountTeacherModel: Model<AccountTeacherDocument>,
     private readingRoomService: ReadingRoomService,
     private readonly workingHoursService: WorkingHoursService,
     // private regularCourseRegistrationService: RegularCourseRegistrationService,
   ) {}
-  populateTeacher = [
-    {
-      path: 'teacher_id',
-      model: this.accountTeacherModel,
-    },
-  ];
+
   async getData(): Promise<ReadingRoom[]> {
     return await this.readingRoomService.getReadingRoom();
   }
 
-  async getEventByReadingRoom(idDto: IdDto): Promise<ReadingRoom> {
-    return await this.readingRoomService.getReadingRoomById(idDto);
+  async getEventByReadingRoom(
+    idDto: IdDto | string,
+    teacher_id?: IdDto,
+  ): Promise<ReadingRoomDocument> {
+    return await this.readingRoomService.getReadingRoomById(idDto, teacher_id);
   }
 
-  async getTeachersByDayTime(data: TimelineDto): Promise<AccountTeacher[]> {
+  async getTeachersByDayTime(data: TimelineDto): Promise<WorkingHours[]> {
     const workingHourDetails =
       await this.workingHoursService.getWorkingHoursByDayAndTime(data);
-    const teacherDetails = workingHourDetails.populate(this.populateTeacher);
-    console.log({ teacherDetails });
-    console.log({ workingHourDetails });
-
-    return teacherDetails;
+    return workingHourDetails;
   }
 
-  // async updateAssignment(
-  //   trialAssignmentDto: TrialAssignmentDto,
-  // ): Promise<void> {
-  //   const { _id, ...updatedData } = trialAssignmentDto;
-  //   const user = await this.accountUserModel.findById(_id);
+  async assignTeacher(teacher_id: IdDto, room_id: string): Promise<void> {
+    const roomDetails = await this.getEventByReadingRoom(room_id, null);
+    const findTeacherId = roomDetails.teacher_id.map((e) => {
+      return e.toString() === teacher_id.id;
+    });
 
-  //   if (!user) {
-  //     throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
-  //   }
-  //   if (updatedData.password) {
-  //     await this.findByIdAndUpdateEmail(_id, updatedData.password);
-  //   }
-  //   delete updatedData.password;
-  //   await this.accountUserModel.findOneAndUpdate({ _id }, updatedData, {
-  //     new: true,
-  //   });
-  // }
+    if (findTeacherId[0]) {
+      throw new BadRequestException(httpErrors.TEACHER_EXISTED);
+    } else {
+      const payload = {
+        teacher_id: teacher_id.id,
+      } as UpdateTeacherRoomDto;
+      await this.readingRoomService.findByIdAndUpdateReadingRoom(
+        roomDetails._id,
+        payload,
+      );
+    }
+  }
 }
