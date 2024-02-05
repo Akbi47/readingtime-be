@@ -78,7 +78,7 @@ export class CourseRegistrationService {
     }
   }
 
-  async create(data: CourseRegistrationDto): Promise<CourseRegistration> {
+  async create(data: CourseRegistrationDto): Promise<ReadingRoom> {
     const { email, password } = data;
     // const payload = { email, password } as CreateAccountUserDto;
     const signIn = { email, password } as LoginDto;
@@ -101,12 +101,12 @@ export class CourseRegistrationService {
           throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
         }
 
-        // await Promise.all([
-        //   await this.mailService.sendMailToUser(data),
-        //   await this.mailService.sendMailToAdmin(data),
-        // ]);
+        await Promise.all([
+          await this.mailService.sendMailToUser(data),
+          await this.mailService.sendMailToAdmin(data),
+        ]);
 
-        // delete data.email;
+        delete data.email;
         delete data.password;
 
         const res = await this.courseRegistrationModel.create({
@@ -126,8 +126,7 @@ export class CourseRegistrationService {
         console.log({ readingRoomDetails });
 
         const payload = { id: readingRoomDetails._id } as IdDto;
-        await this.createEvents(payload);
-        return res;
+        return await this.createEvents(payload);
       }
     }
   }
