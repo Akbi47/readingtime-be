@@ -3,6 +3,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 import { AccountUser } from 'src/modules/admin/user-management/account-user/schemas/account-user.schema';
 import * as moment from 'moment';
 import { Days } from 'src/shares/enums/timeline.enum';
+import { TrialProduct } from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
 
 export type CourseRegistrationDocument = CourseRegistration & Document;
 const formattedDate = moment(Date.now()).format('DD/MM/YYYY');
@@ -40,6 +41,13 @@ export class CourseRegistration {
     ref: AccountUser.name,
   })
   user_account: MongooseSchema.Types.ObjectId;
+
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: TrialProduct.name,
+  })
+  trial_product_id: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: false, type: String })
   course: string;
