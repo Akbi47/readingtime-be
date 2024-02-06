@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Curriculum } from 'src/modules/admin/content-management/curriculum/schemas/curriculum.schema';
 
 export type TrialProductDocument = TrialProduct & Document;
 
@@ -14,8 +15,12 @@ export class TrialProduct {
   @Prop({ required: false, type: String })
   picture: string;
 
-  @Prop({ required: false, type: String })
-  curriculum: string;
+  @Prop({
+    required: false,
+    type: MongooseSchema.Types.ObjectId,
+    ref: Curriculum.name,
+  })
+  curriculum: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: false, type: String })
   country_of_sale: string;
