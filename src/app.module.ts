@@ -35,8 +35,6 @@ import { BoardSupportModule } from './modules/admin/website-management/board/sup
 import { BannerModule } from './modules/admin/website-management/banner/banner.module';
 import { BoardNoticeFAQModule } from './modules/admin/website-management/board/notice-faq/board-notice-faq.module';
 import { CategoryModule } from './modules/admin/category/category.module';
-import { MonthlyModule } from './modules/admin/assignment-management/dashboard/monthly/monthly.module';
-import { TodayModule } from './modules/admin/assignment-management/dashboard/today/today.module';
 import { ReportTeacherModule } from './modules/admin/reports/teacher/report-teacher.module';
 import { ReportUserModule } from './modules/admin/reports/user/report-user.module';
 import { AccountUserModule } from './modules/admin/user-management/account-user/account-user.module';
@@ -49,19 +47,15 @@ import { RegularClassModule } from './modules/admin/class-management/regular-cla
 import { MailModule } from './modules/mail/mail.module';
 import { ReadingRoomModule } from './modules/user/reading-room/reading-room.module';
 import { CourseRegistrationModule } from './modules/user/course-registration/course-registration.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { SpaceModule } from './modules/space-module/space.module';
 import { RegularCourseRegistrationModule } from './modules/user/regular-course-registration/regular-course-registration.module';
 import { TrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/trial-assignment.module';
+import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular-assignment.module';
 dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGOOSE_URL),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static'),
-    }),
     WebSettingsModule,
     SMTPSecurityModule,
     MailSettingsModule,
@@ -101,8 +95,6 @@ dotenv.config();
     BoardSupportModule,
     BoardNoticeFAQModule,
     CategoryModule,
-    MonthlyModule,
-    TodayModule,
     ReportTeacherModule,
     ReportUserModule,
     MailModule,
@@ -110,6 +102,7 @@ dotenv.config();
     SpaceModule,
     RegularCourseRegistrationModule,
     TrialAssignmentModule,
+    RegularAssignmentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

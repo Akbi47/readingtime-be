@@ -20,7 +20,7 @@ export class TrialAssignmentService {
   ) {}
 
   async getData(): Promise<ReadingRoom[]> {
-    return await this.readingRoomService.getReadingRoom();
+    return await this.readingRoomService.getReadingRoom(true);
   }
 
   async getEventByReadingRoom(

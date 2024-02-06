@@ -5,6 +5,7 @@ import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { WorkingHours } from 'src/modules/admin/teacher-management/working-hours/schemas/working-hours.schema';
 import { TimelineDto } from 'src/modules/admin/teacher-management/working-hours/dto/get-working-hours.dto';
+import { Timeline } from 'src/modules/user/reading-room/schemas/reading-room.schema';
 
 @Controller('regular-assignment')
 export class RegularAssignmentController {
@@ -40,8 +41,13 @@ export class RegularAssignmentController {
   async assignTeacher(
     @Param() teacher_id: IdDto,
     @Query() room_id: string,
+    timeline?: Timeline,
   ): Promise<void> {
-    await this.regularAssignmentService.assignTeacher(teacher_id, room_id);
+    await this.regularAssignmentService.assignTeacher(
+      teacher_id,
+      room_id,
+      timeline,
+    );
   }
   @Get('events-readingroom/:id')
   async getEvents(@Param() idDto: IdDto) {

@@ -12,7 +12,7 @@ export class ReadingRoomController {
   @Get()
   async getReadingRoom(): Promise<ResponseData<ReadingRoom[]>> {
     try {
-      const data = await this.readingRoomService.getReadingRoom();
+      const data = await this.readingRoomService.getReadingRoom(null);
       return new ResponseData<ReadingRoom[]>(
         data,
         HttpStatus.SUCCESS,

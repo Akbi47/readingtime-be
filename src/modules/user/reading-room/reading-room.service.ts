@@ -37,6 +37,34 @@ export class ReadingRoomService {
     @InjectModel(CourseRegistration.name)
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
   ) {}
+  populateTrialReadingRoom = [
+    {
+      path: 'student_id',
+      model: this.accountUserModel,
+    },
+    {
+      path: 'teacher_id',
+      model: this.accountTeacherModel,
+    },
+    {
+      path: 'course_registration_id',
+      model: this.courseRegistrationModel,
+    },
+  ];
+  populateRegularReadingRoom = [
+    {
+      path: 'student_id',
+      model: this.accountUserModel,
+    },
+    {
+      path: 'teacher_id',
+      model: this.accountTeacherModel,
+    },
+    {
+      path: 'regular_course_registration_id',
+      model: this.regularCourseRegistrationModel,
+    },
+  ];
   populateReadingRoom = [
     {
       path: 'student_id',
@@ -92,12 +120,30 @@ export class ReadingRoomService {
     });
   }
 
-  async getReadingRoom(): Promise<ReadingRoom[]> {
-    const data = await this.readingRoomModel
-      .find()
-      .populate(this.populateReadingRoom);
+  async getReadingRoom(
+    trialClass?: true | false | null,
+  ): Promise<ReadingRoom[]> {
+    if (trialClass !== null) {
+      const data = await this.readingRoomModel
+        .find(
+          trialClass
+            ? { course_registration_id: { $exists: true } }
+            : { regular_course_registration_id: { $exists: true } },
+        )
+        .populate(
+          trialClass === true
+            ? this.populateTrialReadingRoom
+            : this.populateRegularReadingRoom,
+        );
 
-    return data;
+      return data;
+    } else if (trialClass === null) {
+      const data = await this.readingRoomModel
+        .find()
+        .populate(this.populateReadingRoom);
+
+      return data;
+    }
   }
   async findByIdAndUpdateReadingRoom(
     id: string,

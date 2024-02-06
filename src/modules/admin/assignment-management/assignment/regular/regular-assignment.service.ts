@@ -7,9 +7,11 @@ import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.s
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { WorkingHoursService } from 'src/modules/admin/teacher-management/working-hours/working-hours.service';
 import { TimelineDto } from 'src/modules/admin/teacher-management/working-hours/dto/get-working-hours.dto';
+import { TimelineDto as UpdateTimeLineSubstituteTeacherDto } from 'src/modules/user/reading-room/dto/update-teacher-id-room.dto';
 import { WorkingHours } from 'src/modules/admin/teacher-management/working-hours/schemas/working-hours.schema';
 import { httpErrors } from 'src/shares/exceptions';
 import { UpdateTeacherRoomDto } from 'src/modules/user/reading-room/dto/update-teacher-id-room.dto';
+import { Timeline } from 'src/modules/user/course-registration/schemas/course-registration.schema';
 
 @Injectable()
 export class RegularAssignmentService {
@@ -20,7 +22,7 @@ export class RegularAssignmentService {
   ) {}
 
   async getData(): Promise<ReadingRoom[]> {
-    return await this.readingRoomService.getReadingRoom();
+    return await this.readingRoomService.getReadingRoom(false);
   }
 
   async getEventByReadingRoom(
@@ -36,15 +38,14 @@ export class RegularAssignmentService {
     return workingHourDetails;
   }
 
-  async assignTeacher(teacher_id: IdDto, room_id: string): Promise<void> {
+  async assignTeacher(
+    teacher_id: IdDto,
+    room_id: string,
+    timeline?: Timeline,
+  ): Promise<void> {
     const roomDetails = await this.getEventByReadingRoom(room_id, null);
-    // const findTeacherId = roomDetails.teacher_id.map((e) => {
-    //   return e.toString() === teacher_id.id;
-    // });
-    const findTeacherId = teacher_id.id === roomDetails.teacher_id.toString();
-    if (findTeacherId) {
-      throw new BadRequestException(httpErrors.TEACHER_EXISTED);
-    } else {
+    const isSubstitute = !!roomDetails.teacher_id;
+    if (!isSubstitute) {
       const payload = {
         teacher_id: teacher_id.id,
       } as UpdateTeacherRoomDto;
@@ -52,6 +53,24 @@ export class RegularAssignmentService {
         roomDetails._id,
         payload,
       );
+    } else {
+      const findTeacherId = teacher_id.id === roomDetails.teacher_id.toString();
+      if (findTeacherId) {
+        throw new BadRequestException(httpErrors.TEACHER_EXISTED);
+      } else {
+        const payload = {
+          days: timeline.days,
+          time: timeline.time,
+          teacher_id: teacher_id.id,
+        } as UpdateTimeLineSubstituteTeacherDto;
+        const classPerWeek = {
+          class_per_week: [payload],
+        } as UpdateTeacherRoomDto;
+        await this.readingRoomService.findByIdAndUpdateReadingRoom(
+          roomDetails._id,
+          classPerWeek,
+        );
+      }
     }
   }
 }
