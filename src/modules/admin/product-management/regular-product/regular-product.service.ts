@@ -46,6 +46,10 @@ export class RegularProductService {
     return this.regularProductModel.findById(_id).exec();
   }
 
+  async getRegularProductByName(name: string): Promise<RegularProduct> {
+    return this.regularProductModel.findOne({ product_name: name });
+  }
+
   async createRegularProduct(
     createRegularProductDto: CreateRegularProductDto,
   ): Promise<RegularProduct> {

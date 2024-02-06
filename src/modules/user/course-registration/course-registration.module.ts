@@ -12,17 +12,27 @@ import { ReadingRoomModule } from '../reading-room/reading-room.module';
 import { AuthenticationModule } from 'src/modules/authentication/authentication.module';
 import { DateUtil } from 'src/shares/utils/date.util';
 import { FreeTrialProductModule } from 'src/modules/admin/product-management/free-trial-product/free-trial-product.module';
+import {
+  RegularCourseRegistration,
+  RegularCourseRegistrationSchema,
+} from '../regular-course-registration/schemas/regular-course-registration.schema';
+import { RegularProductModule } from 'src/modules/admin/product-management/regular-product/regular-product.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: CourseRegistration.name, schema: CourseRegistrationSchema },
+      {
+        name: RegularCourseRegistration.name,
+        schema: RegularCourseRegistrationSchema,
+      },
     ]),
     MailModule,
     AccountUserModule,
     ReadingRoomModule,
     AuthenticationModule,
     FreeTrialProductModule,
+    RegularProductModule,
   ],
   providers: [CourseRegistrationService, DateUtil],
   exports: [CourseRegistrationService],

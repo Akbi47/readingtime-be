@@ -10,6 +10,9 @@ import {
   RegularCourseRegistrationDocument,
 } from './schemas/regular-course-registration.schema';
 import { ReadingRoomService } from '../reading-room/reading-room.service';
+import { CourseRegistrationService } from '../course-registration/course-registration.service';
+import { IdDto } from 'src/shares/dtos/param.dto';
+import { ReadingRoom } from '../reading-room/schemas/reading-room.schema';
 
 @Injectable()
 export class RegularCourseRegistrationService {
@@ -18,6 +21,7 @@ export class RegularCourseRegistrationService {
     private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
     private accountUser: AccountUserService,
     private readingRoomService: ReadingRoomService,
+    private courseRegistrationService: CourseRegistrationService,
   ) {}
 
   async getRegularCourseRegistrationById(id?: string): Promise<any> {
@@ -27,9 +31,7 @@ export class RegularCourseRegistrationService {
     return data;
   }
 
-  async create(
-    data: RegularCourseRegistrationDto,
-  ): Promise<RegularCourseRegistration> {
+  async create(data: RegularCourseRegistrationDto): Promise<ReadingRoom> {
     const { email } = data;
 
     const user = await this.accountUser.findOne({
@@ -38,23 +40,29 @@ export class RegularCourseRegistrationService {
     });
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
+    } else {
+      const registeredCourse =
+        await this.regularCourseRegistrationModel.findOne({
+          user_account: new mongoose.Types.ObjectId(user._id),
+        });
+      if (registeredCourse) {
+        throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
+      }
+      const res = await this.regularCourseRegistrationModel.create({
+        ...data,
+        user_account: new mongoose.Types.ObjectId(user._id),
+      });
+      const readingRoomDetails =
+        await this.readingRoomService.findByStudentIdAndUpdateReadingRoom(
+          user._id,
+          res._id,
+          false,
+        );
+      if (!readingRoomDetails) {
+        throw new BadRequestException(httpErrors.ROOM_NOT_FOUND);
+      }
+      const payload = { id: readingRoomDetails._id } as IdDto;
+      return await this.courseRegistrationService.createEvents(payload, false);
     }
-    const registeredCourse = await this.regularCourseRegistrationModel.findOne({
-      user_account: new mongoose.Types.ObjectId(user._id),
-    });
-    if (registeredCourse) {
-      throw new BadRequestException(httpErrors.PRODUCT_EXISTED);
-    }
-    const res = await this.regularCourseRegistrationModel.create({
-      ...data,
-      user_account: new mongoose.Types.ObjectId(user._id),
-    });
-
-    await this.readingRoomService.findByStudentIdAndUpdateReadingRoom(
-      user._id,
-      res._id,
-      false,
-    );
-    return res;
   }
 }

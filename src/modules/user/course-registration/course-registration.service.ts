@@ -14,54 +14,75 @@ import { ReadingRoomService } from '../reading-room/reading-room.service';
 import { AuthenticationService } from 'src/modules/authentication/authentication.service';
 import { LoginDto } from 'src/modules/authentication/dto/login.dto';
 import { DateUtil } from 'src/shares/utils/date.util';
-import { GetEventDto } from '../reading-room/dto/get-timeline-event.dto';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { FreeTrialProductService } from 'src/modules/admin/product-management/free-trial-product/free-trial-product.service';
-import { CreateTimelineEventDto } from '../reading-room/dto/create-timeline-event.dto';
 import { ReadingRoom } from '../reading-room/schemas/reading-room.schema';
+import {
+  RegularCourseRegistration,
+  RegularCourseRegistrationDocument,
+} from '../regular-course-registration/schemas/regular-course-registration.schema';
+import { RegularProductService } from 'src/modules/admin/product-management/regular-product/regular-product.service';
 
 @Injectable()
 export class CourseRegistrationService {
   constructor(
     @InjectModel(CourseRegistration.name)
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
+    @InjectModel(RegularCourseRegistration.name)
+    private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
     private readonly mailService: MailService,
     private readonly dateUtils: DateUtil,
     private readonly accountUser: AccountUserService,
     private readonly authenUserService: AuthenticationService,
     private readonly readingRoomService: ReadingRoomService,
     private readonly freeTrialProductService: FreeTrialProductService,
+    private readonly regularProductService: RegularProductService,
   ) {}
 
-  async getCourseRegistrationById(id?: string): Promise<any> {
-    const data = await this.courseRegistrationModel.findById({
-      _id: new mongoose.Types.ObjectId(id),
-    });
+  async getCourseRegistrationById(
+    id?: string,
+    isTrial?: boolean,
+  ): Promise<any> {
+    const data = isTrial
+      ? await this.courseRegistrationModel.findById({
+          _id: new mongoose.Types.ObjectId(id),
+        })
+      : await this.regularCourseRegistrationModel.findById({
+          _id: new mongoose.Types.ObjectId(id),
+        });
     return data;
   }
 
-  async createEvents(idDto: IdDto): Promise<ReadingRoom> {
+  async createEvents(idDto: IdDto, isTrial: boolean): Promise<ReadingRoom> {
     const data = await this.readingRoomService.getReadingRoomById(idDto, null);
-    if (data.course_registration_id) {
-      const trialCourseDetails = await this.getCourseRegistrationById(
-        data.course_registration_id.toString(),
-      );
-      if (!trialCourseDetails) {
+
+    const detailsCourse = isTrial
+      ? data.course_registration_id
+      : data.regular_course_registration_id;
+
+    if (detailsCourse) {
+      const CourseDetails = isTrial
+        ? await this.getCourseRegistrationById(detailsCourse.toString(), true)
+        : await this.getCourseRegistrationById(detailsCourse.toString(), false);
+      if (!CourseDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
-      const class_per_week = trialCourseDetails['class_per_week'];
-      const trialProductDetails =
-        await this.freeTrialProductService.getFreeTrialProductByName(
-          trialCourseDetails.course,
-        );
-      if (!trialProductDetails) {
+      const class_per_week = CourseDetails['class_per_week'];
+      const productDetails = isTrial
+        ? await this.freeTrialProductService.getFreeTrialProductByName(
+            CourseDetails.course,
+          )
+        : await this.regularProductService.getRegularProductByName(
+            CourseDetails.course,
+          );
+      if (!productDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
-      console.log({ trialProductDetails });
+      console.log({ productDetails });
 
       const eventsList = await this.dateUtils.calculateNeededDaysWithTime(
-        trialProductDetails.reg_day,
-        trialProductDetails.exp_day,
+        productDetails.reg_day,
+        productDetails.exp_day,
         class_per_week,
       );
       const payload = {
@@ -89,8 +110,7 @@ export class CourseRegistrationService {
     });
     if (!user) {
       throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
-    }
-    if (user) {
+    } else {
       const signInResponse = await this.authenUserService.login(signIn);
       if (signInResponse.accessToken) {
         const registeredCourse = await this.courseRegistrationModel.findOne({
@@ -123,10 +143,9 @@ export class CourseRegistrationService {
         if (!readingRoomDetails) {
           throw new BadRequestException(httpErrors.ROOM_NOT_FOUND);
         }
-        console.log({ readingRoomDetails });
 
         const payload = { id: readingRoomDetails._id } as IdDto;
-        return await this.createEvents(payload);
+        return await this.createEvents(payload, true);
       }
     }
   }

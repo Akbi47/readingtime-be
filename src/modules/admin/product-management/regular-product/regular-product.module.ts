@@ -18,5 +18,6 @@ import {
   ],
   controllers: [RegularProductController],
   providers: [RegularProductService],
+  exports: [RegularProductService],
 })
 export class RegularProductModule {}

@@ -66,7 +66,7 @@ export class ReadingRoomService {
     idDto: IdDto | string,
     teacher_id?: IdDto,
   ): Promise<ReadingRoomDocument> {
-    if (idDto instanceof IdDto) {
+    if (typeof idDto === 'object') {
       const { id } = idDto;
       return await this.readingRoomModel.findOne({
         _id: id,
