@@ -1,9 +1,13 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber, IsArray } from 'class-validator';
 
 export class GetTrialProductDto {
   @IsString()
   @IsOptional()
   product_name: string;
+
+  @IsArray()
+  @IsOptional()
+  study_time: string[];
 
   @IsString()
   @IsOptional()

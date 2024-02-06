@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import { RegularAssignmentService } from './regular-assignment.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { ResponseData } from 'src/global/globalClass';
@@ -41,7 +41,7 @@ export class RegularAssignmentController {
   async assignTeacher(
     @Param() teacher_id: IdDto,
     @Query() room_id: string,
-    timeline?: Timeline,
+    @Body() timeline?: Timeline,
   ): Promise<void> {
     await this.regularAssignmentService.assignTeacher(
       teacher_id,

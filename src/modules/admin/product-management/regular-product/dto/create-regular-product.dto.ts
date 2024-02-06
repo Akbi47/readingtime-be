@@ -1,4 +1,4 @@
-import { IsString, IsDate, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsArray } from 'class-validator';
 import { CreateTrialProductDto } from '../../free-trial-product/dto/create-trial-product.dto';
 
 export class CreateRegularProductDto extends CreateTrialProductDto {
@@ -10,9 +10,9 @@ export class CreateRegularProductDto extends CreateTrialProductDto {
   @IsOptional()
   discount_price: string;
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  study_time: string;
+  study_time: string[];
 
   @IsString()
   @IsOptional()

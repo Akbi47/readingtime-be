@@ -51,6 +51,7 @@ import { SpaceModule } from './modules/space-module/space.module';
 import { RegularCourseRegistrationModule } from './modules/user/regular-course-registration/regular-course-registration.module';
 import { TrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/trial-assignment.module';
 import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular-assignment.module';
+import { DashboardTodayModule } from './modules/admin/assignment-management/dashboard/dashboard-today/dashboard-today.module';
 dotenv.config();
 
 @Module({
@@ -103,6 +104,7 @@ dotenv.config();
     RegularCourseRegistrationModule,
     TrialAssignmentModule,
     RegularAssignmentModule,
+    DashboardTodayModule,
   ],
   controllers: [AppController],
   providers: [AppService],

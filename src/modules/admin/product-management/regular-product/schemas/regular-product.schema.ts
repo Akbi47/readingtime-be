@@ -13,9 +13,6 @@ export class RegularProduct extends TrialProduct {
   discount_price: string;
 
   @Prop({ required: false, type: String })
-  study_time: string;
-
-  @Prop({ required: false, type: String })
   product_division: string;
 }
 

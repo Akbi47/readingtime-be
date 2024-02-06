@@ -6,7 +6,7 @@ import {
   IsArray,
 } from 'class-validator';
 
-export class GetCurriculumDto {
+export class UpdateCurriculumDto {
   @IsString()
   @IsOptional()
   curriculum_title: string;
@@ -36,4 +36,4 @@ export class GetCurriculumDto {
   reg_day: Date;
 }
 
-export default GetCurriculumDto;
+export default UpdateCurriculumDto;

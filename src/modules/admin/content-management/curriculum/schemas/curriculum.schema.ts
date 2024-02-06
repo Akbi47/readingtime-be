@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import * as moment from 'moment';
+import { Book } from '../../book/schemas/book.schema';
 
 export type CurriculumDocument = Curriculum & Document;
 const formattedDate = moment(Date.now()).format('DD/MM/YYYY');
@@ -17,6 +18,13 @@ export class Curriculum {
 
   @Prop({ required: false, type: String })
   division: string;
+
+  @Prop({
+    required: false,
+    type: [{ type: MongooseSchema.Types.ObjectId }],
+    ref: Book.name,
+  })
+  books: MongooseSchema.Types.ObjectId[];
 
   @Prop({ required: false, type: Boolean })
   whether_to_use: boolean;

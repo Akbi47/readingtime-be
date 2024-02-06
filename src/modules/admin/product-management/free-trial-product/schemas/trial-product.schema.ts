@@ -40,6 +40,9 @@ export class TrialProduct {
 
   @Prop({ required: false, type: String })
   whether_to_use: string;
+
+  @Prop({ required: false, type: [String] })
+  study_time: string[];
 }
 
 export const TrialProductSchema = SchemaFactory.createForClass(TrialProduct);

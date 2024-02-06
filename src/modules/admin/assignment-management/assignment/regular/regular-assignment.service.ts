@@ -44,6 +44,11 @@ export class RegularAssignmentService {
     timeline?: Timeline,
   ): Promise<void> {
     const roomDetails = await this.getEventByReadingRoom(room_id, null);
+    console.log(roomDetails);
+
+    if (!roomDetails) {
+      throw new BadRequestException(httpErrors.ROOM_NOT_FOUND);
+    }
     const isSubstitute = !!roomDetails.teacher_id;
     if (!isSubstitute) {
       const payload = {
