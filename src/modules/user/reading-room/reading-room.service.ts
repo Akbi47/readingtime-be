@@ -35,6 +35,8 @@ import {
   Curriculum,
   CurriculumDocument,
 } from 'src/modules/admin/content-management/curriculum/schemas/curriculum.schema';
+import { DashboardMonthlyDto } from 'src/modules/admin/assignment-management/dashboard/dashboard-monthly/dto/dashboard-monthly.dto';
+import { DashboardDateDto } from 'src/modules/admin/assignment-management/dashboard/dashboard-today/dto/dashboard-date.dto';
 moment.tz.setDefault('Asia/Seoul');
 
 @Injectable()
@@ -155,6 +157,7 @@ export class ReadingRoomService {
       ],
     },
   ];
+
   async createData(data: any) {
     return await this.readingRoomModel.create(data);
   }
@@ -219,6 +222,8 @@ export class ReadingRoomService {
   }
   async getOneReadingRoomByDay(
     trialClass?: true | false | null,
+    teacher_id?: IdDto,
+    date?: DashboardDateDto,
   ): Promise<any[]> {
     if (trialClass !== null) {
       const data = await this.readingRoomModel
@@ -237,27 +242,131 @@ export class ReadingRoomService {
     } else if (trialClass === null) {
       const data = await this.readingRoomModel
         .findOne({
+          teacher_id: teacher_id.id,
           timeline_events: {
             $elemMatch: {
-              date: this.date,
-              month: this.month,
-              year: this.year,
+              date: date ? date.day : this.date,
+              month: date ? date.month : this.month,
+              year: date ? date.year : this.year,
             },
           },
         })
         .populate(this.populateReadingRoom);
       if (data) {
-        let index = data.timeline_events.findIndex(
-          (item) =>
-            item.date === this.date &&
-            item.month === this.month &&
-            item.year === this.year,
+        let index = data.timeline_events.findIndex((item) =>
+          date
+            ? item.date === date.day &&
+              item.month === date.month &&
+              item.year === date.year
+            : item.date === this.date &&
+              item.month === this.month &&
+              item.year === this.year,
         );
         if (index !== -1) {
           index = index !== -1 ? index : null;
           return [data, { index: index }];
         }
       }
+    }
+    return [];
+  }
+  async getReadingRoomByDay(
+    trialClass?: true | false | null,
+    teacher_id?: IdDto,
+    date?: DashboardDateDto,
+  ): Promise<any[]> {
+    if (trialClass !== null) {
+      const data = await this.readingRoomModel
+        .find(
+          trialClass
+            ? { course_registration_id: { $exists: true } }
+            : { regular_course_registration_id: { $exists: true } },
+        )
+        .populate(
+          trialClass === true
+            ? this.populateTrialReadingRoom
+            : this.populateRegularReadingRoom,
+        );
+
+      return data;
+    } else if (trialClass === null) {
+      const data = await this.readingRoomModel
+        .find({
+          teacher_id: teacher_id.id,
+          timeline_events: {
+            $elemMatch: {
+              date: date ? date.day : this.date,
+              month: date ? date.month : this.month,
+              year: date ? date.year : this.year,
+            },
+          },
+        })
+        .populate(this.populateReadingRoom);
+
+      return data;
+    }
+    return [];
+  }
+  async getOneReadingRoomByMonth(
+    trialClass?: true | false | null,
+    date?: DashboardMonthlyDto,
+  ): Promise<any[]> {
+    const DashboardMonthlyPipeline = [
+      {
+        $match: {
+          'timeline_events.month': date.month,
+          'timeline_events.year': date.year,
+        },
+      },
+      {
+        $unwind: '$timeline_events',
+      },
+      {
+        $match: {
+          'timeline_events.month': date.month,
+          'timeline_events.year': date.year,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            teacher_id: '$teacher_id',
+            date: '$timeline_events.date',
+          },
+          totalLessons: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: '$_id.date',
+          lessonsByDate: {
+            $push: {
+              teacher_id: '$_id.teacher_id',
+              totalLessons: '$totalLessons',
+            },
+          },
+        },
+      },
+    ];
+    if (trialClass !== null) {
+      const data = await this.readingRoomModel
+        .find(
+          trialClass
+            ? { course_registration_id: { $exists: true } }
+            : { regular_course_registration_id: { $exists: true } },
+        )
+        .populate(
+          trialClass === true
+            ? this.populateTrialReadingRoom
+            : this.populateRegularReadingRoom,
+        );
+
+      return data;
+    } else if (trialClass === null) {
+      const data = await this.readingRoomModel.aggregate(
+        DashboardMonthlyPipeline,
+      );
+      return data;
     }
     return [];
   }

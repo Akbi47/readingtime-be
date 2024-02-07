@@ -52,6 +52,7 @@ import { RegularCourseRegistrationModule } from './modules/user/regular-course-r
 import { TrialAssignmentModule } from './modules/admin/assignment-management/assignment/free-trial/trial-assignment.module';
 import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular-assignment.module';
 import { DashboardTodayModule } from './modules/admin/assignment-management/dashboard/dashboard-today/dashboard-today.module';
+import { DashboardMonthlyModule } from './modules/admin/assignment-management/dashboard/dashboard-monthly/dashboard-monthly.module';
 dotenv.config();
 
 @Module({
@@ -105,6 +106,7 @@ dotenv.config();
     TrialAssignmentModule,
     RegularAssignmentModule,
     DashboardTodayModule,
+    DashboardMonthlyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

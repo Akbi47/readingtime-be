@@ -6,6 +6,7 @@ import {
   PointPenaltyManagement,
   PointPenaltyManagementDocument,
 } from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
+import { TimelineDto } from './schemas/point-penalty-management.schema';
 // import { ClassFeedback } from '../class-feedback/interface/class-feedback.interface';
 
 @Injectable()
@@ -18,11 +19,12 @@ export class PointPenaltyManagementService {
   ) {}
 
   async getPointPenaltyManagement(
-    Teacher_Name: string,
+    dateParam: TimelineDto,
   ): Promise<PointPenaltyManagement[]> {
-    return this.pointPenaltyManagementModel
-      .find({ Teacher_Name: Teacher_Name })
-      .exec();
+    const { month, year } = dateParam;
+    return this.pointPenaltyManagementModel.find({
+      date: { $elemMatch: { month, year } },
+    });
   }
 
   // async getPointsAndPenaltiesInMonth(

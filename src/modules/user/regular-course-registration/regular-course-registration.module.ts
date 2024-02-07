@@ -11,6 +11,10 @@ import {
 } from './schemas/regular-course-registration.schema';
 import { ReadingRoomModule } from '../reading-room/reading-room.module';
 import { CourseRegistrationModule } from '../course-registration/course-registration.module';
+import {
+  RegularProduct,
+  RegularProductSchema,
+} from 'src/modules/admin/product-management/regular-product/schemas/regular-product.schema';
 
 @Module({
   imports: [
@@ -18,6 +22,10 @@ import { CourseRegistrationModule } from '../course-registration/course-registra
       {
         name: RegularCourseRegistration.name,
         schema: RegularCourseRegistrationSchema,
+      },
+      {
+        name: RegularProduct.name,
+        schema: RegularProductSchema,
       },
     ]),
     MailModule,

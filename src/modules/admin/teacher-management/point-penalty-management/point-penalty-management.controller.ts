@@ -1,10 +1,11 @@
-import { Controller, Get, Body, Post } from '@nestjs/common';
+import { Controller, Get, Body, Post, Query } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
 import { PointPenaltyManagementService } from './point-penalty-management.service';
 import { CreatePointPenaltyManagementDto } from './dto/create-point-penalty-management.dto';
 import { PointPenaltyManagement } from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
+import { TimelineDto } from './schemas/point-penalty-management.schema';
 
 @Controller('point-penalty')
 export class PointPenaltyManagementController {
@@ -14,13 +15,12 @@ export class PointPenaltyManagementController {
 
   @Get()
   async getPointPenaltyManagement(
-    @Body() requestBody: { Teacher_Name: string },
+    @Query() date: TimelineDto,
   ): Promise<ResponseData<PointPenaltyManagement[]>> {
     try {
-      const { Teacher_Name } = requestBody;
       const data =
         await this.pointPenaltyManagementService.getPointPenaltyManagement(
-          Teacher_Name,
+          date,
         );
       return new ResponseData<PointPenaltyManagement[]>(
         data,

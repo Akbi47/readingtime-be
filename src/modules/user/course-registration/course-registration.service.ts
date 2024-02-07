@@ -95,7 +95,7 @@ export class CourseRegistrationService {
       if (!productDetails) {
         throw new BadRequestException(httpErrors.PRODUCT_NOT_FOUND);
       }
-      console.log({ productDetails });
+      // console.log({ productDetails });
 
       const eventsList = await this.dateUtils.calculateNeededDaysWithTime(
         productDetails.reg_day,
@@ -105,7 +105,7 @@ export class CourseRegistrationService {
       const payload = {
         timeline_events: eventsList,
       };
-      console.log({ payload });
+      // console.log({ payload });
 
       return await this.readingRoomService.findByIdAndUpdateReadingRoom(
         data._id,

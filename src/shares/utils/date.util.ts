@@ -18,14 +18,14 @@ export class DateUtil {
       );
 
       if (matchingDay) {
-        const [timeStart, timeEnd] = matchingDay.time.split('~');
+        const [time_start, time_end] = matchingDay.time.split('~');
         result.push({
           day: currentDate.format('dddd'),
           date: currentDate.format('D'),
           month: currentDate.format('M'),
           year: currentDate.format('YYYY'),
-          timeStart,
-          timeEnd,
+          time_start,
+          time_end,
         });
       }
       currentDate.add(1, 'day');

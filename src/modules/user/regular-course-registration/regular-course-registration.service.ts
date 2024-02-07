@@ -13,12 +13,19 @@ import { ReadingRoomService } from '../reading-room/reading-room.service';
 import { CourseRegistrationService } from '../course-registration/course-registration.service';
 import { IdDto } from 'src/shares/dtos/param.dto';
 import { ReadingRoom } from '../reading-room/schemas/reading-room.schema';
+import {
+  RegularProduct,
+  RegularProductDocument,
+} from 'src/modules/admin/product-management/regular-product/schemas/regular-product.schema';
+import { CourseRegistration } from '../course-registration/schemas/course-registration.schema';
 
 @Injectable()
 export class RegularCourseRegistrationService {
   constructor(
     @InjectModel(RegularCourseRegistration.name)
     private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
+    @InjectModel(RegularProduct.name)
+    private readonly regularProductModel: Model<RegularProductDocument>,
     private accountUser: AccountUserService,
     private readingRoomService: ReadingRoomService,
     private courseRegistrationService: CourseRegistrationService,
@@ -29,6 +36,17 @@ export class RegularCourseRegistrationService {
       _id: new mongoose.Types.ObjectId(id),
     });
     return data;
+  }
+  populateRegularProduct = [
+    {
+      path: 'regular_product_id',
+      model: this.regularProductModel,
+    },
+  ];
+  async getAll(): Promise<CourseRegistration[]> {
+    return await this.regularProductModel
+      .find()
+      .populate(this.populateRegularProduct);
   }
 
   async create(data: RegularCourseRegistrationDto): Promise<ReadingRoom> {

@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreatePointPenaltyManagementDto {
   @IsString()
@@ -21,7 +21,18 @@ export class CreatePointPenaltyManagementDto {
   @IsOptional()
   texts?: string;
 
+  @IsOptional()
+  date: any;
+
   @IsString()
   @IsOptional()
-  date?: string;
+  comment: string;
+
+  @IsString()
+  @IsOptional()
+  time: string;
+
+  @IsNumber()
+  @IsOptional()
+  score?: string;
 }

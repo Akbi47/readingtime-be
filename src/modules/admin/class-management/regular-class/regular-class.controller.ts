@@ -1,23 +1,16 @@
 import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { RegularClassService } from './regular-class.service';
 import { ResponseData } from 'src/global/globalClass';
-import { RegularClass, RegularClassDocument } from './schemas/regular-class.schema';
+import {
+  RegularClass,
+  RegularClassDocument,
+} from './schemas/regular-class.schema';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { CreateRegularClassDto } from './dto/create-regular-class.schema';
 
 @Controller('regular-class')
 export class RegularClassController {
   constructor(private readonly regularClassService: RegularClassService) {}
-
-  // @Post()
-  // async createData(@Body() data: any) {
-  //   try {
-  //     const res = await this.regularClassService.createData(data);
-  //     return res;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
 
   @Get('/')
   async getRegularClass(): Promise<ResponseData<RegularClass[]>> {

@@ -38,10 +38,13 @@ export class Event {
   year: string;
 
   @Prop({ required: false, type: String })
-  timeStart: string;
+  time_start: string;
 
   @Prop({ required: false, type: String })
-  timeEnd: string;
+  time_end: string;
+
+  @Prop({ required: false, type: Boolean })
+  is_absent: boolean;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
