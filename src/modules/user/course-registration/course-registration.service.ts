@@ -22,6 +22,10 @@ import {
   RegularCourseRegistrationDocument,
 } from '../regular-course-registration/schemas/regular-course-registration.schema';
 import { RegularProductService } from 'src/modules/admin/product-management/regular-product/regular-product.service';
+import {
+  TrialProduct,
+  TrialProductDocument,
+} from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
 
 @Injectable()
 export class CourseRegistrationService {
@@ -30,6 +34,8 @@ export class CourseRegistrationService {
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
     @InjectModel(RegularCourseRegistration.name)
     private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
+    @InjectModel(TrialProduct.name)
+    private readonly trialProductModel: Model<TrialProductDocument>,
     private readonly mailService: MailService,
     private readonly dateUtils: DateUtil,
     private readonly accountUser: AccountUserService,
@@ -38,6 +44,17 @@ export class CourseRegistrationService {
     private readonly freeTrialProductService: FreeTrialProductService,
     private readonly regularProductService: RegularProductService,
   ) {}
+  populateTrialProduct = [
+    {
+      path: 'trial_product_id',
+      model: this.trialProductModel,
+    },
+  ];
+  async getAll(): Promise<CourseRegistration[]> {
+    return await this.courseRegistrationModel
+      .find()
+      .populate(this.populateTrialProduct);
+  }
 
   async getCourseRegistrationById(
     id?: string,
@@ -100,7 +117,7 @@ export class CourseRegistrationService {
   }
 
   async create(data: CourseRegistrationDto): Promise<ReadingRoom> {
-    const { email, password } = data;
+    const { email, password, course } = data;
     // const payload = { email, password } as CreateAccountUserDto;
     const signIn = { email, password } as LoginDto;
 
@@ -128,9 +145,19 @@ export class CourseRegistrationService {
 
         delete data.email;
         delete data.password;
+        let course_id;
+        if (course) {
+          course_id =
+            await this.freeTrialProductService.getFreeTrialProductByName(
+              course,
+            );
+        }
 
         const res = await this.courseRegistrationModel.create({
           ...data,
+          ...(course_id
+            ? { trial_product_id: new mongoose.Types.ObjectId(course_id._id) }
+            : ''),
           user_account: new mongoose.Types.ObjectId(user._id),
         });
 

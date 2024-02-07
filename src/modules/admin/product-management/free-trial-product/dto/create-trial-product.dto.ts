@@ -1,4 +1,11 @@
-import { IsString, IsDate, IsOptional, IsNumber, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsDate,
+  IsOptional,
+  IsNumber,
+  IsArray,
+  IsMongoId,
+} from 'class-validator';
 
 export class CreateTrialProductDto {
   @IsString()
@@ -10,6 +17,10 @@ export class CreateTrialProductDto {
 
   @IsString()
   @IsOptional()
+  picture: string;
+
+  @IsMongoId()
+  @IsOptional()
   curriculum: string;
 
   @IsString()
@@ -20,13 +31,13 @@ export class CreateTrialProductDto {
   @IsOptional()
   currency: string;
 
-  @IsArray()
-  @IsOptional()
-  study_time: string[];
-
   @IsString()
   @IsOptional()
   about: string;
+
+  @IsArray()
+  @IsOptional()
+  study_time: string[];
 
   @IsString()
   @IsOptional()

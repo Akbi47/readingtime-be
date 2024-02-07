@@ -19,6 +19,15 @@ import {
   RegularCourseRegistration,
   RegularCourseRegistrationSchema,
 } from 'src/modules/user/regular-course-registration/schemas/regular-course-registration.schema';
+import {
+  TrialProduct,
+  TrialProductSchema,
+} from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
+import {
+  RegularProduct,
+  RegularProductSchema,
+} from 'src/modules/admin/product-management/regular-product/schemas/regular-product.schema';
+import { Curriculum, CurriculumSchema } from 'src/modules/admin/content-management/curriculum/schemas/curriculum.schema';
 
 @Module({
   imports: [
@@ -30,6 +39,18 @@ import {
       {
         name: RegularCourseRegistration.name,
         schema: RegularCourseRegistrationSchema,
+      },
+      {
+        name: TrialProduct.name,
+        schema: TrialProductSchema,
+      },
+      {
+        name: RegularProduct.name,
+        schema: RegularProductSchema,
+      },
+      {
+        name: Curriculum.name,
+        schema: CurriculumSchema,
       },
     ]),
   ],

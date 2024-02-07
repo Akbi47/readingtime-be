@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import CreateBookDto from './dto/create-book.dto';
 import { httpErrors } from 'src/shares/exceptions';
 import { Book, BookDocument } from './schemas/book.schema';
+import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Injectable()
 export class BookService {
@@ -16,8 +17,8 @@ export class BookService {
     return this.bookModel.find();
   }
 
-  async getBookById(_id: string): Promise<Book> {
-    return this.bookModel.findById(_id).exec();
+  async getBookById(idDto: IdDto): Promise<Book> {
+    return this.bookModel.findById(idDto.id);
   }
 
   async createBook(createBookDto: CreateBookDto): Promise<Book> {

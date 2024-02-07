@@ -22,6 +22,20 @@ import {
   RegularCourseRegistration,
   RegularCourseRegistrationDocument,
 } from '../regular-course-registration/schemas/regular-course-registration.schema';
+import * as moment from 'moment-timezone';
+import {
+  TrialProduct,
+  TrialProductDocument,
+} from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
+import {
+  RegularProduct,
+  RegularProductDocument,
+} from 'src/modules/admin/product-management/regular-product/schemas/regular-product.schema';
+import {
+  Curriculum,
+  CurriculumDocument,
+} from 'src/modules/admin/content-management/curriculum/schemas/curriculum.schema';
+moment.tz.setDefault('Asia/Seoul');
 
 @Injectable()
 export class ReadingRoomService {
@@ -36,7 +50,17 @@ export class ReadingRoomService {
     private readonly regularCourseRegistrationModel: Model<RegularCourseRegistrationDocument>,
     @InjectModel(CourseRegistration.name)
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
+    @InjectModel(TrialProduct.name)
+    private readonly trialProductModel: Model<TrialProductDocument>,
+    @InjectModel(RegularProduct.name)
+    private readonly regularProductModel: Model<RegularProductDocument>,
+    @InjectModel(Curriculum.name)
+    private readonly curriculumModel: Model<CurriculumDocument>,
   ) {}
+  today = moment();
+  date = this.today.date().toString();
+  month = (this.today.month() + 1).toString();
+  year = this.today.year().toString();
   populateTrialReadingRoom = [
     {
       path: 'student_id',
@@ -49,6 +73,18 @@ export class ReadingRoomService {
     {
       path: 'course_registration_id',
       model: this.courseRegistrationModel,
+      populate: [
+        {
+          path: 'trial_product_id',
+          model: this.trialProductModel,
+          populate: [
+            {
+              path: 'curriculum',
+              model: this.curriculumModel,
+            },
+          ],
+        },
+      ],
     },
   ];
   populateRegularReadingRoom = [
@@ -63,6 +99,18 @@ export class ReadingRoomService {
     {
       path: 'regular_course_registration_id',
       model: this.regularCourseRegistrationModel,
+      populate: [
+        {
+          path: 'regular_product_id',
+          model: this.regularProductModel,
+          populate: [
+            {
+              path: 'curriculum',
+              model: this.curriculumModel,
+            },
+          ],
+        },
+      ],
     },
   ];
   populateReadingRoom = [
@@ -77,10 +125,34 @@ export class ReadingRoomService {
     {
       path: 'regular_course_registration_id',
       model: this.regularCourseRegistrationModel,
+      populate: [
+        {
+          path: 'regular_product_id',
+          model: this.regularProductModel,
+          populate: [
+            {
+              path: 'curriculum',
+              model: this.curriculumModel,
+            },
+          ],
+        },
+      ],
     },
     {
       path: 'course_registration_id',
       model: this.courseRegistrationModel,
+      populate: [
+        {
+          path: 'trial_product_id',
+          model: this.trialProductModel,
+          populate: [
+            {
+              path: 'curriculum',
+              model: this.curriculumModel,
+            },
+          ],
+        },
+      ],
     },
   ];
   async createData(data: any) {
@@ -144,6 +216,50 @@ export class ReadingRoomService {
 
       return data;
     }
+  }
+  async getOneReadingRoomByDay(
+    trialClass?: true | false | null,
+  ): Promise<any[]> {
+    if (trialClass !== null) {
+      const data = await this.readingRoomModel
+        .find(
+          trialClass
+            ? { course_registration_id: { $exists: true } }
+            : { regular_course_registration_id: { $exists: true } },
+        )
+        .populate(
+          trialClass === true
+            ? this.populateTrialReadingRoom
+            : this.populateRegularReadingRoom,
+        );
+
+      return data;
+    } else if (trialClass === null) {
+      const data = await this.readingRoomModel
+        .findOne({
+          timeline_events: {
+            $elemMatch: {
+              date: this.date,
+              month: this.month,
+              year: this.year,
+            },
+          },
+        })
+        .populate(this.populateReadingRoom);
+      if (data) {
+        let index = data.timeline_events.findIndex(
+          (item) =>
+            item.date === this.date &&
+            item.month === this.month &&
+            item.year === this.year,
+        );
+        if (index !== -1) {
+          index = index !== -1 ? index : null;
+          return [data, { bookNo: index }];
+        }
+      }
+    }
+    return [];
   }
   async findByIdAndUpdateReadingRoom(
     id: string,

@@ -17,6 +17,10 @@ import {
   RegularCourseRegistrationSchema,
 } from '../regular-course-registration/schemas/regular-course-registration.schema';
 import { RegularProductModule } from 'src/modules/admin/product-management/regular-product/regular-product.module';
+import {
+  TrialProduct,
+  TrialProductSchema,
+} from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
 
 @Module({
   imports: [
@@ -25,6 +29,10 @@ import { RegularProductModule } from 'src/modules/admin/product-management/regul
       {
         name: RegularCourseRegistration.name,
         schema: RegularCourseRegistrationSchema,
+      },
+      {
+        name: TrialProduct.name,
+        schema: TrialProductSchema,
       },
     ]),
     MailModule,

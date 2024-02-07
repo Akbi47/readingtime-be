@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CourseRegistrationService } from './course-registration.service';
 import { CourseRegistrationDto } from './dto/course-registration.dto';
 import { ResponseData } from 'src/global/globalClass';
@@ -11,7 +11,23 @@ export class CourseRegistrationController {
   constructor(
     private readonly courseRegistrationService: CourseRegistrationService,
   ) {}
-
+  @Get()
+  async getAll(): Promise<ResponseData<CourseRegistration[]>> {
+    try {
+      const data = await this.courseRegistrationService.getAll();
+      return new ResponseData<CourseRegistration[]>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<CourseRegistration[]>(
+        error,
+        HttpStatus.ERROR,
+        HttpMessage.ERROR,
+      );
+    }
+  }
   @Post()
   async create(
     @Body() courseRegistrationDto: CourseRegistrationDto,

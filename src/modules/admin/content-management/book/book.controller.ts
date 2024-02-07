@@ -1,9 +1,10 @@
-import { Controller, Get, Body, Post, Put } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put, Param } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { BookService } from './book.service';
 import CreateBookDto from './dto/create-book.dto';
 import { Book, BookDocument } from './schemas/book.schema';
+import { IdDto } from 'src/shares/dtos/param.dto';
 
 @Controller('book')
 export class BookController {
@@ -26,6 +27,19 @@ export class BookController {
       );
     }
   }
+  @Get(':id')
+  async getBookById(@Param() idDto: IdDto): Promise<ResponseData<Book>> {
+    try {
+      const data = await this.bookService.getBookById(idDto);
+      return new ResponseData<Book>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<Book>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+    }
+  }
 
   @Post('/')
   async createBook(
@@ -41,12 +55,6 @@ export class BookController {
     } catch (error) {
       return new ResponseData<Book>(error, HttpStatus.ERROR, HttpMessage.ERROR);
     }
-  }
-
-  @Get('get-detail')
-  async getBookById(@Body() body: { _id: string }): Promise<Book> {
-    const { _id } = body;
-    return this.bookService.getBookById(_id);
   }
 
   @Put()

@@ -4,6 +4,7 @@ import {
   IsArray,
   IsEmail,
   IsEnum,
+  IsMongoId,
   IsNumber,
   IsOptional,
   IsString,
@@ -58,6 +59,10 @@ export class CourseRegistrationDto {
   @IsString()
   @IsOptional()
   start_class: string;
+
+  @IsMongoId()
+  @IsOptional()
+  trial_product_id: string;
 
   @IsArray()
   @IsOptional()

@@ -5,7 +5,7 @@ import { DashboardTodayService } from './dashboard-today.service';
 export class DashboardTodayController {
   constructor(private readonly dashboardTodayService: DashboardTodayService) {}
   @Get()
-  async getData() {
+  async getData(): Promise<any[]> {
     return await this.dashboardTodayService.getData();
   }
 }
