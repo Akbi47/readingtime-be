@@ -255,7 +255,7 @@ export class ReadingRoomService {
         );
         if (index !== -1) {
           index = index !== -1 ? index : null;
-          return [data, { bookNo: index }];
+          return [data, { index: index }];
         }
       }
     }
