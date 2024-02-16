@@ -4,6 +4,8 @@ import { AuthenticationService } from './authentication.service';
 import * as dotenv from 'dotenv';
 import { AuthenticationController } from './authentication.controller';
 import { AccountUserModule } from '../admin/user-management/account-user/account-user.module';
+import { UserAtStrategy } from './strategies/user-at.strategy';
+import { UserRtStrategy } from './strategies/user-rt.strategy';
 dotenv.config();
 
 @Module({
@@ -15,7 +17,7 @@ dotenv.config();
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, UserAtStrategy, UserRtStrategy],
   exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

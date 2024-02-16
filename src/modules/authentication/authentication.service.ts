@@ -44,6 +44,10 @@ export class AuthenticationService {
     };
   }
 
+  async decodeAccessToken(accessToken: string): Promise<any> {
+    return this.jwtService.decode(accessToken);
+  }
+
   async generateToken(
     user: AccountUser,
   ): Promise<{ authToken: string; userRole: number }> {

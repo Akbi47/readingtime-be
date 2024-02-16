@@ -173,6 +173,10 @@ export class AccountUserService {
     return await this.accountUserModel.findOne(condition);
   }
 
+  async findById(_id: string): Promise<AccountUserDocument> {
+    return await this.accountUserModel.findById(_id);
+  }
+
   async createAccountUser(
     accountUserDto: CreateAccountUserDto,
   ): Promise<AccountUserDocument> {
