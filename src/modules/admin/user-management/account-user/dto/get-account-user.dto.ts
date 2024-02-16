@@ -1,12 +1,5 @@
 // Import the necessary modules
-import {
-  IsString,
-  IsEmail,
-  IsEnum,
-  IsDate,
-  IsOptional,
-  IsArray,
-} from 'class-validator';
+import { IsString, IsEmail, IsEnum, IsDate, IsOptional } from 'class-validator';
 import { GenderStatus } from 'src/shares/enums/account-teacher.enum';
 import { Admission, UserStatus } from 'src/shares/enums/account-user.enum';
 

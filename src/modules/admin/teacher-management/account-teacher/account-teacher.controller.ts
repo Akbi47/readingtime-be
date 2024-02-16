@@ -9,12 +9,15 @@ import {
   AccountTeacherDocument,
 } from './schemas/account-teacher.schema';
 import { GetAccountTeacherDto } from './dto/get-account-teacher.dto';
+import { UserRole } from 'src/shares/enums/account-user.enum';
+import { UserAuth } from 'src/shares/decorators/http.decorators';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
   constructor(private readonly accountTeacherService: AccountTeacherService) {}
 
   @Get()
+  @UserAuth([UserRole.admin])
   async getAccountTeacher(@Query() query?: any): Promise<any> {
     try {
       const data = await this.accountTeacherService.getAccountTeacher(query);
