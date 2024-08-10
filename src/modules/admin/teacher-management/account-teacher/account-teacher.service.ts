@@ -157,7 +157,11 @@ export class AccountTeacherService {
       teacher_id: new mongoose.Types.ObjectId(data._id),
       team_name: new mongoose.Types.ObjectId(teamName._id),
     });
-    await this.mailService.sendRegisterMailToUser(accountTeacherDto);
+    try {
+      await this.mailService.sendRegisterMailToUser(accountTeacherDto);
+    } catch (e) {
+      console.log(e);
+    }
     return res;
   }
 }

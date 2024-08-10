@@ -9,6 +9,7 @@ import {
 import CreateAccountUserDto from './dto/create-account-user.dto';
 import GetAccountUserDto from './dto/get-account-user.dto';
 import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Controller('account-user')
 export class AccountUserController {
@@ -100,6 +101,23 @@ export class AccountUserController {
         HttpStatus.ERROR,
         HttpMessage.ERROR,
       );
+    }
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(
+    @Body() forgotPasswordDto: ForgotPasswordDto,
+  ): Promise<any> {
+    try {
+      const data =
+        await this.accountUserService.forgotPassword(forgotPasswordDto);
+      return new ResponseData<any>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
     }
   }
 

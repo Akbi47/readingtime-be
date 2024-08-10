@@ -53,11 +53,35 @@ import { TrialAssignmentModule } from './modules/admin/assignment-management/ass
 import { RegularAssignmentModule } from './modules/admin/assignment-management/assignment/regular/regular-assignment.module';
 import { DashboardTodayModule } from './modules/admin/assignment-management/dashboard/dashboard-today/dashboard-today.module';
 import { DashboardMonthlyModule } from './modules/admin/assignment-management/dashboard/dashboard-monthly/dashboard-monthly.module';
+import * as redisStore from 'cache-manager-redis-store';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisConfig } from './modules/configs/redis.config';
+import { BullModule } from '@nestjs/bull';
+// const redisStore = require('cache-manager-redis-store').redisStore;
 dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGOOSE_URL),
+    BullModule.forRoot({
+      // redis: {
+      //   host: process.env.REDIS_HOST,
+      //   port: +process.env.REDIS_PORT,
+      //   // username: process.env.REDIS_USERNAME, // new property
+      //   // password: process.env.REDIS_PASSWORD, // new property
+      // },
+      redis: redisConfig,
+    }),
+    CacheModule.register({
+      store: redisStore,
+      isGlobal: true,
+      ...redisConfig,
+      // host: process.env.REDIS_HOST,
+      // port: process.env.REDIS_PORT,
+      // username: process.env.REDIS_USERNAME, // new property
+      // password: process.env.REDIS_PASSWORD, // new property
+      no_ready_check: true, // new property
+    }),
     WebSettingsModule,
     SMTPSecurityModule,
     MailSettingsModule,

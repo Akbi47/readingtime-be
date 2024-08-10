@@ -321,12 +321,12 @@ export class ReadingRoomService {
       {
         $unwind: '$timeline_events',
       },
-      {
-        $match: {
-          'timeline_events.month': date.month,
-          'timeline_events.year': date.year,
-        },
-      },
+      // {
+      //   $match: {
+      //     'timeline_events.month': date.month,
+      //     'timeline_events.year': date.year,
+      //   },
+      // },
       {
         $group: {
           _id: {

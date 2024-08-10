@@ -9,19 +9,42 @@ export class MailConfigService implements MailerOptionsFactory {
   constructor(private mailSettingService: MailSettingsService) {}
   async createMailerOptions(): Promise<MailerOptions> {
     const mailSettings = await this.mailSettingService.getMailSettings();
+    // const mailSettings = [];
+    console.log({ mailSettings });
 
     return {
       transport: {
-        host: mailSettings[0]?.SMTP_Host,
-        port: mailSettings[0]?.SMTP_Port,
-        secure: mailSettings[0]?.SMTP_Security === 'SSL' ? true : false, // true for 465, false for other ports
+        host:
+          mailSettings.length !== 0
+            ? mailSettings[0]?.SMTP_Host
+            : process.env.MAIL_HOST,
+        port:
+          mailSettings.length !== 0
+            ? mailSettings[0]?.SMTP_Port
+            : +process.env.MAIL_PORT,
+        secure:
+          mailSettings.length !== 0
+            ? mailSettings[0]?.SMTP_Security === 'SSL'
+              ? true
+              : false
+            : true, // true for 465, false for other ports
         auth: {
-          user: mailSettings[0]?.SMTP_User_Id,
-          pass: mailSettings[0]?.SMTP_User_Password,
+          user:
+            mailSettings.length !== 0
+              ? mailSettings[0]?.SMTP_User_Id
+              : process.env.MAIL_ACCOUNT,
+          pass:
+            mailSettings.length !== 0
+              ? mailSettings[0]?.SMTP_User_Password
+              : process.env.MAIL_PASSWORD,
         },
       },
       defaults: {
-        from: `"No Reply" <${mailSettings[0]?.Email_Sending_Address}>`,
+        from: `"No Reply" <${
+          mailSettings.length !== 0
+            ? mailSettings[0]?.Email_Sending_Address
+            : process.env.MAIL_FROM
+        }>`,
       },
       template: {
         dir: join(__dirname, 'templates'),

@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { CreateAccountTeacherDto } from '../../teacher-management/account-teacher/dto/create-account-teacher.dto';
 import { MailService } from 'src/modules/mail/mail.service';
 import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
 
 @Injectable()
 export class AccountUserService {
@@ -219,6 +220,19 @@ export class AccountUserService {
     delete data.password;
 
     return data;
+  }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<any> {
+    const { email } = forgotPasswordDto;
+    const client = await this.accountUserModel.findOne({ email });
+    if (!client) {
+      throw new BadRequestException(httpErrors.CLIENT_EMAIL_CONFIRM_NOT_FOUND);
+    }
+    try {
+      return await this.mailService.sendForgotPasswordEmailJob(email);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async createTeacher(

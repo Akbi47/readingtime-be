@@ -7,11 +7,11 @@ import {
   RoleManagement,
   RoleManagementSchema,
 } from './schemas/role-management.schema';
+import { MailModule } from 'src/modules/mail/mail.module';
 import {
   AutoIncrementID,
   AutoIncrementIDOptions,
 } from '@typegoose/auto-increment';
-import { MailModule } from 'src/modules/mail/mail.module';
 
 @Module({
   imports: [
