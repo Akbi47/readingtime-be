@@ -28,6 +28,23 @@ export class CourseRegistrationController {
       );
     }
   }
+  @Post('test-email')
+  async testEmail(
+    @Body() courseRegistrationDto: CourseRegistrationDto,
+  ): Promise<any> {
+    try {
+      const data = await this.courseRegistrationService.testEmail(
+        courseRegistrationDto,
+      );
+      return new ResponseData<ReadingRoom>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
+    }
+  }
   @Post()
   async create(
     @Body() courseRegistrationDto: CourseRegistrationDto,

@@ -176,4 +176,10 @@ export class CourseRegistrationService {
       }
     }
   }
+  async testEmail(data: CourseRegistrationDto): Promise<any> {
+    await Promise.all([
+      await this.mailService.sendMailToUser(data),
+      await this.mailService.sendMailToAdmin(data),
+    ]);
+  }
 }
