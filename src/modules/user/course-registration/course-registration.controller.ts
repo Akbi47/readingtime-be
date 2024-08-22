@@ -45,6 +45,23 @@ export class CourseRegistrationController {
       return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
     }
   }
+  @Get('test-email')
+  async getTestEmail(
+    @Body() courseRegistrationDto: CourseRegistrationDto,
+  ): Promise<any> {
+    try {
+      const data = await this.courseRegistrationService.getTestEmail(
+        courseRegistrationDto,
+      );
+      return new ResponseData<ReadingRoom>(
+        data,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS,
+      );
+    } catch (error) {
+      return new ResponseData<any>(error, HttpStatus.ERROR, HttpMessage.ERROR);
+    }
+  }
   @Post()
   async create(
     @Body() courseRegistrationDto: CourseRegistrationDto,

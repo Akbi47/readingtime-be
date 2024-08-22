@@ -57,12 +57,15 @@ import * as redisStore from 'cache-manager-redis-store';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisConfig } from './modules/configs/redis.config';
 import { BullModule } from '@nestjs/bull';
+import { ConfigModule } from '@nestjs/config';
+import configuration from './modules/configs/configuration';
 // const redisStore = require('cache-manager-redis-store').redisStore;
 dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGOOSE_URL),
+    ConfigModule.forRoot({ isGlobal: true, load: [configuration] }),
     BullModule.forRoot({
       // redis: {
       //   host: process.env.REDIS_HOST,

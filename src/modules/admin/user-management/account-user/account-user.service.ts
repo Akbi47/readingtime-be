@@ -229,7 +229,7 @@ export class AccountUserService {
       throw new BadRequestException(httpErrors.CLIENT_EMAIL_CONFIRM_NOT_FOUND);
     }
     try {
-      return await this.mailService.sendForgotPasswordEmailJob(email);
+      return await this.mailService.sendForgotPasswordEmail(email);
     } catch (e) {
       console.log(e);
     }

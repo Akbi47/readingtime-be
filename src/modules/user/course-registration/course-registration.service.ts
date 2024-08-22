@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import {
@@ -26,10 +26,14 @@ import {
   TrialProduct,
   TrialProductDocument,
 } from 'src/modules/admin/product-management/free-trial-product/schemas/trial-product.schema';
-
+import { FORGOT_PASSWORD_CACHE } from 'src/modules/authentication/auth.constants';
+import { CacheForgotPassword } from 'src/modules/admin/user-management/account-user/dto/forgot-password.dto';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 @Injectable()
 export class CourseRegistrationService {
   constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     @InjectModel(CourseRegistration.name)
     private readonly courseRegistrationModel: Model<CourseRegistrationDocument>,
     @InjectModel(RegularCourseRegistration.name)
@@ -177,9 +181,34 @@ export class CourseRegistrationService {
     }
   }
   async testEmail(data: CourseRegistrationDto): Promise<any> {
+    const { email } = data;
     await Promise.all([
-      await this.mailService.sendMailToUser(data),
-      await this.mailService.sendMailToAdmin(data),
+      // await this.mailService.sendMailToUser(data),
+      // await this.mailService.sendMailToAdmin(data),
+      this.mailService.sendForgotPasswordEmail(email),
     ]);
+    const verifyClientCache = await this.cacheManager.get<string>(
+      `${FORGOT_PASSWORD_CACHE}${email}`,
+    );
+    if (!verifyClientCache) {
+      throw new BadRequestException();
+    }
+    const forgotPasswordInfo: CacheForgotPassword =
+      JSON.parse(verifyClientCache);
+
+    console.log({ forgotPasswordInfo });
+  }
+  async getTestEmail(data: CourseRegistrationDto): Promise<any> {
+    const { email } = data;
+    const verifyClientCache = await this.cacheManager.get<string>(
+      `${FORGOT_PASSWORD_CACHE}${email}`,
+    );
+    if (!verifyClientCache) {
+      throw new BadRequestException();
+    }
+    const forgotPasswordInfo: CacheForgotPassword =
+      JSON.parse(verifyClientCache);
+
+    console.log({ forgotPasswordInfo });
   }
 }
