@@ -113,20 +113,20 @@ export class AccountTeacher {
   @Prop({ required: false, type: String, enum: RecommendedLevel })
   recommended_level: RecommendedLevel;
 
-  @Prop({ required: false, type: String })
-  character: Array<string>;
+  @Prop({ required: false, type: [String] })
+  character: string[];
 
-  @Prop({ required: false, type: String })
-  lesson_style: Array<string>;
+  @Prop({ required: false, type: [String] })
+  lesson_style: string[];
 
   @Prop({ required: false, type: String })
   video: string;
 
-  @Prop({ required: false, type: String })
-  student_review: Array<string>;
+  @Prop({ required: false, type: [String] })
+  student_review: string[];
 
-  @Prop({ required: false, type: String })
-  comment: Array<string>;
+  @Prop({ required: false, type: [String] })
+  comment: string[];
 
   @Prop({ required: false, type: Number })
   point: number;

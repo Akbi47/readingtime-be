@@ -129,7 +129,7 @@ export class AccountUserService {
     );
   }
   async findByIdAndUpdateEmail(
-    id: string,
+    id: string | mongoose.Schema.Types.ObjectId,
     data: any,
     isEmail?: boolean,
   ): Promise<void> {
