@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PointPenaltyManagementController } from './point-penalty-management.controller';
+
+import { PointPenaltyManagementService } from './point-penalty-management.service';
 import {
   PointPenaltyManagement,
   PointPenaltyManagementSchema,
-} from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
-import { PointPenaltyManagementService } from './point-penalty-management.service';
+} from './schemas/point-penalty-management.schema';
 
 @Module({
   imports: [

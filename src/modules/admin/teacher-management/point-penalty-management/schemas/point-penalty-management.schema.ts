@@ -1,11 +1,10 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { ClassFeedback } from '../../class-feedback/schemas/class-feedback.schema';
 import { AccountTeacher } from '../../account-teacher/schemas/account-teacher.schema';
 import { IsString, IsOptional } from 'class-validator';
 
 export type PointPenaltyManagementDocument = PointPenaltyManagement & Document;
-
 export class TimelineDto {
   @IsString()
   @IsOptional()
@@ -19,6 +18,20 @@ export class TimelineDto {
   @IsOptional()
   year: string;
 }
+@Schema({ _id: false })
+export class Timeline {
+  @Prop({ required: false, type: String })
+  day: string;
+
+  @Prop({ required: false, type: String })
+  month: string;
+
+  @Prop({ required: false, type: String })
+  year: string;
+}
+export const TimelineSchema = SchemaFactory.createForClass(Timeline);
+
+@Schema({ timestamps: true })
 export class PointPenaltyManagement {
   @Prop({
     required: false,
@@ -43,8 +56,8 @@ export class PointPenaltyManagement {
   @Prop({ required: false, type: String })
   texts: string;
 
-  @Prop({ required: false, type: [{ type: TimelineDto }] })
-  date: TimelineDto[];
+  @Prop({ required: false, type: [TimelineSchema] })
+  date: Timeline[];
 
   @Prop({ required: false, type: String })
   comment: string;

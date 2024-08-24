@@ -4,8 +4,11 @@ import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
 import { PointPenaltyManagementService } from './point-penalty-management.service';
 import { CreatePointPenaltyManagementDto } from './dto/create-point-penalty-management.dto';
-import { PointPenaltyManagement } from 'src/schemas/admin/teacher-management/point-penalty-management.schema';
-import { TimelineDto } from './schemas/point-penalty-management.schema';
+
+import {
+  PointPenaltyManagement,
+  TimelineDto,
+} from './schemas/point-penalty-management.schema';
 
 @Controller('point-penalty')
 export class PointPenaltyManagementController {

@@ -25,7 +25,7 @@ export class WorkingHours {
   })
   teacher_id: MongooseSchema.Types.ObjectId;
 
-  @Prop({ required: false, type: [{ type: TimelineSchema }] })
+  @Prop({ required: false, type: [{ type: TimelineSchema }] }) // type: [TimelineSchema]
   timesheet: Timeline[];
 }
 

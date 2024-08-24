@@ -1,36 +1,60 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
+export class CreateDateDto {
+  @IsString()
+  @IsOptional()
+  day: string;
+
+  @IsString()
+  @IsOptional()
+  month: string;
+
+  @IsString()
+  @IsOptional()
+  year: string;
+}
 export class CreatePointPenaltyManagementDto {
   @IsString()
   @IsOptional()
-  teacher_id: string;
+  teacher_id?: string;
 
   @IsString()
   @IsOptional()
-  class_feedback_id: string;
+  class_feedback_id?: string;
 
   @IsString()
   @IsOptional()
-  division: string;
+  division?: string;
 
   @IsString()
   @IsOptional()
-  items: string;
+  items?: string;
 
   @IsString()
   @IsOptional()
   texts?: string;
 
-  @IsOptional()
-  date: any;
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreateDateDto)
+  date?: CreateDateDto[];
 
   @IsString()
   @IsOptional()
-  comment: string;
+  comment?: string;
 
   @IsString()
   @IsOptional()
-  time: string;
+  time?: string;
 
   @IsNumber()
   @IsOptional()
