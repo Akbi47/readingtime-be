@@ -64,6 +64,10 @@ export class CourseRegistrationDto {
   @IsOptional()
   trial_product_id: string;
 
+  @IsMongoId()
+  @IsOptional()
+  user_account: string;
+
   @IsArray()
   @IsOptional()
   known_from: string[];

@@ -32,9 +32,6 @@ export class CourseRegistration {
   @Prop({ required: false, type: String, default: formattedDate })
   application_day: string;
 
-  @Prop({ required: false, type: String, unique: true })
-  email: string;
-
   @Prop({
     required: false,
     type: MongooseSchema.Types.ObjectId,
