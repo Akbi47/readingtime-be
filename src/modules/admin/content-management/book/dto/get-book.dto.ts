@@ -5,8 +5,9 @@ import {
   IsBoolean,
   IsDate,
 } from 'class-validator';
+import { BaseDto } from 'src/shares/dtos/base.dto';
 
-export class GetBookDto {
+export class GetBookDto extends BaseDto {
   @IsString()
   @IsOptional()
   book_title: string;

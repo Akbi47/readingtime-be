@@ -9,7 +9,7 @@ export const httpErrors = {
     code: 'USER_00001',
   },
   ACCOUNT_HASH_NOT_MATCH: {
-    message: 'Account adress and hash message are not matched.',
+    message: 'Account address and hash message are not matched.',
     code: 'USER_00002',
   },
   UNAUTHORIZED: {

@@ -15,6 +15,7 @@ import { CreateAccountTeacherDto } from '../../teacher-management/account-teache
 import { MailService } from 'src/modules/mail/mail.service';
 import { ReadingRoomService } from 'src/modules/user/reading-room/reading-room.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AccountUserService {
@@ -255,5 +256,32 @@ export class AccountUserService {
     delete data.password;
 
     return data;
+  }
+  async update(filter, update) {
+    if (update.refresh_token) {
+      const reversedToken = update.refresh_token.split('').reverse().join('');
+      update.refresh_token = await bcrypt.hash(reversedToken, 10);
+    }
+    const payload = {
+      _id: filter,
+      ...update,
+    };
+    return await this.updateAccountUserById(payload);
+  }
+  async getUserByRefresh(refresh_token, email) {
+    const user = await this.findOne({ email });
+    if (!user) {
+      throw new BadRequestException(httpErrors.ACCOUNT_NOT_FOUND);
+    }
+    const is_equal = await bcrypt.compare(
+      refresh_token.split('').reverse().join(''),
+      user.refresh_token,
+    );
+
+    if (!is_equal) {
+      throw new BadRequestException(httpErrors.ACCOUNT_HASH_NOT_MATCH);
+    }
+
+    return user;
   }
 }

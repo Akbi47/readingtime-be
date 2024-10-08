@@ -85,6 +85,9 @@ export class AccountUser {
 
   @Prop({ required: false, type: String, default: formattedDate })
   reg_day: string;
+
+  @Prop({ required: false, type: String })
+  refresh_token: string;
 }
 
 export const AccountUserSchema = SchemaFactory.createForClass(AccountUser);

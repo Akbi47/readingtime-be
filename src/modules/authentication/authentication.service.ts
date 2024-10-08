@@ -11,14 +11,15 @@ import { validateHash } from 'src/shares/helpers/bcrypt';
 import { AccountUser } from '../admin/user-management/account-user/schemas/account-user.schema';
 import { AccountUserService } from '../admin/user-management/account-user/account-user.service';
 import { UserStatus } from 'src/shares/enums/account-user.enum';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private accountUserService: AccountUserService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
-
   async login(loginDto: LoginDto): Promise<ResponseLogin> {
     const { email, password } = loginDto;
     const user = await this.accountUserService.findOne({
@@ -34,13 +35,26 @@ export class AuthenticationService {
       throw new UnauthorizedException(httpErrors.UNAUTHORIZED);
     }
 
-    await this.accountUserService.updateRecentLogin(user._id);
-    const { authToken, userRole } = await this.generateToken(user);
+    const [accessToken, refreshToken] = await Promise.all([
+      this.generateToken(user),
+      this.generateRefreshToken(user),
+    ]);
+
+    await Promise.all([
+      this.accountUserService.updateRecentLogin(user._id),
+      this.accountUserService.update(
+        { _id: user._id },
+        {
+          refresh_token: refreshToken,
+        },
+      ),
+    ]);
 
     return {
-      accessToken: authToken,
-      role: userRole,
-      _id: user._id,
+      accessToken,
+      exp: this.configService.get<number>('EXPIRESIN'),
+      refreshToken,
+      expRefresh: this.configService.get<number>('EXPIRESIN_REFRESH'),
     };
   }
 
@@ -48,17 +62,55 @@ export class AuthenticationService {
     return this.jwtService.decode(accessToken);
   }
 
-  async generateToken(
-    user: AccountUser,
-  ): Promise<{ authToken: string; userRole: number }> {
-    const { role } = user;
+  private async generateToken(user: AccountUser): Promise<any> {
     const payload = {
       email: user.email,
       role: user.role,
-      userId: user['_id'],
+      sub: user['_id'],
     };
     const authToken = this.jwtService.sign(payload);
 
-    return { authToken, userRole: role };
+    return authToken;
+  }
+  private async generateRefreshToken(user: AccountUser): Promise<any> {
+    const payload = {
+      email: user.email,
+      role: user.role,
+      sub: user['_id'],
+    };
+    const authToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('SECRET_KEY'),
+      expiresIn: this.configService.get<number>('EXPIRESIN_REFRESH'),
+    });
+
+    return authToken;
+  }
+  async refresh(token: string): Promise<any> {
+    const isValidUser = await this.jwtService.verify(token, {
+      secret: this.configService.get<string>('SECRET_KEY'),
+    });
+    if (!isValidUser) {
+      throw new BadRequestException(httpErrors.ACCOUNT_HASH_NOT_MATCH);
+    }
+    const user = await this.accountUserService.getUserByRefresh(
+      token,
+      isValidUser.email,
+    );
+    const accessToken = await this.generateToken(user);
+    const payload = {
+      email: user.email,
+      role: user.role,
+      sub: user['_id'],
+    };
+    return {
+      ...payload,
+      accessToken,
+    };
+  }
+  async logout(user: any) {
+    await this.accountUserService.update(
+      { _id: user.userId },
+      { refresh_token: null },
+    );
   }
 }

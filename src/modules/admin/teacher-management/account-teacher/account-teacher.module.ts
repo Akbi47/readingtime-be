@@ -17,6 +17,7 @@ import {
   TeamManagement,
   TeamManagementSchema,
 } from '../../team-management/schemas/team-management.schema';
+import { JwtStrategy } from 'src/modules/authentication/strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import {
     TeamManagementModule,
   ],
   controllers: [AccountTeacherController],
-  providers: [AccountTeacherService],
+  providers: [AccountTeacherService, JwtStrategy],
   exports: [AccountTeacherService],
 })
 export class AccountTeacherModule {}

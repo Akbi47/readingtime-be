@@ -6,18 +6,31 @@ import { AuthenticationController } from './authentication.controller';
 import { AccountUserModule } from '../admin/user-management/account-user/account-user.module';
 import { UserAtStrategy } from './strategies/user-at.strategy';
 import { UserRtStrategy } from './strategies/user-rt.strategy';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
 dotenv.config();
 
 @Module({
   imports: [
     AccountUserModule,
-    JwtModule.register({
-      secret: process.env.SECRET_KEY,
-      signOptions: { expiresIn: '8h' },
+    PassportModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('SECRET_KEY'),
+        signOptions: { expiresIn: configService.get('EXPIRESIN') },
+      }),
     }),
   ],
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, UserAtStrategy, UserRtStrategy],
-  exports: [AuthenticationService],
+  providers: [
+    AuthenticationService,
+    UserAtStrategy,
+    UserRtStrategy,
+    JwtStrategy,
+  ],
+  exports: [AuthenticationService, JwtStrategy],
 })
 export class AuthenticationModule {}

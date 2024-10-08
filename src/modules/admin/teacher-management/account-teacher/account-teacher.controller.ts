@@ -1,4 +1,13 @@
-import { Controller, Get, Body, Post, Put, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 
@@ -9,18 +18,22 @@ import {
   AccountTeacherDocument,
 } from './schemas/account-teacher.schema';
 import { GetAccountTeacherDto } from './dto/get-account-teacher.dto';
-import { UserRole } from 'src/shares/enums/account-user.enum';
-import { UserAuth } from 'src/shares/decorators/http.decorators';
+import { JwtAuthGuard } from 'src/modules/authentication/guards/jwt-auth.guard';
 
 @Controller('account-teacher')
 export class AccountTeacherController {
   constructor(private readonly accountTeacherService: AccountTeacherService) {}
 
   @Get()
-  @UserAuth([UserRole.admin])
-  async getAccountTeacher(@Query() query?: any): Promise<any> {
+  @UseGuards(JwtAuthGuard)
+  // @UserAuth([UserRole.admin])
+  async getAccountTeacher(@Query() query: any, @Req() req: any): Promise<any> {
     try {
-      const data = await this.accountTeacherService.getAccountTeacher(query);
+      let data = await this.accountTeacherService.getAccountTeacher(query);
+      data = {
+        user: req.user,
+        data,
+      };
       return new ResponseData<any>(
         data,
         HttpStatus.SUCCESS,

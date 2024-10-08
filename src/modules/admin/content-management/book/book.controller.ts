@@ -1,15 +1,17 @@
-import { Controller, Get, Body, Post, Put, Param } from '@nestjs/common';
+import { Controller, Get, Body, Post, Put, Param, UseInterceptors } from '@nestjs/common';
 import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage, HttpStatus } from 'src/global/globalEnum';
 import { BookService } from './book.service';
 import CreateBookDto from './dto/create-book.dto';
 import { Book, BookDocument } from './schemas/book.schema';
 import { IdDto } from 'src/shares/dtos/param.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import GetBookDto from './dto/get-book.dto';
 
 @Controller('book')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
-
+  @UseInterceptors(CacheInterceptor)
   @Get('/')
   async getBook(): Promise<ResponseData<Book[]>> {
     try {
@@ -57,8 +59,8 @@ export class BookController {
     }
   }
 
-  @Put()
-  async updateBook(@Body() book: BookDocument): Promise<void> {
-    await this.bookService.updateBook(book);
+  @Get()
+  async updateBook(@Body() book: GetBookDto): Promise<GetBookDto> {
+    return GetBookDto._plainToClass(book);
   }
 }
